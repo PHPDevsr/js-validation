@@ -52,6 +52,19 @@ jobs:
           fi
 
           ./scripts/release.sh --from-tag "${GITHUB_REF_NAME}"
+
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          PACKAGE_VERSION="$(node --input-type=module -e "import fs from 'node:fs'; console.log(JSON.parse(fs.readFileSync('package.json', 'utf8')).version);")"
+          if [[ "$PACKAGE_VERSION" != "$TAG_VERSION" ]]; then
+            echo "::error::package.json version ($PACKAGE_VERSION) does not match tag version ($TAG_VERSION)."
+            exit 1
+          fi
+
+          if ! grep -q "^## \\[$TAG_VERSION\\]" CHANGELOG.md; then
+            echo "::error::CHANGELOG.md is missing a section for version $TAG_VERSION."
+            exit 1
+          fi
+
           git push origin HEAD:main
 
       - name: Resolve release ref

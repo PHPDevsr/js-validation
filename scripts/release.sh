@@ -58,12 +58,13 @@ fi
 VERSION_NUMBER="${NEW_VERSION#v}"
 RELEASE_DATE=$(date +%F)
 
-VERSION_NUMBER="$VERSION_NUMBER" RELEASE_DATE="$RELEASE_DATE" node --input-type=module <<'NODE'
+ALLOW_EXISTING_VERSION="$TAG_MODE" VERSION_NUMBER="$VERSION_NUMBER" RELEASE_DATE="$RELEASE_DATE" node --input-type=module <<'NODE'
 import fs from 'node:fs';
 
 const changelogPath = 'CHANGELOG.md';
 const version = process.env.VERSION_NUMBER;
 const releaseDate = process.env.RELEASE_DATE;
+const allowExistingVersion = process.env.ALLOW_EXISTING_VERSION === 'true';
 
 if (!version || !releaseDate) {
   console.error('Error: missing release metadata for changelog update.');
@@ -79,6 +80,11 @@ if (!content.includes(unreleasedHeading)) {
 }
 
 if (content.includes(`## [${version}]`)) {
+  if (allowExistingVersion) {
+    console.log(`${changelogPath} already contains version ${version}; skipping changelog promotion.`);
+    process.exit(0);
+  }
+
   console.error(`Error: ${changelogPath} already contains version ${version}.`);
   process.exit(1);
 }

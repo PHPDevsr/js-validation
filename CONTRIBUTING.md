@@ -91,7 +91,7 @@ git push origin main --tags
 
 When a `v*` tag is pushed to `main`, the release pipeline will:
 
-1. **Prepare release metadata** on `main` (sync package version + promote `CHANGELOG.md` from `[Unreleased]`)
+1. **Prepare release metadata** on `main` (sync package version + promote `CHANGELOG.md` from `[Unreleased]` and enforce a section for the tag version)
 2. **Build** the full bundle (`js-validation.js` + `.min.js` + ESM variants)
 3. **Create a GitHub Release** with auto-generated release notes and attach all dist files
 4. **Publish to NPM** registry (skips publish if that version already exists)
