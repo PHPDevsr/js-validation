@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('E2E: equalTo rule', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/equalTo-fixture.html');
+    await page.goto('/equalTo/fixture.html');
   });
 
   test('fails when fields do not match', async ({ page }) => {

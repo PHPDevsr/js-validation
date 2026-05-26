@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('E2E: pattern rule', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/pattern-fixture.html');
+    await page.goto('/pattern/fixture.html');
   });
 
   test('fails when value does not match pattern', async ({ page }) => {

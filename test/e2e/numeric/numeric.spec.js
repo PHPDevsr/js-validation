@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('E2E: numeric rule', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/numeric-fixture.html');
+    await page.goto('/numeric/fixture.html');
   });
 
   test('fails for alphabetic characters', async ({ page }) => {

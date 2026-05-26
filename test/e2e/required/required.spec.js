@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('E2E: required rule', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/required-fixture.html');
+    await page.goto('/required/fixture.html');
   });
 
   test('fails when field is empty', async ({ page }) => {
