@@ -6,6 +6,11 @@ on:
     paths:
       - '**.js'
       - '**.yml'
+  push:
+    branches: [develop, main]
+    paths:
+      - '**.js'
+      - '**.yml'
 
 concurrency:
   group: ci-${{ github.event.pull_request.number || github.ref }}
