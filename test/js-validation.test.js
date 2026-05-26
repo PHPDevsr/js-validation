@@ -77,11 +77,11 @@ describe('email rule', () => {
     expect(v.validate()).toBe(true);
   });
 
-  it('passes when empty (not required)', () => {
+  it('fails when empty', () => {
     const f = field('email', '');
     const form = makeForm([f]);
     const v = jsValidation(form, { rules: { email: { email: true } } });
-    expect(v.validate()).toBe(true);
+    expect(v.validate()).toBe(false);
   });
 });
 
@@ -133,6 +133,13 @@ describe('pattern rule', () => {
     const v = jsValidation(form, { rules: { zip: { pattern: '^\\d{5}$' } } });
     expect(v.validate()).toBe(true);
   });
+
+  it('fails when value is empty', () => {
+    const f = field('zip', '');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { zip: { pattern: '^\\d{5}$' } } });
+    expect(v.validate()).toBe(false);
+  });
 });
 
 describe('equalTo rule', () => {
@@ -171,11 +178,11 @@ describe('numeric rule', () => {
     expect(v.validate()).toBe(true);
   });
 
-  it('passes for empty value (optional)', () => {
+  it('fails for empty value', () => {
     const f = field('age', '');
     const form = makeForm([f]);
     const v = jsValidation(form, { rules: { age: { numeric: true } } });
-    expect(v.validate()).toBe(true);
+    expect(v.validate()).toBe(false);
   });
 
   it('fails for mixed alphanumeric value', () => {
