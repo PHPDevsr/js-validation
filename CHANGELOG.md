@@ -1,0 +1,31 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [1.0.0] - 2026-05-26
+
+### Added
+- Initial release of js-validation library.
+- Core validator engine (`src/core.js`) with `jsValidation(formOrSelector, options)` API.
+- Modular built-in rules (each in `src/rules/`):
+  - `required` – validates non-empty fields.
+  - `email` – validates email format.
+  - `minlength` – validates minimum character length.
+  - `maxlength` – validates maximum character length.
+  - `pattern` – validates against a regular expression.
+  - `equalTo` – validates field matches another field's value.
+- Extensibility via `jsValidation.addMethod(name, validateFn, message)`.
+- Support for rules from both JavaScript options and `data-rule-*` HTML attributes.
+- Custom error messages via `options.messages` and `data-msg-*` attributes.
+- Field-level error state with `aria-invalid`, `validationMessage`, and `jsv-invalid` CSS class.
+- Form-wide `validate()` and `resetForm()` methods.
+- Vite build pipeline producing UMD and ES module bundles (`.js` and `.min.js`).
+- Vitest test suite with 18 tests covering all built-in rules.
+- CI workflow (GitHub Actions) for building and testing on push/PR.
+- Release workflow deploying compiled assets and docs to GitHub Pages.
+- Demo page (`docs/index.html`) with declarative and programmatic usage examples.
