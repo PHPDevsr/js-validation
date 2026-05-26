@@ -13,23 +13,8 @@
     "./core": {
       "import": "./src/core-entry.js"
     },
-    "./rules/required": {
-      "import": "./src/rules/required.js"
-    },
-    "./rules/email": {
-      "import": "./src/rules/email.js"
-    },
-    "./rules/minlength": {
-      "import": "./src/rules/minlength.js"
-    },
-    "./rules/maxlength": {
-      "import": "./src/rules/maxlength.js"
-    },
-    "./rules/pattern": {
-      "import": "./src/rules/pattern.js"
-    },
-    "./rules/equalTo": {
-      "import": "./src/rules/equalTo.js"
+    "./rules/*": {
+      "import": "./src/rules/*.js"
     }
   },
   "files": [

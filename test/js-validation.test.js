@@ -155,6 +155,37 @@ describe('equalTo rule', () => {
   });
 });
 
+describe('numeric rule', () => {
+  it('fails for non-numeric value', () => {
+    const f = field('age', 'abc');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { age: { numeric: true } } });
+    expect(v.validate()).toBe(false);
+    expect(f._jsvMessage).toBe('Please enter only numeric values.');
+  });
+
+  it('passes for numeric value', () => {
+    const f = field('age', '123');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { age: { numeric: true } } });
+    expect(v.validate()).toBe(true);
+  });
+
+  it('passes for empty value (optional)', () => {
+    const f = field('age', '');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { age: { numeric: true } } });
+    expect(v.validate()).toBe(true);
+  });
+
+  it('fails for mixed alphanumeric value', () => {
+    const f = field('age', '12a3');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { age: { numeric: true } } });
+    expect(v.validate()).toBe(false);
+  });
+});
+
 describe('custom messages', () => {
   it('uses custom message from options', () => {
     const f = field('username', 'ab');
