@@ -70,6 +70,7 @@ Maintainers create a release by simply tagging a version on `main`. The CI pipel
 
 ```bash
 # On main branch, after merging develop:
+# Bumps package version and promotes CHANGELOG.md [Unreleased] notes into the new version section
 npm run release patch   # 1.0.0 → 1.0.1
 npm run release minor   # 1.0.0 → 1.1.0
 npm run release major   # 1.0.0 → 2.0.0
