@@ -96,13 +96,14 @@ When a `v*` tag is pushed to `main`, the release pipeline will:
 4. **Deploy** docs and compiled assets to GitHub Pages
 
 After NPM publish, the package is also available via CDN:
-```
+
+```text
 https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation/dist/js-validation.min.js
 ```
 
 ### Workflow summary
 
-```
+```text
 develop (contributions) → PR → main (releases)
                                   ↓
                             tag v1.x.x
@@ -124,6 +125,7 @@ The release build produces:
 ## Adding a new built-in rule
 
 1. Create a new file in `src/rules/` (e.g., `src/rules/myRule.js`):
+
    ```js
    import { VanillaValidator } from '../core.js';
 
@@ -138,6 +140,7 @@ The release build produces:
    ```
 
 2. Import the rule in `src/index.js`:
+
    ```js
    import './rules/myRule.js';
    ```

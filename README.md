@@ -45,6 +45,7 @@ npm run build
 ```
 
 Produces in `dist/`:
+
 - `js-validation.js` – UMD (unminified)
 - `js-validation.min.js` – UMD (minified)
 - `js-validation.esm.js` – ES module (unminified)
@@ -131,4 +132,3 @@ This project has had thousands on contributions from people since its creation. 
 </a>
 
 Made with [contrib.rocks](https://contrib.rocks).
-
