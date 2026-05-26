@@ -13,6 +13,7 @@ import './rules/minlength.js';
 import './rules/maxlength.js';
 import './rules/pattern.js';
 import './rules/equalTo.js';
+import './rules/numeric.js';
 
 function jsValidation(formOrSelector, options = {}) {
   let form = formOrSelector;
