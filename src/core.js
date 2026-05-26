@@ -37,8 +37,13 @@ export class VanillaValidator {
     if (!this.form || typeof this.form.addEventListener !== 'function') return;
 
     this.form.addEventListener('submit', (event) => {
-      if (!this.validate() && event && typeof event.preventDefault === 'function') {
+      if (event && typeof event.preventDefault === 'function') {
         event.preventDefault();
+      }
+      if (this.validate()) {
+        if (this._submitHandler) {
+          this._submitHandler(this.form);
+        }
       }
     });
 
@@ -49,6 +54,11 @@ export class VanillaValidator {
         this.element(event.target);
       }
     });
+  }
+
+  submit(handler) {
+    this._submitHandler = handler;
+    return this;
   }
 
   _elements() {

@@ -193,3 +193,48 @@ describe('resetForm', () => {
     expect(Object.keys(v.errors).length).toBe(0);
   });
 });
+
+describe('submit handler', () => {
+  it('calls submit handler when validation passes', () => {
+    const f = field('name', 'hello');
+    let submitCalled = false;
+    let submitEvents = [];
+    const form = {
+      elements: [f],
+      addEventListener: (event, handler) => { submitEvents.push({ event, handler }); },
+      querySelector: () => null
+    };
+    const v = jsValidation(form, { rules: { name: { required: true } } })
+      .submit(() => { submitCalled = true; });
+
+    // Simulate form submit event
+    const submitHandler = submitEvents.find(e => e.event === 'submit');
+    submitHandler.handler({ preventDefault: () => {} });
+    expect(submitCalled).toBe(true);
+  });
+
+  it('does not call submit handler when validation fails', () => {
+    const f = field('name', '');
+    let submitCalled = false;
+    let submitEvents = [];
+    const form = {
+      elements: [f],
+      addEventListener: (event, handler) => { submitEvents.push({ event, handler }); },
+      querySelector: () => null
+    };
+    const v = jsValidation(form, { rules: { name: { required: true } } })
+      .submit(() => { submitCalled = true; });
+
+    const submitHandler = submitEvents.find(e => e.event === 'submit');
+    submitHandler.handler({ preventDefault: () => {} });
+    expect(submitCalled).toBe(false);
+  });
+
+  it('returns validator instance for chaining', () => {
+    const f = field('name', 'hello');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { name: { required: true } } });
+    const result = v.submit(() => {});
+    expect(result).toBe(v);
+  });
+});
