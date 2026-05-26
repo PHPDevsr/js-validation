@@ -1,0 +1,71 @@
+{
+  "name": "@phpdevsr/js-validation",
+  "version": "1.0.0",
+  "description": "Vanilla JavaScript form validation inspired by jquery-validation",
+  "type": "module",
+  "main": "dist/js-validation.js",
+  "module": "dist/js-validation.esm.js",
+  "exports": {
+    ".": {
+      "import": "./dist/js-validation.esm.js",
+      "require": "./dist/js-validation.js"
+    },
+    "./core": {
+      "import": "./src/core-entry.js"
+    },
+    "./rules/required": {
+      "import": "./src/rules/required.js"
+    },
+    "./rules/email": {
+      "import": "./src/rules/email.js"
+    },
+    "./rules/minlength": {
+      "import": "./src/rules/minlength.js"
+    },
+    "./rules/maxlength": {
+      "import": "./src/rules/maxlength.js"
+    },
+    "./rules/pattern": {
+      "import": "./src/rules/pattern.js"
+    },
+    "./rules/equalTo": {
+      "import": "./src/rules/equalTo.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PHPDevsr/js-validation.git"
+  },
+  "homepage": "https://github.com/PHPDevsr/js-validation#readme",
+  "bugs": {
+    "url": "https://github.com/PHPDevsr/js-validation/issues"
+  },
+  "scripts": {
+    "build": "vite build && vite build --config vite.config.min.js",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "test:watch": "vitest",
+    "release": "./scripts/release.sh"
+  },
+  "keywords": [
+    "validation",
+    "vanilla-js",
+    "forms",
+    "form-validation",
+    "javascript"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "terser": "^5.48.0",
+    "vite": "^8.0.14",
+    "vitest": "^4.1.7"
+  }
+}

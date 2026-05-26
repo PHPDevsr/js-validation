@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>js-validation Demo</title>
+    <style>
+      body { font-family: Arial, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
+      label { display: block; margin-top: 1rem; }
+      input { width: 100%; padding: .5rem; margin-top: .25rem; }
+      .jsv-invalid { border: 1px solid #cc0000; }
+      .help { color: #666; font-size: .9rem; }
+      button { margin-top: 1rem; padding: .6rem 1rem; }
+      .ok { color: #117733; margin-top: 1rem; }
+    </style>
+  </head>
+  <body>
+    <h1>Vanilla JS Validation (jquery-validation style)</h1>
+    <p class="help">Rules can come from JS options or <code>data-rule-*</code> attributes.</p>
+
+    <form id="signup-form" novalidate>
+      <label>
+        Email
+        <input name="email" data-rule-required="true" data-rule-email="true" />
+      </label>
+
+      <label>
+        Password
+        <input id="password" name="password" type="password" data-rule-required="true" data-rule-minlength="6" />
+      </label>
+
+      <label>
+        Confirm Password
+        <input name="confirmPassword" type="password" />
+      </label>
+
+      <button type="submit">Validate</button>
+    </form>
+
+    <p id="status" class="ok"></p>
+
+    <script src="./assets/js-validation.min.js"></script>
+    <script>
+      const validator = jsValidation.default('#signup-form', {
+        rules: {
+          confirmPassword: { equalTo: '#password' }
+        },
+        messages: {
+          confirmPassword: { equalTo: 'Passwords must match.' }
+        }
+      });
+
+      document.getElementById('signup-form').addEventListener('submit', function () {
+        document.getElementById('status').textContent = validator.validate() ? 'Form is valid.' : '';
+      });
+    </script>
+  </body>
+</html>
