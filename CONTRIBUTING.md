@@ -1,5 +1,40 @@
 # Contributing
 
+## Documentation
+
+Project documentation lives in the `docs/` folder as Markdown (`.md`) files. These are published to GitHub Pages on every release.
+
+### Documentation Structure
+
+| File | Content |
+|------|---------|
+| `docs/README.md` | Index / landing page with table of contents |
+| `docs/getting-started.md` | Quick-start guide and API reference |
+| `docs/installation.md` | Installation methods (NPM, CDN, download) |
+| `docs/requirements.md` | Runtime and development requirements |
+| `docs/browser-support.md` | Supported browsers and required APIs |
+| `docs/rules.md` | Complete list of built-in validation rules |
+| `docs/custom-rules.md` | Guide for creating custom validation rules |
+| `docs/changelog.md` | Version history and release notes |
+
+### Writing Documentation
+
+When contributing documentation:
+
+1. **Use Markdown format** — all docs files must be `.md` files in the `docs/` folder.
+2. **Follow existing structure** — use headings, tables, and code blocks consistently.
+3. **Include code examples** — show both usage with options and HTML `data-rule-*` attributes.
+4. **Link between pages** — use relative links (e.g., `[Rules List](rules.md)`).
+5. **Keep the index updated** — add new pages to `docs/README.md` table of contents.
+
+### Publishing Documentation
+
+Documentation is published automatically to GitHub Pages when a release tag (`v*`) is pushed to `main`. The release pipeline deploys the `docs/` folder contents along with compiled assets.
+
+To preview documentation locally, you can use any Markdown previewer or serve the `docs/` folder with a local HTTP server.
+
+---
+
 ## Branching Strategy
 
 - **`develop`** — all contributions and feature work go here
@@ -61,13 +96,14 @@ When a `v*` tag is pushed to `main`, the release pipeline will:
 4. **Deploy** docs and compiled assets to GitHub Pages
 
 After NPM publish, the package is also available via CDN:
-```
+
+```text
 https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation/dist/js-validation.min.js
 ```
 
 ### Workflow summary
 
-```
+```text
 develop (contributions) → PR → main (releases)
                                   ↓
                             tag v1.x.x
@@ -89,6 +125,7 @@ The release build produces:
 ## Adding a new built-in rule
 
 1. Create a new file in `src/rules/` (e.g., `src/rules/myRule.js`):
+
    ```js
    import { VanillaValidator } from '../core.js';
 
@@ -103,6 +140,7 @@ The release build produces:
    ```
 
 2. Import the rule in `src/index.js`:
+
    ```js
    import './rules/myRule.js';
    ```

@@ -1,0 +1,84 @@
+name: Docs Preview
+
+on:
+  pull_request:
+    branches: [develop, main]
+    paths:
+      - 'docs/**'
+      - '.github/workflows/docs-preview.yml'
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
+
+concurrency:
+  group: docs-preview-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  docs-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Build docs site
+        if: github.event.action != 'closed'
+        run: |
+          mkdir -p _docs_preview
+          cat > _docs_preview/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>js-validation Docs Preview</title>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css">
+            <style>
+              .sidebar .app-name { font-weight: bold; }
+              .markdown-section { max-width: 900px; }
+            </style>
+          </head>
+          <body>
+            <div id="app"></div>
+            <script>
+              window.$docsify = {
+                name: 'js-validation',
+                repo: 'PHPDevsr/js-validation',
+                loadSidebar: true,
+                subMaxLevel: 3,
+                search: 'auto',
+                auto2top: true
+              };
+            </script>
+            <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-javascript.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+          </body>
+          </html>
+          EOF
+
+          cat > _docs_preview/_sidebar.md << 'EOF'
+          - [Home](README.md)
+          - [Getting Started](getting-started.md)
+          - [Installation](installation.md)
+          - [Requirements](requirements.md)
+          - [Browser Support](browser-support.md)
+          - [Rules List](rules.md)
+          - [Custom Rules](custom-rules.md)
+          - [Changelog](changelog.md)
+          EOF
+
+          cp docs/*.md _docs_preview/
+          touch _docs_preview/.nojekyll
+
+      - name: Deploy PR preview
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: _docs_preview/

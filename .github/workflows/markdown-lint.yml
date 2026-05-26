@@ -1,0 +1,40 @@
+name: Markdown Lint
+
+on:
+  pull_request:
+    branches: [develop, main]
+    paths:
+      - 'docs/**/*.md'
+      - 'docs/*.md'
+      - '*.md'
+      - '.markdownlint-cli2.jsonc'
+      - '.github/workflows/markdown-lint.yml'
+  push:
+    branches: [develop, main]
+    paths:
+      - 'docs/**/*.md'
+      - 'docs/*.md'
+      - '*.md'
+      - '.markdownlint-cli2.jsonc'
+      - '.github/workflows/markdown-lint.yml'
+
+concurrency:
+  group: markdown-lint-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  markdown-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Run markdownlint-cli2
+        uses: DavidAnson/markdownlint-cli2-action@v23
+        with:
+          globs: |
+            docs/*.md
+            *.md

@@ -1,0 +1,21 @@
+{
+  "config": {
+    "default": true,
+    // Allow long lines in tables and code blocks
+    "MD013": {
+      "line_length": 300,
+      "tables": false,
+      "code_blocks": false
+    },
+    // Allow duplicate headings in different sections
+    "MD024": {
+      "siblings_only": true
+    },
+    // Allow inline HTML (badges, images, etc.)
+    "MD033": false,
+    // Allow images without alt text (badges)
+    "MD045": false,
+    // Disable table column style (too strict for compact tables)
+    "MD060": false
+  }
+}
