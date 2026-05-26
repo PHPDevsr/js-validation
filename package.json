@@ -9,6 +9,27 @@
     ".": {
       "import": "./dist/js-validation.esm.js",
       "require": "./dist/js-validation.js"
+    },
+    "./core": {
+      "import": "./src/core-entry.js"
+    },
+    "./rules/required": {
+      "import": "./src/rules/required.js"
+    },
+    "./rules/email": {
+      "import": "./src/rules/email.js"
+    },
+    "./rules/minlength": {
+      "import": "./src/rules/minlength.js"
+    },
+    "./rules/maxlength": {
+      "import": "./src/rules/maxlength.js"
+    },
+    "./rules/pattern": {
+      "import": "./src/rules/pattern.js"
+    },
+    "./rules/equalTo": {
+      "import": "./src/rules/equalTo.js"
     }
   },
   "files": [
@@ -18,6 +39,7 @@
   "scripts": {
     "build": "vite build && vite build --config vite.config.min.js",
     "test": "vitest run",
+    "test:e2e": "playwright test",
     "test:watch": "vitest"
   },
   "keywords": [
@@ -27,6 +49,7 @@
   ],
   "license": "MIT",
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "terser": "^5.48.0",
     "vite": "^8.0.14",
     "vitest": "^4.1.7"

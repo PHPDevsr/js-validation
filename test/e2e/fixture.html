@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>E2E Test Page</title>
+    <style>
+      .jsv-invalid { border: 2px solid red; }
+    </style>
+  </head>
+  <body>
+    <form id="test-form" novalidate>
+      <input name="username" id="username" type="text" />
+      <input name="email" id="email" type="text" />
+      <input name="password" id="password" type="password" />
+      <input name="confirmPassword" id="confirmPassword" type="password" />
+      <button type="submit" id="submit-btn">Submit</button>
+    </form>
+    <p id="status"></p>
+
+    <script type="module">
+      import jsValidation from '/src/index.js';
+
+      const validator = jsValidation('#test-form', {
+        rules: {
+          username: { required: true, minlength: 3 },
+          email: { required: true, email: true },
+          password: { required: true, minlength: 6 },
+          confirmPassword: { required: true, equalTo: '#password' }
+        },
+        messages: {
+          confirmPassword: { equalTo: 'Passwords must match.' }
+        }
+      }).submit(() => {
+        document.getElementById('status').textContent = 'Form submitted successfully!';
+      });
+
+      window.__validator = validator;
+    </script>
+  </body>
+</html>

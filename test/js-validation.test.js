@@ -50,7 +50,7 @@ describe('required rule', () => {
     const form = makeForm([f]);
     const v = jsValidation(form, { rules: { name: { required: true } } });
     expect(v.validate()).toBe(false);
-    expect(f.validationMessage).toBe('This field is required.');
+    expect(f._jsvMessage).toBe('This field is required.');
   });
 
   it('passes for non-empty value', () => {
@@ -67,7 +67,7 @@ describe('email rule', () => {
     const form = makeForm([f]);
     const v = jsValidation(form, { rules: { email: { email: true } } });
     expect(v.validate()).toBe(false);
-    expect(f.validationMessage).toBe('Please enter a valid email address.');
+    expect(f._jsvMessage).toBe('Please enter a valid email address.');
   });
 
   it('passes for valid email', () => {
@@ -91,7 +91,7 @@ describe('minlength rule', () => {
     const form = makeForm([f]);
     const v = jsValidation(form, {});
     expect(v.validate()).toBe(false);
-    expect(f.validationMessage).toContain('at least 3');
+    expect(f._jsvMessage).toContain('at least 3');
   });
 
   it('passes when value meets minimum', () => {
@@ -108,7 +108,7 @@ describe('maxlength rule', () => {
     const form = makeForm([f]);
     const v = jsValidation(form, { rules: { code: { maxlength: 4 } } });
     expect(v.validate()).toBe(false);
-    expect(f.validationMessage).toContain('no more than 4');
+    expect(f._jsvMessage).toContain('no more than 4');
   });
 
   it('passes when value is within limit', () => {
@@ -164,7 +164,7 @@ describe('custom messages', () => {
       messages: { username: { minlength: 'Need at least 3 chars.' } }
     });
     expect(v.validate()).toBe(false);
-    expect(f.validationMessage).toBe('Need at least 3 chars.');
+    expect(f._jsvMessage).toBe('Need at least 3 chars.');
   });
 });
 
@@ -175,7 +175,7 @@ describe('addMethod', () => {
     const form = makeForm([f]);
     const v = jsValidation(form, { rules: { code: { startsWithA: true } } });
     expect(v.validate()).toBe(false);
-    expect(f.validationMessage).toBe('Must start with A.');
+    expect(f._jsvMessage).toBe('Must start with A.');
 
     f.value = 'Abc';
     expect(v.validate()).toBe(true);

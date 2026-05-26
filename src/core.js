@@ -106,15 +106,25 @@ export class VanillaValidator {
   showError(field, message) {
     this.errors[field.name] = message;
     this._getClassList(field).add('jsv-invalid');
-    field['aria-invalid'] = 'true';
-    field.validationMessage = message;
+    if (field.setAttribute) {
+      field.setAttribute('aria-invalid', 'true');
+      field.setAttribute('data-jsv-message', message);
+    } else {
+      field['aria-invalid'] = 'true';
+    }
+    field._jsvMessage = message;
   }
 
   clearError(field) {
     delete this.errors[field.name];
     this._getClassList(field).remove('jsv-invalid');
-    field['aria-invalid'] = 'false';
-    field.validationMessage = '';
+    if (field.setAttribute) {
+      field.setAttribute('aria-invalid', 'false');
+      field.removeAttribute('data-jsv-message');
+    } else {
+      field['aria-invalid'] = 'false';
+    }
+    field._jsvMessage = '';
   }
 
   element(field) {
