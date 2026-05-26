@@ -3,84 +3,72 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>js-validation Demo</title>
+    <title>js-validation – Documentation</title>
     <style>
-      body { font-family: Arial, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
+      * { box-sizing: border-box; }
+      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; color: #1a1a1a; }
       h1 { margin-bottom: 0.25rem; }
-      .help { color: #666; font-size: .9rem; margin-bottom: 1.5rem; }
-      .form-group { margin-bottom: 1rem; }
-      .form-group label { display: block; font-weight: bold; margin-bottom: .25rem; }
-      .form-group input { width: 100%; padding: .5rem; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-      .form-group input.is-invalid { border-color: #dc3545; }
-      .invalid-feedback { display: block; color: #dc3545; font-size: .875rem; margin-top: .25rem; }
-      button { margin-top: 1rem; padding: .6rem 1.2rem; background: #0d6efd; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
-      button:hover { background: #0b5ed7; }
-      .ok { color: #198754; margin-top: 1rem; font-weight: bold; }
-
-      .sample-output { margin-top: 2rem; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px; padding: 1rem; }
-      .sample-output h3 { margin-top: 0; }
-      .sample-output pre { background: #272822; color: #f8f8f2; padding: 1rem; border-radius: 4px; overflow-x: auto; font-size: .85rem; }
+      .subtitle { color: #555; margin-top: 0; margin-bottom: 2rem; }
+      .badge { display: inline-block; background: #0d6efd; color: #fff; font-size: .75rem; padding: .2rem .5rem; border-radius: 3px; vertical-align: middle; }
+      .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+      .card { border: 1px solid #dee2e6; border-radius: 8px; padding: 1.25rem; text-decoration: none; color: inherit; transition: box-shadow .2s, border-color .2s; }
+      .card:hover { border-color: #0d6efd; box-shadow: 0 2px 8px rgba(13,110,253,.15); }
+      .card h3 { margin: 0 0 .5rem; font-size: 1rem; color: #0d6efd; }
+      .card p { margin: 0; font-size: .875rem; color: #555; }
+      .section-title { margin-top: 2.5rem; margin-bottom: .5rem; font-size: 1.1rem; border-bottom: 2px solid #dee2e6; padding-bottom: .25rem; }
+      .demo-link { display: inline-block; margin-top: 1.5rem; background: #0d6efd; color: #fff; padding: .6rem 1.2rem; border-radius: 4px; text-decoration: none; font-weight: bold; }
+      .demo-link:hover { background: #0b5ed7; }
+      .features { list-style: none; padding: 0; }
+      .features li { padding: .4rem 0; padding-left: 1.5rem; position: relative; }
+      .features li::before { content: '✓'; position: absolute; left: 0; color: #198754; font-weight: bold; }
     </style>
   </head>
   <body>
-    <h1>js-validation Demo</h1>
-    <p class="help">Vanilla JS form validation (jquery-validation style). Rules can come from JS options or <code>data-rule-*</code> attributes.</p>
+    <h1>js-validation <span class="badge">v1.0.0</span></h1>
+    <p class="subtitle">Lightweight, zero-dependency vanilla JavaScript form validation library inspired by jquery-validation.</p>
 
-    <form id="signup-form" novalidate>
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input id="email" name="email" type="text" data-rule-required="true" data-rule-email="true" />
-      </div>
+    <ul class="features">
+      <li>No dependencies – pure vanilla JavaScript</li>
+      <li>Familiar API inspired by jquery-validation</li>
+      <li>Built-in rules: required, email, minlength, maxlength, pattern, equalTo, numeric</li>
+      <li>Custom rules via <code>addMethod()</code></li>
+      <li>Tree-shakeable ES module imports</li>
+      <li>Configurable error classes and error elements</li>
+      <li>Accessible – sets <code>aria-invalid</code> and <code>invalid</code> attributes</li>
+    </ul>
 
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" data-rule-required="true" data-rule-minlength="6" />
-      </div>
+    <a href="demo.html" class="demo-link">▶ Live Demo</a>
 
-      <div class="form-group">
-        <label for="confirmPassword">Confirm Password</label>
-        <input id="confirmPassword" name="confirmPassword" type="password" />
-      </div>
-
-      <button type="submit">Submit</button>
-    </form>
-
-    <p id="status" class="ok"></p>
-
-    <div class="sample-output">
-      <h3>Sample Output (when validation fails)</h3>
-      <p>When a field fails validation, the following HTML is produced:</p>
-      <pre><code>&lt;div class="form-group"&gt;
-  &lt;label for="email"&gt;Email&lt;/label&gt;
-  &lt;input id="email" name="email" type="text"
-    class="is-invalid"
-    aria-invalid="true"
-    invalid="true"
-    data-jsv-message="Please enter a valid email address." /&gt;
-  &lt;span class="invalid-feedback"
-    data-jsv-error-for="email"&gt;Please enter a valid email address.&lt;/span&gt;
-&lt;/div&gt;</code></pre>
-
-      <h3>When validation passes</h3>
-      <pre><code>&lt;div class="form-group"&gt;
-  &lt;label for="email"&gt;Email&lt;/label&gt;
-  &lt;input id="email" name="email" type="text"
-    aria-invalid="false" /&gt;
-&lt;/div&gt;</code></pre>
+    <h2 class="section-title">Documentation</h2>
+    <div class="cards">
+      <a href="getting-started.md" class="card">
+        <h3>Getting Started</h3>
+        <p>Quick setup guide, basic usage, and API reference.</p>
+      </a>
+      <a href="installation.md" class="card">
+        <h3>Installation</h3>
+        <p>CDN, npm, and manual install methods.</p>
+      </a>
+      <a href="rules.md" class="card">
+        <h3>Rules</h3>
+        <p>All built-in validation rules and their options.</p>
+      </a>
+      <a href="custom-rules.md" class="card">
+        <h3>Custom Rules</h3>
+        <p>Create your own validation rules with addMethod().</p>
+      </a>
+      <a href="browser-support.md" class="card">
+        <h3>Browser Support</h3>
+        <p>Supported browsers and compatibility notes.</p>
+      </a>
+      <a href="requirements.md" class="card">
+        <h3>Requirements</h3>
+        <p>System and environment requirements.</p>
+      </a>
+      <a href="changelog.md" class="card">
+        <h3>Changelog</h3>
+        <p>Version history and release notes.</p>
+      </a>
     </div>
-
-    <script src="./assets/js-validation.min.js"></script>
-    <script>
-      const validator = jsValidation.default('#signup-form', {
-        rules: {
-          confirmPassword: { required: true, equalTo: '#password' }
-        },
-        messages: {
-          confirmPassword: { equalTo: 'Passwords must match.' }
-        }
-      }).submit(function (form) {
-        document.getElementById('status').textContent = 'Form submitted successfully!';
-      });
-    </script>
   </body>
 </html>
