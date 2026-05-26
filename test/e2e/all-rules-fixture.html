@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>E2E Test - All Rules</title>
+    <style>
+      .jsv-invalid { border: 2px solid red; }
+    </style>
+  </head>
+  <body>
+    <form id="all-rules-form" novalidate>
+      <!-- required -->
+      <input name="requiredField" id="requiredField" type="text" />
+
+      <!-- email -->
+      <input name="emailField" id="emailField" type="text" />
+
+      <!-- minlength -->
+      <input name="minlengthField" id="minlengthField" type="text" />
+
+      <!-- maxlength -->
+      <input name="maxlengthField" id="maxlengthField" type="text" />
+
+      <!-- numeric -->
+      <input name="numericField" id="numericField" type="text" />
+
+      <!-- pattern -->
+      <input name="patternField" id="patternField" type="text" />
+
+      <!-- equalTo -->
+      <input name="sourceField" id="sourceField" type="text" />
+      <input name="equalToField" id="equalToField" type="text" />
+
+      <button type="submit" id="submit-btn">Submit</button>
+    </form>
+    <p id="status"></p>
+
+    <script type="module">
+      import jsValidation from '/src/index.js';
+
+      const validator = jsValidation('#all-rules-form', {
+        rules: {
+          requiredField: { required: true },
+          emailField: { required: true, email: true },
+          minlengthField: { required: true, minlength: 5 },
+          maxlengthField: { required: true, maxlength: 10 },
+          numericField: { required: true, numeric: true },
+          patternField: { required: true, pattern: '^[A-Z]{3}-\\d{4}$' },
+          sourceField: { required: true },
+          equalToField: { required: true, equalTo: '#sourceField' }
+        },
+        messages: {
+          requiredField: { required: 'Required field is empty.' },
+          emailField: { email: 'Invalid email format.' },
+          minlengthField: { minlength: 'Too short.' },
+          maxlengthField: { maxlength: 'Too long.' },
+          numericField: { numeric: 'Must be numeric.' },
+          patternField: { pattern: 'Must match format ABC-1234.' },
+          equalToField: { equalTo: 'Fields do not match.' }
+        }
+      }).submit(() => {
+        document.getElementById('status').textContent = 'Form submitted successfully!';
+      });
+
+      window.__validator = validator;
+    </script>
+  </body>
+</html>
