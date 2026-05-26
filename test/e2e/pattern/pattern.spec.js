@@ -8,29 +8,29 @@ test.describe('E2E: pattern rule', () => {
   test('fails when value does not match pattern', async ({ page }) => {
     await page.fill('#field', 'invalid');
     await page.click('#submit-btn');
-    await expect(page.locator('#field')).toHaveClass(/jsv-invalid/);
+    await expect(page.locator('#field')).toHaveClass(/is-invalid/);
   });
 
   test('fails for partial match (missing digits)', async ({ page }) => {
     await page.fill('#field', 'ABC-');
     await page.click('#submit-btn');
-    await expect(page.locator('#field')).toHaveClass(/jsv-invalid/);
+    await expect(page.locator('#field')).toHaveClass(/is-invalid/);
   });
 
   test('fails for wrong case', async ({ page }) => {
     await page.fill('#field', 'abc-1234');
     await page.click('#submit-btn');
-    await expect(page.locator('#field')).toHaveClass(/jsv-invalid/);
+    await expect(page.locator('#field')).toHaveClass(/is-invalid/);
   });
 
   test('passes when value matches pattern exactly', async ({ page }) => {
     await page.fill('#field', 'ABC-1234');
-    await expect(page.locator('#field')).not.toHaveClass(/jsv-invalid/);
+    await expect(page.locator('#field')).not.toHaveClass(/is-invalid/);
   });
 
   test('passes for another valid pattern match', async ({ page }) => {
     await page.fill('#field', 'XYZ-9999');
-    await expect(page.locator('#field')).not.toHaveClass(/jsv-invalid/);
+    await expect(page.locator('#field')).not.toHaveClass(/is-invalid/);
   });
 
   test('displays custom error message', async ({ page }) => {

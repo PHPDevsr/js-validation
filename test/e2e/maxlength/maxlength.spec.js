@@ -8,17 +8,17 @@ test.describe('E2E: maxlength rule', () => {
   test('fails when value exceeds maximum length', async ({ page }) => {
     await page.fill('#field', 'abcdefghijk');
     await page.click('#submit-btn');
-    await expect(page.locator('#field')).toHaveClass(/jsv-invalid/);
+    await expect(page.locator('#field')).toHaveClass(/is-invalid/);
   });
 
   test('passes when value meets exact maximum length', async ({ page }) => {
     await page.fill('#field', 'abcdefghij');
-    await expect(page.locator('#field')).not.toHaveClass(/jsv-invalid/);
+    await expect(page.locator('#field')).not.toHaveClass(/is-invalid/);
   });
 
   test('passes when value is shorter than maximum', async ({ page }) => {
     await page.fill('#field', 'abc');
-    await expect(page.locator('#field')).not.toHaveClass(/jsv-invalid/);
+    await expect(page.locator('#field')).not.toHaveClass(/is-invalid/);
   });
 
   test('displays custom error message', async ({ page }) => {

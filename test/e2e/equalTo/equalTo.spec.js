@@ -9,20 +9,20 @@ test.describe('E2E: equalTo rule', () => {
     await page.fill('#source', 'hello');
     await page.fill('#confirm', 'world');
     await page.click('#submit-btn');
-    await expect(page.locator('#confirm')).toHaveClass(/jsv-invalid/);
+    await expect(page.locator('#confirm')).toHaveClass(/is-invalid/);
   });
 
   test('fails when target is empty and source has value', async ({ page }) => {
     await page.fill('#source', 'hello');
     await page.fill('#confirm', '');
     await page.click('#submit-btn');
-    await expect(page.locator('#confirm')).toHaveClass(/jsv-invalid/);
+    await expect(page.locator('#confirm')).toHaveClass(/is-invalid/);
   });
 
   test('passes when both fields have the same value', async ({ page }) => {
     await page.fill('#source', 'matching');
     await page.fill('#confirm', 'matching');
-    await expect(page.locator('#confirm')).not.toHaveClass(/jsv-invalid/);
+    await expect(page.locator('#confirm')).not.toHaveClass(/is-invalid/);
   });
 
   test('displays custom error message', async ({ page }) => {

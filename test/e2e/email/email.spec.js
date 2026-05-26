@@ -8,29 +8,29 @@ test.describe('E2E: email rule', () => {
   test('fails for invalid email without @', async ({ page }) => {
     await page.fill('#field', 'invalidemail');
     await page.click('#submit-btn');
-    await expect(page.locator('#field')).toHaveClass(/jsv-invalid/);
+    await expect(page.locator('#field')).toHaveClass(/is-invalid/);
   });
 
   test('fails for email without domain', async ({ page }) => {
     await page.fill('#field', 'user@');
     await page.click('#submit-btn');
-    await expect(page.locator('#field')).toHaveClass(/jsv-invalid/);
+    await expect(page.locator('#field')).toHaveClass(/is-invalid/);
   });
 
   test('fails for email without TLD', async ({ page }) => {
     await page.fill('#field', 'user@domain');
     await page.click('#submit-btn');
-    await expect(page.locator('#field')).toHaveClass(/jsv-invalid/);
+    await expect(page.locator('#field')).toHaveClass(/is-invalid/);
   });
 
   test('passes for valid email', async ({ page }) => {
     await page.fill('#field', 'user@example.com');
-    await expect(page.locator('#field')).not.toHaveClass(/jsv-invalid/);
+    await expect(page.locator('#field')).not.toHaveClass(/is-invalid/);
   });
 
   test('passes for email with subdomain', async ({ page }) => {
     await page.fill('#field', 'user@sub.example.com');
-    await expect(page.locator('#field')).not.toHaveClass(/jsv-invalid/);
+    await expect(page.locator('#field')).not.toHaveClass(/is-invalid/);
   });
 
   test('displays custom error message', async ({ page }) => {

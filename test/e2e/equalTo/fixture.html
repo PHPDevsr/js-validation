@@ -4,13 +4,13 @@
     <meta charset="UTF-8" />
     <title>E2E Test - EqualTo Rule</title>
     <style>
-      .jsv-invalid { border: 2px solid red; }
+      .is-invalid { border: 2px solid red; }
     </style>
   </head>
   <body>
     <form id="test-form" novalidate>
-      <input name="source" id="source" type="text" />
-      <input name="confirm" id="confirm" type="text" />
+      <div><input name="source" id="source" type="text" /></div>
+      <div><input name="confirm" id="confirm" type="text" /></div>
       <button type="submit" id="submit-btn">Submit</button>
     </form>
     <p id="status"></p>

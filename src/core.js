@@ -25,6 +25,8 @@ export class VanillaValidator {
     this.form = form;
     this.options = options;
     this.errorClass = options.errorClass || 'is-invalid';
+    this.errorElement = options.errorElement || 'span';
+    this.errorElementClass = options.errorElementClass || 'invalid-feedback';
     this.errors = {};
 
     if (!this.form) {
@@ -109,13 +111,14 @@ export class VanillaValidator {
     this._getClassList(field).add(this.errorClass);
     if (field.setAttribute) {
       field.setAttribute('aria-invalid', 'true');
-      field.setAttribute('invalid', '');
+      field.setAttribute('invalid', 'true');
       field.setAttribute('data-jsv-message', message);
     } else {
       field['aria-invalid'] = 'true';
-      field['invalid'] = '';
+      field['invalid'] = 'true';
     }
     field._jsvMessage = message;
+    this._showErrorElement(field, message);
   }
 
   clearError(field) {
@@ -130,6 +133,30 @@ export class VanillaValidator {
       delete field['invalid'];
     }
     field._jsvMessage = '';
+    this._removeErrorElement(field);
+  }
+
+  _showErrorElement(field, message) {
+    if (!field.parentNode || typeof document === 'undefined') return;
+
+    this._removeErrorElement(field);
+
+    const el = document.createElement(this.errorElement);
+    el.className = this.errorElementClass;
+    el.textContent = message;
+    el.setAttribute('data-jsv-error-for', field.name);
+    field.parentNode.insertBefore(el, field.nextSibling);
+  }
+
+  _removeErrorElement(field) {
+    if (!field.parentNode) return;
+
+    const existing = field.parentNode.querySelector(
+      `[data-jsv-error-for="${field.name}"]`
+    );
+    if (existing) {
+      existing.parentNode.removeChild(existing);
+    }
   }
 
   element(field) {

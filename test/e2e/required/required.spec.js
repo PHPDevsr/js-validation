@@ -7,19 +7,19 @@ test.describe('E2E: required rule', () => {
 
   test('fails when field is empty', async ({ page }) => {
     await page.click('#submit-btn');
-    await expect(page.locator('#field')).toHaveClass(/jsv-invalid/);
+    await expect(page.locator('#field')).toHaveClass(/is-invalid/);
     await expect(page.locator('#status')).toHaveText('');
   });
 
   test('fails when field contains only whitespace', async ({ page }) => {
     await page.fill('#field', '   ');
     await page.click('#submit-btn');
-    await expect(page.locator('#field')).toHaveClass(/jsv-invalid/);
+    await expect(page.locator('#field')).toHaveClass(/is-invalid/);
   });
 
   test('passes when field has a value', async ({ page }) => {
     await page.fill('#field', 'hello');
-    await expect(page.locator('#field')).not.toHaveClass(/jsv-invalid/);
+    await expect(page.locator('#field')).not.toHaveClass(/is-invalid/);
   });
 
   test('displays custom error message', async ({ page }) => {
@@ -35,9 +35,9 @@ test.describe('E2E: required rule', () => {
 
   test('clears error on valid input after failed submit', async ({ page }) => {
     await page.click('#submit-btn');
-    await expect(page.locator('#field')).toHaveClass(/jsv-invalid/);
+    await expect(page.locator('#field')).toHaveClass(/is-invalid/);
 
     await page.fill('#field', 'fixed');
-    await expect(page.locator('#field')).not.toHaveClass(/jsv-invalid/);
+    await expect(page.locator('#field')).not.toHaveClass(/is-invalid/);
   });
 });

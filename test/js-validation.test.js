@@ -221,14 +221,14 @@ describe('addMethod', () => {
 });
 
 describe('error class and invalid attribute', () => {
-  it('adds is-invalid class and invalid attribute on error', () => {
+  it('adds is-invalid class and invalid="true" attribute on error', () => {
     const f = field('name', '');
     const form = makeForm([f]);
     const v = jsValidation(form, { rules: { name: { required: true } } });
     v.validate();
     expect(f.classList.contains('is-invalid')).toBe(true);
     expect(f['aria-invalid']).toBe('true');
-    expect(f['invalid']).toBe('');
+    expect(f['invalid']).toBe('true');
   });
 
   it('removes is-invalid class and invalid attribute on clearError', () => {
