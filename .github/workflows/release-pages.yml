@@ -96,6 +96,8 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v')
     permissions:
       contents: read
+    outputs:
+      publish_status: ${{ steps.publish-status.outputs.publish_status }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -115,10 +117,34 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Check if version already exists on NPM
+        id: npm-version-check
+        run: |
+          VERSION="$(node --input-type=module -e "import fs from 'node:fs'; console.log(JSON.parse(fs.readFileSync('package.json', 'utf8')).version);")"
+          PACKAGE_NAME="$(node --input-type=module -e "import fs from 'node:fs'; console.log(JSON.parse(fs.readFileSync('package.json', 'utf8')).name);")"
+
+          if npm view "${PACKAGE_NAME}@${VERSION}" version >/dev/null 2>&1; then
+            echo "publish_needed=false" >> "$GITHUB_OUTPUT"
+            echo "Version ${VERSION} is already published on NPM. Skipping publish."
+          else
+            echo "publish_needed=true" >> "$GITHUB_OUTPUT"
+            echo "Version ${VERSION} is not published yet. Proceeding with publish."
+          fi
+
       - name: Publish to NPM
+        if: steps.npm-version-check.outputs.publish_needed == 'true'
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Record publish status
+        id: publish-status
+        run: |
+          if [[ "${{ steps.npm-version-check.outputs.publish_needed }}" == "true" ]]; then
+            echo "publish_status=published" >> "$GITHUB_OUTPUT"
+          else
+            echo "publish_status=skipped-already-published" >> "$GITHUB_OUTPUT"
+          fi
 
   deploy:
     runs-on: ubuntu-latest

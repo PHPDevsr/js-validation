@@ -94,7 +94,7 @@ When a `v*` tag is pushed to `main`, the release pipeline will:
 1. **Prepare release metadata** on `main` (sync package version + promote `CHANGELOG.md` from `[Unreleased]`)
 2. **Build** the full bundle (`js-validation.js` + `.min.js` + ESM variants)
 3. **Create a GitHub Release** with auto-generated release notes and attach all dist files
-4. **Publish to NPM** registry (available via `npm install @phpdevsr/js-validation`)
+4. **Publish to NPM** registry (skips publish if that version already exists)
 5. **Deploy** docs and compiled assets to GitHub Pages
 
 After NPM publish, the package is also available via CDN:
