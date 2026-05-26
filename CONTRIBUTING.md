@@ -1,5 +1,12 @@
 # Contributing
 
+## Branching Strategy
+
+- **`develop`** — all contributions and feature work go here
+- **`main`** — release branch, always reflects the latest stable version
+
+Create pull requests targeting `develop`. When ready to release, merge `develop` into `main` and run the release script.
+
 ## Development
 
 ```bash
@@ -18,50 +25,45 @@ npm run test:watch
 
 ## Release Process
 
-This project uses GitHub Releases to trigger the deployment pipeline.
+Maintainers create a release by simply tagging a version on `main`. The CI pipeline handles everything else automatically (GitHub Release creation, asset upload, and GitHub Pages deploy).
 
-### Steps to create a release
+### Quick release (one command)
 
-1. **Update version** in `package.json`:
-   ```bash
-   npm version patch   # for bug fixes (1.0.0 → 1.0.1)
-   npm version minor   # for new features (1.0.0 → 1.1.0)
-   npm version major   # for breaking changes (1.0.0 → 2.0.0)
-   ```
+```bash
+# On main branch, after merging develop:
+npm run release patch   # 1.0.0 → 1.0.1
+npm run release minor   # 1.0.0 → 1.1.0
+npm run release major   # 1.0.0 → 2.0.0
 
-2. **Update `CHANGELOG.md`** with the new version's changes under a new heading:
-   ```markdown
-   ## [1.1.0] - YYYY-MM-DD
+# Then push to trigger the pipeline:
+git push origin main --tags
+```
 
-   ### Added
-   - Description of new features
+### Manual tag release
 
-   ### Changed
-   - Description of changes
+```bash
+# On main branch:
+git tag v1.1.0
+git push origin main --tags
+```
 
-   ### Fixed
-   - Description of bug fixes
-   ```
+### What happens automatically
 
-3. **Commit and push** the version bump and changelog update:
-   ```bash
-   git add package.json package-lock.json CHANGELOG.md
-   git commit -m "chore: release vX.Y.Z"
-   git push origin main
-   ```
+When a `v*` tag is pushed to `main`, the release pipeline will:
 
-4. **Create a GitHub Release**:
-   - Go to the repository's [Releases page](../../releases/new)
-   - Click **"Draft a new release"**
-   - Create a new tag matching the version (e.g., `v1.1.0`)
-   - Set the release title (e.g., `v1.1.0`)
-   - Copy the relevant section from `CHANGELOG.md` into the release description
-   - Click **"Publish release"**
+1. **Build** the full bundle (`js-validation.js` + `.min.js` + ESM variants)
+2. **Create a GitHub Release** with auto-generated release notes and attach all dist files
+3. **Deploy** docs and compiled assets to GitHub Pages
 
-5. **Automated deployment**: Once the release is published, the `release-pages.yml` workflow will:
-   - Install dependencies
-   - Build the full bundle (`js-validation.js` + `js-validation.min.js`)
-   - Deploy docs and compiled assets to GitHub Pages
+### Workflow summary
+
+```
+develop (contributions) → PR → main (releases)
+                                  ↓
+                            tag v1.x.x
+                                  ↓
+                     CI: build → GitHub Release → Pages deploy
+```
 
 ### Build output
 
