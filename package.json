@@ -36,6 +36,17 @@
     "dist",
     "src"
   ],
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PHPDevsr/js-validation.git"
+  },
+  "homepage": "https://github.com/PHPDevsr/js-validation#readme",
+  "bugs": {
+    "url": "https://github.com/PHPDevsr/js-validation/issues"
+  },
   "scripts": {
     "build": "vite build && vite build --config vite.config.min.js",
     "test": "vitest run",
@@ -46,7 +57,9 @@
   "keywords": [
     "validation",
     "vanilla-js",
-    "forms"
+    "forms",
+    "form-validation",
+    "javascript"
   ],
   "license": "MIT",
   "devDependencies": {

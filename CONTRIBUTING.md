@@ -25,7 +25,11 @@ npm run test:watch
 
 ## Release Process
 
-Maintainers create a release by simply tagging a version on `main`. The CI pipeline handles everything else automatically (GitHub Release creation, asset upload, and GitHub Pages deploy).
+Maintainers create a release by simply tagging a version on `main`. The CI pipeline handles everything else automatically (GitHub Release creation, asset upload, NPM publish, and GitHub Pages deploy).
+
+### Prerequisites
+
+- NPM publish requires a `NPM_TOKEN` secret configured in the repository settings.
 
 ### Quick release (one command)
 
@@ -53,7 +57,13 @@ When a `v*` tag is pushed to `main`, the release pipeline will:
 
 1. **Build** the full bundle (`js-validation.js` + `.min.js` + ESM variants)
 2. **Create a GitHub Release** with auto-generated release notes and attach all dist files
-3. **Deploy** docs and compiled assets to GitHub Pages
+3. **Publish to NPM** registry (available via `npm install js-validation`)
+4. **Deploy** docs and compiled assets to GitHub Pages
+
+After NPM publish, the package is also available via CDN:
+```
+https://cdn.jsdelivr.net/npm/js-validation/dist/js-validation.min.js
+```
 
 ### Workflow summary
 
@@ -62,7 +72,7 @@ develop (contributions) → PR → main (releases)
                                   ↓
                             tag v1.x.x
                                   ↓
-                     CI: build → GitHub Release → Pages deploy
+                     CI: build → GitHub Release → NPM publish → Pages deploy
 ```
 
 ### Build output

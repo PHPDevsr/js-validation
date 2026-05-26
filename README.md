@@ -1,5 +1,9 @@
 # js-validation
 
+[![NPM Version](https://img.shields.io/npm/v/js-validation)](https://www.npmjs.com/package/js-validation)
+[![CI](https://github.com/PHPDevsr/js-validation/actions/workflows/ci.yml/badge.svg)](https://github.com/PHPDevsr/js-validation/actions/workflows/ci.yml)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen)](https://nodejs.org/)
+
 Vanilla JavaScript (pure JS) form validation inspired by [`jquery-validation`](https://github.com/jquery-validation/jquery-validation/).
 
 ## Features
@@ -13,8 +17,25 @@ Vanilla JavaScript (pure JS) form validation inspired by [`jquery-validation`](h
 
 ## Installation
 
+### NPM
+
 ```bash
-npm install
+npm install js-validation
+```
+
+### CDN (jsDelivr)
+
+```html
+<!-- Latest version -->
+<script src="https://cdn.jsdelivr.net/npm/js-validation/dist/js-validation.min.js"></script>
+
+<!-- Specific version -->
+<script src="https://cdn.jsdelivr.net/npm/js-validation@1.0.0/dist/js-validation.min.js"></script>
+
+<!-- ES module -->
+<script type="module">
+  import jsValidation from 'https://cdn.jsdelivr.net/npm/js-validation/dist/js-validation.esm.min.js';
+</script>
 ```
 
 ## Build
@@ -122,6 +143,14 @@ docs/
 
 ## CI/CD
 
-- **CI** (`.github/workflows/ci.yml`): builds with Vite, runs Vitest unit tests, and runs Playwright E2E tests across Chromium, Firefox, and WebKit on push/PR.
-- **CD** (`.github/workflows/release-pages.yml`): on every published release, builds the bundle and deploys the demo + compiled assets to GitHub Pages.
+- **CI** (`.github/workflows/ci.yml`): builds with Vite, runs Vitest unit tests, and runs Playwright E2E tests across Chromium, Firefox, and WebKit on PR.
+- **CD** (`.github/workflows/release-pages.yml`): on `v*` tag push, builds the bundle, creates a GitHub Release, publishes to NPM, and deploys to GitHub Pages.
+
+## CDN
+
+After publishing to NPM, the library is automatically available via [jsDelivr](https://www.jsdelivr.com/):
+
+```
+https://cdn.jsdelivr.net/npm/js-validation/dist/js-validation.min.js
+```
 
