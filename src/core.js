@@ -24,6 +24,7 @@ export class VanillaValidator {
   constructor(form, options = {}) {
     this.form = form;
     this.options = options;
+    this.errorClass = options.errorClass || 'is-invalid';
     this.errors = {};
 
     if (!this.form) {
@@ -105,24 +106,28 @@ export class VanillaValidator {
 
   showError(field, message) {
     this.errors[field.name] = message;
-    this._getClassList(field).add('jsv-invalid');
+    this._getClassList(field).add(this.errorClass);
     if (field.setAttribute) {
       field.setAttribute('aria-invalid', 'true');
+      field.setAttribute('invalid', '');
       field.setAttribute('data-jsv-message', message);
     } else {
       field['aria-invalid'] = 'true';
+      field['invalid'] = '';
     }
     field._jsvMessage = message;
   }
 
   clearError(field) {
     delete this.errors[field.name];
-    this._getClassList(field).remove('jsv-invalid');
+    this._getClassList(field).remove(this.errorClass);
     if (field.setAttribute) {
       field.setAttribute('aria-invalid', 'false');
+      field.removeAttribute('invalid');
       field.removeAttribute('data-jsv-message');
     } else {
       field['aria-invalid'] = 'false';
+      delete field['invalid'];
     }
     field._jsvMessage = '';
   }

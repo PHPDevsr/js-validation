@@ -220,6 +220,39 @@ describe('addMethod', () => {
   });
 });
 
+describe('error class and invalid attribute', () => {
+  it('adds is-invalid class and invalid attribute on error', () => {
+    const f = field('name', '');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { name: { required: true } } });
+    v.validate();
+    expect(f.classList.contains('is-invalid')).toBe(true);
+    expect(f['aria-invalid']).toBe('true');
+    expect(f['invalid']).toBe('');
+  });
+
+  it('removes is-invalid class and invalid attribute on clearError', () => {
+    const f = field('name', '');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { name: { required: true } } });
+    v.validate();
+    f.value = 'hello';
+    v.validate();
+    expect(f.classList.contains('is-invalid')).toBe(false);
+    expect(f['aria-invalid']).toBe('false');
+    expect(f['invalid']).toBeUndefined();
+  });
+
+  it('uses custom errorClass when provided', () => {
+    const f = field('name', '');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { name: { required: true } }, errorClass: 'custom-error' });
+    v.validate();
+    expect(f.classList.contains('custom-error')).toBe(true);
+    expect(f.classList.contains('is-invalid')).toBe(false);
+  });
+});
+
 describe('resetForm', () => {
   it('clears all errors', () => {
     const f = field('name', '');
