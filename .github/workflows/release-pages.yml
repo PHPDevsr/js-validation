@@ -4,14 +4,10 @@ on:
   push:
     tags:
       - 'v*'
-    branches:
-      - main
   workflow_dispatch:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages
@@ -80,11 +76,7 @@ jobs:
     needs: [release, publish-npm]
     if: ${{ always() && !failure() && !cancelled() }}
     permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      contents: write
 
     steps:
       - name: Checkout
@@ -112,14 +104,9 @@ jobs:
           cp dist/js-validation.esm.min.js public/assets/js-validation.esm.min.js
           touch public/.nojekyll
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./public
-
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: ./public
+          branch: gh-pages
+          clean-exclude: pr-preview
