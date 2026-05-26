@@ -4,15 +4,24 @@
     <meta charset="UTF-8" />
     <title>E2E Test Page</title>
     <style>
-      .jsv-invalid { border: 2px solid red; }
+      .is-invalid { border: 2px solid red; }
+      .invalid-feedback { color: red; font-size: 0.875rem; display: block; }
     </style>
   </head>
   <body>
     <form id="test-form" novalidate>
-      <input name="username" id="username" type="text" />
-      <input name="email" id="email" type="text" />
-      <input name="password" id="password" type="password" />
-      <input name="confirmPassword" id="confirmPassword" type="password" />
+      <div>
+        <input name="username" id="username" type="text" />
+      </div>
+      <div>
+        <input name="email" id="email" type="text" />
+      </div>
+      <div>
+        <input name="password" id="password" type="password" />
+      </div>
+      <div>
+        <input name="confirmPassword" id="confirmPassword" type="password" />
+      </div>
       <button type="submit" id="submit-btn">Submit</button>
     </form>
     <p id="status"></p>

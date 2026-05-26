@@ -107,6 +107,9 @@ Creates a validator instance.
 | `rules` | `object` | Field-name-keyed validation rules |
 | `messages` | `object` | Custom error messages per field/rule |
 | `onkeyup` | `boolean` | Set to `false` to disable real-time validation on input |
+| `errorClass` | `string` | CSS class added to invalid fields (default: `'is-invalid'`) |
+| `errorElement` | `string` | HTML tag for the error message element (default: `'span'`) |
+| `errorElementClass` | `string` | CSS class for the error message element (default: `'invalid-feedback'`) |
 
 #### Instance Methods
 
@@ -131,15 +134,30 @@ Register a custom validation rule globally.
 
 When a field fails validation:
 
-- The CSS class `jsv-invalid` is added to the field
+- The CSS class `is-invalid` is added to the field (configurable via `errorClass` option)
 - The `aria-invalid` attribute is set to `"true"`
+- The `invalid` attribute is set to `"true"`
 - The error message is stored in `data-jsv-message` attribute
+- An error element (`<span class="invalid-feedback">`) is inserted after the field displaying the error message
 
 When a field passes validation:
 
-- The `jsv-invalid` class is removed
+- The `is-invalid` class is removed
 - `aria-invalid` is set to `"false"`
+- The `invalid` attribute is removed
 - `data-jsv-message` is removed
+- The error element is removed
+
+### Customizing Error Display
+
+```js
+jsValidation('#my-form', {
+  rules: { name: { required: true } },
+  errorClass: 'my-error-class',          // default: 'is-invalid'
+  errorElement: 'div',                    // default: 'span'
+  errorElementClass: 'my-error-message'   // default: 'invalid-feedback'
+});
+```
 
 ## Next Steps
 

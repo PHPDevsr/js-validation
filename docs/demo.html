@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>js-validation Demo</title>
+    <style>
+      body { font-family: Arial, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
+      h1 { margin-bottom: 0.25rem; }
+      .help { color: #666; font-size: .9rem; margin-bottom: 1.5rem; }
+      .form-group { margin-bottom: 1rem; }
+      .form-group label { display: block; font-weight: bold; margin-bottom: .25rem; }
+      .form-group input { width: 100%; padding: .5rem; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+      .form-group input.is-invalid { border-color: #dc3545; }
+      .invalid-feedback { display: block; color: #dc3545; font-size: .875rem; margin-top: .25rem; }
+      button { margin-top: 1rem; padding: .6rem 1.2rem; background: #0d6efd; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+      button:hover { background: #0b5ed7; }
+      .ok { color: #198754; margin-top: 1rem; font-weight: bold; }
+
+      .sample-output { margin-top: 2rem; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px; padding: 1rem; }
+      .sample-output h3 { margin-top: 0; }
+      .sample-output pre { background: #272822; color: #f8f8f2; padding: 1rem; border-radius: 4px; overflow-x: auto; font-size: .85rem; }
+    </style>
+  </head>
+  <body>
+    <h1>js-validation Demo</h1>
+    <p class="help">Vanilla JS form validation (jquery-validation style). Rules can come from JS options or <code>data-rule-*</code> attributes.</p>
+
+    <form id="signup-form" novalidate>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="text" data-rule-required="true" data-rule-email="true" />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" data-rule-required="true" data-rule-minlength="6" />
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input id="confirmPassword" name="confirmPassword" type="password" />
+      </div>
+
+      <button type="submit">Submit</button>
+    </form>
+
+    <p id="status" class="ok"></p>
+
+    <div class="sample-output">
+      <h3>Sample Output (when validation fails)</h3>
+      <p>When a field fails validation, the following HTML is produced:</p>
+      <pre><code>&lt;div class="form-group"&gt;
+  &lt;label for="email"&gt;Email&lt;/label&gt;
+  &lt;input id="email" name="email" type="text"
+    class="is-invalid"
+    aria-invalid="true"
+    invalid="true"
+    data-jsv-message="Please enter a valid email address." /&gt;
+  &lt;span class="invalid-feedback"
+    data-jsv-error-for="email"&gt;Please enter a valid email address.&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+
+      <h3>When validation passes</h3>
+      <pre><code>&lt;div class="form-group"&gt;
+  &lt;label for="email"&gt;Email&lt;/label&gt;
+  &lt;input id="email" name="email" type="text"
+    aria-invalid="false" /&gt;
+&lt;/div&gt;</code></pre>
+    </div>
+
+    <script src="./assets/js-validation.min.js"></script>
+    <script>
+      const validator = jsValidation.default('#signup-form', {
+        rules: {
+          confirmPassword: { required: true, equalTo: '#password' }
+        },
+        messages: {
+          confirmPassword: { equalTo: 'Passwords must match.' }
+        }
+      }).submit(function (form) {
+        document.getElementById('status').textContent = 'Form submitted successfully!';
+      });
+    </script>
+  </body>
+</html>

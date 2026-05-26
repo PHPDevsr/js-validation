@@ -8,17 +8,17 @@ test.describe('E2E: minlength rule', () => {
   test('fails when value is shorter than minimum', async ({ page }) => {
     await page.fill('#field', 'abcd');
     await page.click('#submit-btn');
-    await expect(page.locator('#field')).toHaveClass(/jsv-invalid/);
+    await expect(page.locator('#field')).toHaveClass(/is-invalid/);
   });
 
   test('passes when value meets exact minimum length', async ({ page }) => {
     await page.fill('#field', 'abcde');
-    await expect(page.locator('#field')).not.toHaveClass(/jsv-invalid/);
+    await expect(page.locator('#field')).not.toHaveClass(/is-invalid/);
   });
 
   test('passes when value exceeds minimum length', async ({ page }) => {
     await page.fill('#field', 'abcdefgh');
-    await expect(page.locator('#field')).not.toHaveClass(/jsv-invalid/);
+    await expect(page.locator('#field')).not.toHaveClass(/is-invalid/);
   });
 
   test('displays custom error message', async ({ page }) => {
