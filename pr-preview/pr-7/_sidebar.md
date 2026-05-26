@@ -1,0 +1,8 @@
+- [Home](README.md)
+- [Getting Started](getting-started.md)
+- [Installation](installation.md)
+- [Requirements](requirements.md)
+- [Browser Support](browser-support.md)
+- [Rules List](rules.md)
+- [Custom Rules](custom-rules.md)
+- [Changelog](changelog.md)
