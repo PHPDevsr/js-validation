@@ -37,17 +37,45 @@ npm test
 
 ## Usage (ES module)
 
+### Default import (all rules included)
+
 ```js
 import jsValidation from 'js-validation';
 
 const validator = jsValidation('#signup', {
   rules: {
     email: { required: true, email: true },
-    confirmPassword: { equalTo: '#password' }
+    password: { required: true, minlength: 6 },
+    confirmPassword: { required: true, equalTo: '#password' }
   },
   messages: {
     confirmPassword: { equalTo: 'Passwords must match.' }
   }
+}).submit((form) => {
+  // Only fires when all fields are valid
+  fetch('/api/signup', { method: 'POST', body: new FormData(form) });
+});
+```
+
+### Selective import (choose only the rules you need)
+
+```js
+// Import core without any rules
+import jsValidation from 'js-validation/core';
+
+// Then import only the specific rules you need
+import 'js-validation/rules/required';
+import 'js-validation/rules/email';
+
+// Available rules: required, email, minlength, maxlength, pattern, equalTo
+
+const validator = jsValidation('#contact', {
+  rules: {
+    name: { required: true },
+    email: { required: true, email: true }
+  }
+}).submit((form) => {
+  fetch('/api/contact', { method: 'POST', body: new FormData(form) });
 });
 ```
 
@@ -73,6 +101,7 @@ jsValidation.addMethod('startsWithA', (value) => value.startsWith('A'), 'Must st
 ```
 src/
   core.js          – Validator engine
+  core-entry.js    – Core-only entry point (for selective imports)
   index.js         – Entry point (imports core + all rules)
   rules/
     required.js
@@ -82,13 +111,17 @@ src/
     pattern.js
     equalTo.js
 test/
-  js-validation.test.js
+  js-validation.test.js      – Unit tests (Vitest)
+  selective-import.test.js   – Selective import tests
+  e2e/
+    validation.spec.js       – E2E browser tests (Playwright)
+    fixture.html             – Test fixture page
 docs/
   index.html       – Demo page (deployed to GitHub Pages)
 ```
 
 ## CI/CD
 
-- **CI** (`.github/workflows/ci.yml`): builds with Vite and runs Vitest on push/PR.
+- **CI** (`.github/workflows/ci.yml`): builds with Vite, runs Vitest unit tests, and runs Playwright E2E tests across Chromium, Firefox, and WebKit on push/PR.
 - **CD** (`.github/workflows/release-pages.yml`): on every published release, builds the bundle and deploys the demo + compiled assets to GitHub Pages.
 
