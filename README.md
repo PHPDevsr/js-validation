@@ -141,10 +141,20 @@ docs/
   index.html       – Demo page (deployed to GitHub Pages)
 ```
 
-## CI/CD
+## Contributing
 
-- **CI** (`.github/workflows/ci.yml`): builds with Vite, runs Vitest unit tests, and runs Playwright E2E tests across Chromium, Firefox, and WebKit on PR.
-- **CD** (`.github/workflows/release-pages.yml`): on `v*` tag push, builds the bundle, creates a GitHub Release, publishes to NPM, and deploys to GitHub Pages.
+We **are** accepting contributions from the community! It doesn't matter whether you can code, write documentation, or help find bugs,
+all contributions are welcome.
+
+Please read the [*CONTRIBUTING.md*](https://github.com/PHPDevsr/js-validation/blob/develop/CONTRIBUTING.md).
+
+This project has had thousands on contributions from people since its creation. This project would not be what it is without them.
+
+<a href="https://github.com/PHPDevsr/js-validation/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=PHPDevsr/js-validation" />
+</a>
+
+Made with [contrib.rocks](https://contrib.rocks).
 
 ## CDN
 
