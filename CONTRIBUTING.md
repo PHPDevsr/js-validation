@@ -57,12 +57,12 @@ When a `v*` tag is pushed to `main`, the release pipeline will:
 
 1. **Build** the full bundle (`js-validation.js` + `.min.js` + ESM variants)
 2. **Create a GitHub Release** with auto-generated release notes and attach all dist files
-3. **Publish to NPM** registry (available via `npm install js-validation`)
+3. **Publish to NPM** registry (available via `npm install @phpdevsr/js-validation`)
 4. **Deploy** docs and compiled assets to GitHub Pages
 
 After NPM publish, the package is also available via CDN:
 ```
-https://cdn.jsdelivr.net/npm/js-validation/dist/js-validation.min.js
+https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation/dist/js-validation.min.js
 ```
 
 ### Workflow summary

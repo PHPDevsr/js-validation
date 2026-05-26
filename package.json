@@ -1,5 +1,5 @@
 {
-  "name": "js-validation",
+  "name": "@phpdevsr/js-validation",
   "version": "1.0.0",
   "description": "Vanilla JavaScript form validation inspired by jquery-validation",
   "type": "module",

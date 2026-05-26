@@ -1,6 +1,6 @@
 # js-validation
 
-[![NPM Version](https://img.shields.io/npm/v/js-validation)](https://www.npmjs.com/package/js-validation)
+[![NPM Version](https://img.shields.io/npm/v/@phpdevsr/js-validation)](https://www.npmjs.com/package/@phpdevsr/js-validation)
 [![CI](https://github.com/PHPDevsr/js-validation/actions/workflows/ci.yml/badge.svg)](https://github.com/PHPDevsr/js-validation/actions/workflows/ci.yml)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen)](https://nodejs.org/)
 
@@ -20,21 +20,21 @@ Vanilla JavaScript (pure JS) form validation inspired by [`jquery-validation`](h
 ### NPM
 
 ```bash
-npm install js-validation
+npm install @phpdevsr/js-validation
 ```
 
 ### CDN (jsDelivr)
 
 ```html
 <!-- Latest version -->
-<script src="https://cdn.jsdelivr.net/npm/js-validation/dist/js-validation.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation/dist/js-validation.min.js"></script>
 
 <!-- Specific version -->
-<script src="https://cdn.jsdelivr.net/npm/js-validation@1.0.0/dist/js-validation.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation@1.0.0/dist/js-validation.min.js"></script>
 
 <!-- ES module -->
 <script type="module">
-  import jsValidation from 'https://cdn.jsdelivr.net/npm/js-validation/dist/js-validation.esm.min.js';
+  import jsValidation from 'https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation/dist/js-validation.esm.min.js';
 </script>
 ```
 
@@ -61,7 +61,7 @@ npm test
 ### Default import (all rules included)
 
 ```js
-import jsValidation from 'js-validation';
+import jsValidation from '@phpdevsr/js-validation';
 
 const validator = jsValidation('#signup', {
   rules: {
@@ -82,11 +82,11 @@ const validator = jsValidation('#signup', {
 
 ```js
 // Import core without any rules
-import jsValidation from 'js-validation/core';
+import jsValidation from '@phpdevsr/js-validation/core';
 
 // Then import only the specific rules you need
-import 'js-validation/rules/required';
-import 'js-validation/rules/email';
+import '@phpdevsr/js-validation/rules/required';
+import '@phpdevsr/js-validation/rules/email';
 
 // Available rules: required, email, minlength, maxlength, pattern, equalTo
 
