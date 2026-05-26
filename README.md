@@ -10,7 +10,7 @@ Vanilla JavaScript (pure JS) form validation inspired by [`jquery-validation`](h
 
 - No dependency (pure JS)
 - Modular rules – each rule lives in its own file under `src/rules/`
-- Built-in rules: `required`, `email`, `minlength`, `maxlength`, `pattern`, `equalTo`
+- Built-in rules: `required`, `email`, `minlength`, `maxlength`, `pattern`, `equalTo`, etc
 - Extensible with custom rules via `addMethod`
 - Build with **Vite** – outputs `js-validation.js` and `js-validation.min.js`
 - Test with **Vitest**
@@ -117,30 +117,6 @@ import jsValidation from 'js-validation';
 jsValidation.addMethod('startsWithA', (value) => value.startsWith('A'), 'Must start with letter A.');
 ```
 
-## Project structure
-
-```
-src/
-  core.js          – Validator engine
-  core-entry.js    – Core-only entry point (for selective imports)
-  index.js         – Entry point (imports core + all rules)
-  rules/
-    required.js
-    email.js
-    minlength.js
-    maxlength.js
-    pattern.js
-    equalTo.js
-test/
-  js-validation.test.js      – Unit tests (Vitest)
-  selective-import.test.js   – Selective import tests
-  e2e/
-    validation.spec.js       – E2E browser tests (Playwright)
-    fixture.html             – Test fixture page
-docs/
-  index.html       – Demo page (deployed to GitHub Pages)
-```
-
 ## Contributing
 
 We **are** accepting contributions from the community! It doesn't matter whether you can code, write documentation, or help find bugs,
@@ -155,12 +131,4 @@ This project has had thousands on contributions from people since its creation. 
 </a>
 
 Made with [contrib.rocks](https://contrib.rocks).
-
-## CDN
-
-After publishing to NPM, the library is automatically available via [jsDelivr](https://www.jsdelivr.com/):
-
-```
-https://cdn.jsdelivr.net/npm/js-validation/dist/js-validation.min.js
-```
 
