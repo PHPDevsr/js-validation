@@ -39,9 +39,9 @@
 
     <p id="status" class="ok"></p>
 
-    <script src="./assets/js-validation.js"></script>
+    <script src="./assets/js-validation.min.js"></script>
     <script>
-      const validator = jsValidation('#signup-form', {
+      const validator = jsValidation.default('#signup-form', {
         rules: {
           confirmPassword: { equalTo: '#password' }
         },

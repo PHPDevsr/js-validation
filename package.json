@@ -2,14 +2,33 @@
   "name": "js-validation",
   "version": "1.0.0",
   "description": "Vanilla JavaScript form validation inspired by jquery-validation",
-  "main": "src/js-validation.js",
+  "type": "module",
+  "main": "dist/js-validation.js",
+  "module": "dist/js-validation.esm.js",
+  "exports": {
+    ".": {
+      "import": "./dist/js-validation.esm.js",
+      "require": "./dist/js-validation.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
-    "test": "node --test"
+    "build": "vite build && vite build --config vite.config.min.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "keywords": [
     "validation",
     "vanilla-js",
     "forms"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "terser": "^5.31.0",
+    "vite": "^6.4.2",
+    "vitest": "^3.2.1"
+  }
 }
