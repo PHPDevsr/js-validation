@@ -6,11 +6,6 @@ on:
     paths:
       - '**.js'
       - '**.yml'
-  push:
-    branches: [develop, main]
-    paths:
-      - '**.js'
-      - '**.yml'
 
 concurrency:
   group: ci-${{ github.event.pull_request.number || github.ref }}
@@ -45,9 +40,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-output
-          path: |
-            node_modules
-            dist
+          path: dist
           retention-days: 1
 
   e2e:
@@ -67,10 +60,14 @@ jobs:
           node-version: '22'
           cache: 'npm'
 
+      - name: Install dependencies
+        run: npm ci
+
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
           name: build-output
+          path: dist
 
       - name: Cache Playwright browser (${{ matrix.browser }})
         uses: actions/cache@v4
