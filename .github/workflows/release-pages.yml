@@ -4,10 +4,14 @@ on:
   push:
     tags:
       - 'v*'
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 concurrency:
   group: pages
@@ -74,10 +78,13 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: [release, publish-npm]
-    if: ${{ !failure() && !cancelled() }}
+    if: ${{ always() && !failure() && !cancelled() }}
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
-      url: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Checkout
@@ -87,6 +94,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '22'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
@@ -102,10 +110,16 @@ jobs:
           cp dist/js-validation.min.js public/assets/js-validation.min.js
           cp dist/js-validation.esm.js public/assets/js-validation.esm.js
           cp dist/js-validation.esm.min.js public/assets/js-validation.esm.min.js
+          touch public/.nojekyll
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
-          keep_files: true
+        id: deployment
+        uses: actions/deploy-pages@v4
