@@ -1,3 +1,9 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const demoBase = base + '/demo/';
+const version = import.meta.env.PUBLIC_APP_VERSION;
+---
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -29,7 +35,7 @@
   </head>
   <body>
     <div class="container">
-      <a class="back" href="index.html">← All demos</a>
+      <a class="back" href={`${demoBase}/`}>← All demos</a>
       <h1><code>email</code> rule</h1>
       <p class="desc">Validates that the value is a properly formatted email address (e.g. <strong>user@example.com</strong>).</p>
 
@@ -51,7 +57,7 @@
       </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation/dist/js-validation.min.js"></script>
+    <script src={`https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation@${version}/dist/js-validation.min.js?v=${version}`}></script>
     <script>
       jsValidation.default('#demo-form').submit(function () {
         const el = document.getElementById('status');
