@@ -51,7 +51,7 @@ jobs:
             exit 1
           fi
 
-          ./scripts/release.sh --from-tag "${GITHUB_REF_NAME}"
+          ./.github/release.sh --from-tag "${GITHUB_REF_NAME}"
 
           TAG_VERSION="${GITHUB_REF_NAME#v}"
           PACKAGE_VERSION="$(node --input-type=module -e "import fs from 'node:fs'; console.log(JSON.parse(fs.readFileSync('package.json', 'utf8')).version);")"
@@ -93,10 +93,46 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Read release notes from CHANGELOG
+        id: release-notes
+        run: |
+          RELEASE_VERSION="${GITHUB_REF_NAME#v}"
+          RELEASE_VERSION="$RELEASE_VERSION" node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+
+          const changelog = fs.readFileSync('CHANGELOG.md', 'utf8');
+          const version = process.env.RELEASE_VERSION;
+          const githubOutput = process.env.GITHUB_OUTPUT;
+
+          if (!version || !githubOutput) {
+            console.error('Missing release note metadata.');
+            process.exit(1);
+          }
+
+          const lines = changelog.split('\n');
+          const headingPrefix = `## [${version}]`;
+          const sectionStart = lines.findIndex((line) => line.startsWith(headingPrefix));
+          if (sectionStart === -1) {
+            console.error(`Unable to find changelog section for ${version}.`);
+            process.exit(1);
+          }
+
+          const sectionEnd = lines.findIndex(
+            (line, index) => index > sectionStart && /^## \[[^\]]+\]/.test(line)
+          );
+
+          const releaseNotes = lines
+            .slice(sectionStart, sectionEnd === -1 ? lines.length : sectionEnd)
+            .join('\n')
+            .trim();
+
+          fs.appendFileSync(githubOutput, `release_notes<<EOF\n${releaseNotes}\nEOF\n`);
+          NODE
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          generate_release_notes: true
+          body: ${{ steps.release-notes.outputs.release_notes }}
           files: |
             dist/js-validation.js
             dist/js-validation.min.js

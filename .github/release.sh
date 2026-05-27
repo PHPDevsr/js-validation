@@ -3,8 +3,8 @@ set -euo pipefail
 
 # Release script for js-validation
 # Usage:
-#   ./scripts/release.sh [patch|minor|major]
-#   ./scripts/release.sh --from-tag vX.Y.Z
+#   ./.github/release.sh [patch|minor|major]
+#   ./.github/release.sh --from-tag vX.Y.Z
 
 TYPE="${1:-patch}"
 TAG_MODE=false
