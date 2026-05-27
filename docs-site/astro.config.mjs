@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import process from "node:process";
+import packageJson from "../package.json" with { type: "json" };
 
 // https://astro.build/config
 export default defineConfig({
@@ -10,6 +11,9 @@ export default defineConfig({
   trailingSlash: "always",
   outDir: "../_site",
   vite: {
+    define: {
+      __APP_VERSION__: JSON.stringify(packageJson.version),
+    },
     plugins: [tailwindcss()],
   },
   prefetch: true,

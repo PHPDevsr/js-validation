@@ -1,12 +1,26 @@
 // @ts-check
-import js from '@eslint/js';
-import astro from 'eslint-plugin-astro';
+import js from "@eslint/js";
+import astro from "eslint-plugin-astro";
 
 /** @type {import("eslint").Linter.Config[]} */
 export default [
+  {
+    ignores: [
+      "**/.astro/**",
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/_site/**",
+    ],
+  },
+
   js.configs.recommended,
   ...astro.configs.recommended,
+
   {
-    ignores: ['node_modules/', 'dist/', '../_site/', '.astro/'],
+    languageOptions: {
+      globals: {
+        __APP_VERSION__: "readonly",
+      },
+    },
   },
 ];
