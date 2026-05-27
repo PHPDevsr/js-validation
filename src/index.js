@@ -18,6 +18,8 @@ import './rules/numeric.js';
 import './rules/url.js';
 import './rules/date.js';
 import './rules/dateISO.js';
+import './rules/ipv4.js';
+import './rules/ipv6.js';
 
 function jsValidation(formOrSelector, options = {}) {
   let form = formOrSelector;

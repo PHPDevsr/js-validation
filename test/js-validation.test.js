@@ -485,3 +485,114 @@ describe('submit handler', () => {
     expect(result).toBe(v);
   });
 });
+
+describe('ipv4 rule', () => {
+  it('fails for invalid IPv4 address', () => {
+    const f = field('ip', '999.999.999.999');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { ip: { ipv4: true } } });
+    expect(v.validate()).toBe(false);
+    expect(f._jsvMessage).toBe('Please enter a valid IPv4 address.');
+  });
+
+  it('fails for partial address', () => {
+    const f = field('ip', '192.168.1');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { ip: { ipv4: true } } });
+    expect(v.validate()).toBe(false);
+  });
+
+  it('fails for address with letters', () => {
+    const f = field('ip', '192.168.1.abc');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { ip: { ipv4: true } } });
+    expect(v.validate()).toBe(false);
+  });
+
+  it('fails for empty value', () => {
+    const f = field('ip', '');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { ip: { ipv4: true } } });
+    expect(v.validate()).toBe(false);
+  });
+
+  it('passes for valid IPv4 address', () => {
+    const f = field('ip', '192.168.1.1');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { ip: { ipv4: true } } });
+    expect(v.validate()).toBe(true);
+  });
+
+  it('passes for loopback address', () => {
+    const f = field('ip', '127.0.0.1');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { ip: { ipv4: true } } });
+    expect(v.validate()).toBe(true);
+  });
+
+  it('passes for broadcast address', () => {
+    const f = field('ip', '255.255.255.255');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { ip: { ipv4: true } } });
+    expect(v.validate()).toBe(true);
+  });
+
+  it('passes for 0.0.0.0', () => {
+    const f = field('ip', '0.0.0.0');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { ip: { ipv4: true } } });
+    expect(v.validate()).toBe(true);
+  });
+});
+
+describe('ipv6 rule', () => {
+  it('fails for invalid IPv6 address', () => {
+    const f = field('ip', 'gggg::1');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { ip: { ipv6: true } } });
+    expect(v.validate()).toBe(false);
+    expect(f._jsvMessage).toBe('Please enter a valid IPv6 address.');
+  });
+
+  it('fails for plain IPv4 address', () => {
+    const f = field('ip', '192.168.1.1');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { ip: { ipv6: true } } });
+    expect(v.validate()).toBe(false);
+  });
+
+  it('fails for empty value', () => {
+    const f = field('ip', '');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { ip: { ipv6: true } } });
+    expect(v.validate()).toBe(false);
+  });
+
+  it('passes for full IPv6 address', () => {
+    const f = field('ip', '2001:0db8:85a3:0000:0000:8a2e:0370:7334');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { ip: { ipv6: true } } });
+    expect(v.validate()).toBe(true);
+  });
+
+  it('passes for compressed IPv6 address', () => {
+    const f = field('ip', '2001:db8::1');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { ip: { ipv6: true } } });
+    expect(v.validate()).toBe(true);
+  });
+
+  it('passes for loopback ::1', () => {
+    const f = field('ip', '::1');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { ip: { ipv6: true } } });
+    expect(v.validate()).toBe(true);
+  });
+
+  it('passes for IPv6 with trailing colon groups', () => {
+    const f = field('ip', 'fe80::');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { ip: { ipv6: true } } });
+    expect(v.validate()).toBe(true);
+  });
+});

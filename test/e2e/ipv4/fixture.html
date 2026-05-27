@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>E2E Test - IPv4 Rule</title>
+    <style>
+      .is-invalid { border: 2px solid red; }
+    </style>
+  </head>
+  <body>
+    <form id="test-form" novalidate>
+      <div><input name="field" id="field" type="text" /></div>
+      <button type="submit" id="submit-btn">Submit</button>
+    </form>
+    <p id="status"></p>
+
+    <script type="module">
+      import jsValidation from '/src/index.js';
+
+      jsValidation('#test-form', {
+        rules: {
+          field: { required: true, ipv4: true }
+        },
+        messages: {
+          field: { ipv4: 'Please enter a valid IPv4 address.' }
+        }
+      }).submit(() => {
+        document.getElementById('status').textContent = 'Form submitted successfully!';
+      });
+    </script>
+  </body>
+</html>

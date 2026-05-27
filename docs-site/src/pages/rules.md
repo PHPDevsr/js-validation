@@ -192,6 +192,34 @@ rules: {
 
 ---
 
+### `ipv4`
+
+Validates that the value is a properly formatted IPv4 address.
+
+```js
+rules: {
+  serverIp: { ipv4: true }
+}
+```
+
+**Default message:** `"Please enter a valid IPv4 address."`
+
+---
+
+### `ipv6`
+
+Validates that the value is a properly formatted IPv6 address. Supports full, compressed, and mixed IPv4-in-IPv6 notations.
+
+```js
+rules: {
+  serverIp: { ipv6: true }
+}
+```
+
+**Default message:** `"Please enter a valid IPv6 address."`
+
+---
+
 ## Using Rules via HTML Attributes
 
 All rules can also be declared using `data-rule-*` attributes:
