@@ -1,5 +1,8 @@
 ---
 import '../styles/global.css';
+import packageJson from '../../package.json';
+
+const version = packageJson.version;
 
 const { frontmatter = {} } = Astro.props;
 const { title = 'js-validation', description = 'Lightweight, zero-dependency vanilla JavaScript form validation library.' } = frontmatter;
@@ -33,7 +36,7 @@ const currentPath = Astro.url.pathname;
       <div class="header-inner">
         <a class="site-title" href={`${base}/`}>
           <span class="site-name">js-validation</span>
-          <span class="site-badge">v1.1.0</span>
+          <span class="site-badge">v{`${version}`}</span>
         </a>
         <nav class="header-nav">
           <a href="https://github.com/PHPDevsr/js-validation" target="_blank" rel="noopener">GitHub</a>
