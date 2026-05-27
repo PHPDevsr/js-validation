@@ -214,6 +214,87 @@ describe('maxlength rule', () => {
   });
 });
 
+describe('range rule', () => {
+  it('fails when value is below minimum', () => {
+    const f = field('age', '1');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { age: { range: [2, 8] } } });
+    expect(v.validate()).toBe(false);
+    expect(f._jsvMessage).toContain('between 2 and 8');
+  });
+
+  it('fails when value exceeds maximum', () => {
+    const f = field('age', '9');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { age: { range: [2, 8] } } });
+    expect(v.validate()).toBe(false);
+    expect(f._jsvMessage).toContain('between 2 and 8');
+  });
+
+  it('fails for non-numeric value', () => {
+    const f = field('age', 'abc');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { age: { range: [2, 8] } } });
+    expect(v.validate()).toBe(false);
+  });
+
+  it('fails for empty value', () => {
+    const f = field('age', '');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { age: { range: [2, 8] } } });
+    expect(v.validate()).toBe(false);
+  });
+
+  it('passes when value meets exact minimum', () => {
+    const f = field('age', '2');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { age: { range: [2, 8] } } });
+    expect(v.validate()).toBe(true);
+  });
+
+  it('passes when value meets exact maximum', () => {
+    const f = field('age', '8');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { age: { range: [2, 8] } } });
+    expect(v.validate()).toBe(true);
+  });
+
+  it('passes when value is within range', () => {
+    const f = field('age', '5');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { age: { range: [2, 8] } } });
+    expect(v.validate()).toBe(true);
+  });
+
+  it('returns false when param is a single number instead of array', () => {
+    const f = field('age', '5');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { age: { range: 5 } } });
+    expect(v.validate()).toBe(false);
+  });
+
+  it('returns false when param is an array with only one element', () => {
+    const f = field('age', '5');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { age: { range: [2] } } });
+    expect(v.validate()).toBe(false);
+  });
+
+  it('returns false when param is an invalid JSON string', () => {
+    const f = field('age', '5');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { age: { range: 'invalid' } } });
+    expect(v.validate()).toBe(false);
+  });
+
+  it('returns false when param is null', () => {
+    const f = field('age', '5');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { age: { range: null } } });
+    expect(v.validate()).toBe(false);
+  });
+});
+
 describe('pattern rule', () => {
   it('fails when pattern does not match', () => {
     const f = field('zip', 'abc');

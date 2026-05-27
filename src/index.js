@@ -11,6 +11,7 @@ import './rules/required.js';
 import './rules/email.js';
 import './rules/minlength.js';
 import './rules/maxlength.js';
+import './rules/range.js';
 import './rules/pattern.js';
 import './rules/equalTo.js';
 import './rules/numeric.js';
