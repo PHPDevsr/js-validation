@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-05-27
+
+### Added
+
+- feat: added url rules by @ddevsr in #11
+- docs: migrate to Astro Build by @Copilot in #12
+
 ## [1.1.0] - 2026-05-27
 
 ### Added
@@ -38,5 +45,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Demo page (`docs/index.html`) with declarative and programmatic usage examples.
 
 [Unreleased]: https://github.com/PHPDevsr/js-validation/compare/v1.1.0...HEAD
+[1.1.1]: https://github.com/PHPDevsr/js-validation/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/PHPDevsr/js-validation/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/PHPDevsr/js-validation/releases/tag/v1.0.0

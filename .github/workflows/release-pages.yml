@@ -51,7 +51,7 @@ jobs:
             exit 1
           fi
 
-          ./scripts/release.sh --from-tag "${GITHUB_REF_NAME}"
+          ./.github/scripts/release.sh --from-tag "${GITHUB_REF_NAME}"
 
           TAG_VERSION="${GITHUB_REF_NAME#v}"
           PACKAGE_VERSION="$(node --input-type=module -e "import fs from 'node:fs'; console.log(JSON.parse(fs.readFileSync('package.json', 'utf8')).version);")"
