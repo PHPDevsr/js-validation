@@ -596,3 +596,62 @@ describe('ipv6 rule', () => {
     expect(v.validate()).toBe(true);
   });
 });
+
+describe('alphanumeric rule', () => {
+  it('fails for value with spaces', () => {
+    const f = field('username', 'hello world');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { username: { alphanumeric: true } } });
+    expect(v.validate()).toBe(false);
+    expect(f._jsvMessage).toBe('Please enter only letters, numbers, and underscores.');
+  });
+
+  it('fails for value with special characters', () => {
+    const f = field('username', 'hello@world');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { username: { alphanumeric: true } } });
+    expect(v.validate()).toBe(false);
+  });
+
+  it('fails for value with hyphens', () => {
+    const f = field('username', 'hello-world');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { username: { alphanumeric: true } } });
+    expect(v.validate()).toBe(false);
+  });
+
+  it('fails for empty value', () => {
+    const f = field('username', '');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { username: { alphanumeric: true } } });
+    expect(v.validate()).toBe(false);
+  });
+
+  it('passes for letters only', () => {
+    const f = field('username', 'helloworld');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { username: { alphanumeric: true } } });
+    expect(v.validate()).toBe(true);
+  });
+
+  it('passes for digits only', () => {
+    const f = field('username', '12345');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { username: { alphanumeric: true } } });
+    expect(v.validate()).toBe(true);
+  });
+
+  it('passes for letters and digits mixed', () => {
+    const f = field('username', 'hello123');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { username: { alphanumeric: true } } });
+    expect(v.validate()).toBe(true);
+  });
+
+  it('passes for value with underscores', () => {
+    const f = field('username', 'hello_world');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { username: { alphanumeric: true } } });
+    expect(v.validate()).toBe(true);
+  });
+});

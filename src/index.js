@@ -20,6 +20,7 @@ import './rules/date.js';
 import './rules/dateISO.js';
 import './rules/ipv4.js';
 import './rules/ipv6.js';
+import './rules/alphanumeric.js';
 
 function jsValidation(formOrSelector, options = {}) {
   let form = formOrSelector;
