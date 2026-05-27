@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Custom Rules Demo – js-validation</title>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8f9fa; color: #1a1a1a; padding: 2rem 1rem; }
+      .container { max-width: 640px; margin: 0 auto; }
+      .back { display: inline-flex; align-items: center; gap: 0.35rem; color: #0d6efd; text-decoration: none; font-size: 0.9rem; margin-bottom: 1.5rem; }
+      .back:hover { text-decoration: underline; }
+      h1 { font-size: 1.6rem; margin-bottom: 0.25rem; }
+      .desc { color: #555; font-size: 0.95rem; margin-bottom: 2rem; }
+      .card { background: #fff; border: 1px solid #dee2e6; border-radius: 8px; padding: 1.75rem; margin-bottom: 1.5rem; }
+      .card h2 { font-size: 1.05rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid #dee2e6; }
+      .form-group { margin-bottom: 1.25rem; }
+      .form-group label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem; }
+      .form-group input { width: 100%; padding: 0.55rem 0.75rem; border: 1px solid #ced4da; border-radius: 6px; font-size: 0.95rem; outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
+      .form-group input:focus { border-color: #86b7fe; box-shadow: 0 0 0 3px rgba(13,110,253,0.15); }
+      .form-group input.is-invalid { border-color: #dc3545; }
+      .invalid-feedback { display: block; color: #dc3545; font-size: 0.82rem; margin-top: 0.35rem; }
+      .btn { display: inline-flex; align-items: center; margin-top: 0.5rem; padding: 0.6rem 1.5rem; background: #0d6efd; color: #fff; border: none; border-radius: 6px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.15s, box-shadow 0.15s; box-shadow: 0 1px 4px rgba(13,110,253,0.25); }
+      .btn:hover { background: #0b5ed7; box-shadow: 0 3px 8px rgba(13,110,253,0.3); }
+      .btn:active { background: #0a58ca; }
+      .alert { margin-top: 1.25rem; padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.9rem; font-weight: 500; }
+      .alert-success { background: #d1e7dd; color: #0a3622; border: 1px solid #a3cfbb; }
+      code { background: #f4f4f5; padding: 0.1em 0.35em; border-radius: 3px; font-size: 0.88em; }
+      pre { background: #1e1e2e; color: #cdd6f4; border-radius: 6px; padding: 1rem; overflow-x: auto; font-size: 0.83rem; line-height: 1.6; margin-bottom: 1.5rem; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <a class="back" href="index.html">← All demos</a>
+      <h1>Custom Rules with <code>addMethod()</code></h1>
+      <p class="desc">Extend the validator with your own logic using <code>jsValidation.addMethod(name, fn, message)</code>.</p>
+
+      <!-- Demo 1: no-spaces rule -->
+      <div class="card">
+        <h2>Example 1 – <code>noSpaces</code> rule</h2>
+        <pre><code>jsValidation.addMethod('noSpaces', function (value) {
+  return !/\s/.test(value);
+}, 'Spaces are not allowed.');</code></pre>
+        <form id="form-nospaces" novalidate>
+          <div class="form-group">
+            <label for="handle">Username (no spaces)</label>
+            <input id="handle" name="handle" type="text" placeholder="e.g. cool_user42"
+              data-rule-required="true" data-rule-noSpaces="true" />
+          </div>
+          <button class="btn" type="submit">Check</button>
+        </form>
+        <div id="status1"></div>
+      </div>
+
+      <!-- Demo 2: strongPassword rule -->
+      <div class="card">
+        <h2>Example 2 – <code>strongPassword</code> rule</h2>
+        <pre><code>jsValidation.addMethod('strongPassword', function (value) {
+  return /[A-Z]/.test(value) && /[0-9]/.test(value) && /[^A-Za-z0-9]/.test(value);
+}, 'Must contain an uppercase letter, a digit, and a special character.');</code></pre>
+        <form id="form-strong" novalidate>
+          <div class="form-group">
+            <label for="securePass">Password</label>
+            <input id="securePass" name="securePass" type="password" placeholder="e.g. Secret@1"
+              data-rule-required="true" data-rule-minlength="8" data-rule-strongPassword="true" />
+          </div>
+          <button class="btn" type="submit">Check</button>
+        </form>
+        <div id="status2"></div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation/dist/js-validation.min.js"></script>
+    <script>
+      // Register custom rules
+      jsValidation.addMethod('noSpaces', function (value) {
+        return !/\s/.test(value);
+      }, 'Spaces are not allowed.');
+
+      jsValidation.addMethod('strongPassword', function (value) {
+        return /[A-Z]/.test(value) && /[0-9]/.test(value) && /[^A-Za-z0-9]/.test(value);
+      }, 'Must contain an uppercase letter, a digit, and a special character.');
+
+      jsValidation.default('#form-nospaces').submit(function () {
+        document.getElementById('status1').innerHTML =
+          '<div class="alert alert-success">✓ Username is valid!</div>';
+      });
+
+      jsValidation.default('#form-strong').submit(function () {
+        document.getElementById('status2').innerHTML =
+          '<div class="alert alert-success">✓ Password meets all requirements!</div>';
+      });
+    </script>
+  </body>
+</html>
