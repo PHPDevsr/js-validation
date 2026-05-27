@@ -9,9 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.0] - 2026-05-27
 
-### Changed
+### Added
 
-- No notable changes.
+- feat: add invalid attribute, error element, and configurable error class on validation failure by @Copilot in #8
 
 ## [1.0.0] - 2026-05-26
 

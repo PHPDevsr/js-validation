@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 For the full changelog, see [CHANGELOG.md](../CHANGELOG.md) in the project root.
 
+## [1.1.0] - 2026-05-27
+
+- feat: add invalid attribute, error element, and configurable error class on validation failure by @Copilot
+
 ## [1.0.0] - 2026-05-26
 
 ### Added
@@ -34,3 +38,4 @@ For the full changelog, see [CHANGELOG.md](../CHANGELOG.md) in the project root.
 - Demo page (`docs/index.html`) with declarative and programmatic usage examples.
 
 [1.0.0]: https://github.com/PHPDevsr/js-validation/releases/tag/v1.0.0
+[1.1.0]: https://github.com/PHPDevsr/js-validation/releases/tag/v1.1.0
