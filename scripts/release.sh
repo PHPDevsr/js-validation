@@ -144,11 +144,26 @@ if (previousVersion) {
 }
 
 fs.writeFileSync(changelogPath, finalContent.replace(/\n{3,}/g, '\n\n'));
+
+const docsChangelogPath = 'docs-site/src/pages/changelog.md';
+if (fs.existsSync(docsChangelogPath)) {
+  const docsFrontmatter = [
+    '---',
+    'layout: ../layouts/DocsLayout.astro',
+    'title: "Changelog"',
+    'description: "Version history and release notes for js-validation."',
+    '---',
+    ''
+  ].join('\n');
+
+  const docsPageContent = `${docsFrontmatter}\n${finalContent.replace(/\n{3,}/g, '\n\n').trimEnd()}\n`;
+  fs.writeFileSync(docsChangelogPath, docsPageContent);
+}
 NODE
-echo "Updated CHANGELOG.md"
+echo "Updated CHANGELOG.md and docs-site/src/pages/changelog.md"
 
 # Commit and optionally create tag
-git add package.json package-lock.json CHANGELOG.md
+git add package.json package-lock.json CHANGELOG.md docs-site/src/pages/changelog.md
 
 if [[ -n "$(git diff --cached --name-only)" ]]; then
   if [[ "$TAG_MODE" == true ]]; then
