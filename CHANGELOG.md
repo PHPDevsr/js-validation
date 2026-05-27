@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.2] - 2026-05-27
+
+### Documentation
+
+- docs: demo pages using .astro
+
 ## [1.2.1] - 2026-05-27
 
 ### Others
@@ -93,7 +99,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Release workflow deploying compiled assets and docs to GitHub Pages.
 - Demo page (`docs/index.html`) with declarative and programmatic usage examples.
 
-[Unreleased]: https://github.com/PHPDevsr/js-validation/compare/v1.2.1...HEAD
+[Unreleased]: https://github.com/PHPDevsr/js-validation/compare/v1.2.2...HEAD
 [1.1.1]: https://github.com/PHPDevsr/js-validation/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/PHPDevsr/js-validation/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/PHPDevsr/js-validation/releases/tag/v1.0.0
@@ -101,3 +107,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.1.3]: https://github.com/PHPDevsr/js-validation/compare/v1.1.2...v1.1.3
 [1.2.0]: https://github.com/PHPDevsr/js-validation/compare/v1.1.3...v1.2.0
 [1.2.1]: https://github.com/PHPDevsr/js-validation/compare/v1.2.0...v1.2.1
+[1.2.2]: https://github.com/PHPDevsr/js-validation/compare/v1.2.1...v1.2.2
