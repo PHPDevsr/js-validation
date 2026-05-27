@@ -182,6 +182,13 @@
 <span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <p><strong>Default message:</strong> <code>"Please enter a valid IPv6 address."</code></p>
 <hr>
+<h3 id="alphanumeric"><code>alphanumeric</code></h3>
+<p>Validates that the value contains only letters (a–z, A–Z), digits (0–9), and underscores. Spaces and special characters are not allowed.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">rules</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#B392F0">  username</span><span style="color:#E1E4E8">: { </span><span style="color:#B392F0">alphanumeric</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><strong>Default message:</strong> <code>"Please enter only letters, numbers, and underscores."</code></p>
+<hr>
 <h2 id="using-rules-via-html-attributes">Using Rules via HTML Attributes</h2>
 <p>All rules can also be declared using <code>data-rule-*</code> attributes:</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">input</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"email"</span><span style="color:#B392F0"> data-rule-required</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"true"</span><span style="color:#B392F0"> data-rule-email</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"true"</span><span style="color:#E1E4E8"> /></span></span>
