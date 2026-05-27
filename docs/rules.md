@@ -32,6 +32,20 @@ rules: {
 
 ---
 
+### `url`
+
+Validates that the value is a properly formatted URL.
+
+```js
+rules: {
+  url: { required: true, url: true }
+}
+```
+
+**Default message:** `"Please enter a valid URL."`
+
+---
+
 ### `minlength`
 
 Validates that the value has at least the specified number of characters.
