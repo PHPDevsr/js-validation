@@ -1,0 +1,222 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Quick setup guide, basic usage, and API reference for js-validation."><title>Getting Started – js-validation</title><link rel="stylesheet" href="/js-validation/_astro/browser-support.CYxOa96R.css"></head> <body> <header class="site-header"> <div class="header-inner"> <a class="site-title" href="/js-validation/"> <span class="site-name">js-validation</span> <span class="site-badge">v1.1.0</span> </a> <nav class="header-nav"> <a href="https://github.com/PHPDevsr/js-validation" target="_blank" rel="noopener">GitHub</a> <a href="https://www.npmjs.com/package/@phpdevsr/js-validation" target="_blank" rel="noopener">npm</a> </nav> </div> </header> <div class="layout"> <aside class="sidebar"> <nav> <ul> <li> <a href="/js-validation/" class="nav-link"> Home </a> </li><li> <a href="/js-validation/getting-started/" class="nav-link active"> Getting Started </a> </li><li> <a href="/js-validation/installation/" class="nav-link"> Installation </a> </li><li> <a href="/js-validation/requirements/" class="nav-link"> Requirements </a> </li><li> <a href="/js-validation/browser-support/" class="nav-link"> Browser Support </a> </li><li> <a href="/js-validation/rules/" class="nav-link"> Rules </a> </li><li> <a href="/js-validation/custom-rules/" class="nav-link"> Custom Rules </a> </li><li> <a href="/js-validation/changelog/" class="nav-link"> Changelog </a> </li> </ul> </nav> </aside> <main class="content"> <h1 id="getting-started">Getting Started</h1>
+<h2 id="overview">Overview</h2>
+<p><strong>js-validation</strong> is a lightweight, zero-dependency vanilla JavaScript form validation library. It provides a familiar API inspired by <a href="https://github.com/jquery-validation/jquery-validation/">jquery-validation</a> — without requiring jQuery.</p>
+<h2 id="basic-usage">Basic Usage</h2>
+<h3 id="1-include-the-library">1. Include the library</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> src</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation/dist/js-validation.min.js"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span></code></pre>
+<h3 id="2-create-a-form">2. Create a form</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">form</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"my-form"</span><span style="color:#B392F0"> novalidate</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">input</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"email"</span><span style="color:#B392F0"> type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"email"</span><span style="color:#E1E4E8"> /></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">input</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"password"</span><span style="color:#B392F0"> type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"password"</span><span style="color:#E1E4E8"> /></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">button</span><span style="color:#B392F0"> type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"submit"</span><span style="color:#E1E4E8">>Submit&#x3C;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">form</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span></code></pre>
+<h3 id="3-initialize-validation">3. Initialize validation</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> validator</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> jsValidation.</span><span style="color:#B392F0">default</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'#my-form'</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#E1E4E8">    rules: {</span></span>
+<span class="line"><span style="color:#E1E4E8">      email: { required: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, email: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">      password: { required: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, minlength: </span><span style="color:#79B8FF">6</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span></code></pre>
+<h2 id="es-module-usage">ES Module Usage</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> jsValidation </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@phpdevsr/js-validation'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> validator</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> jsValidation</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'#signup'</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#E1E4E8">  rules: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    email: { required: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, email: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">    password: { required: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, minlength: </span><span style="color:#79B8FF">6</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">    confirmPassword: { required: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, equalTo: </span><span style="color:#9ECBFF">'#password'</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  messages: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    confirmPassword: { equalTo: </span><span style="color:#9ECBFF">'Passwords must match.'</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}).</span><span style="color:#B392F0">submit</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">form</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">  fetch</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/api/signup'</span><span style="color:#E1E4E8">, { method: </span><span style="color:#9ECBFF">'POST'</span><span style="color:#E1E4E8">, body: </span><span style="color:#F97583">new</span><span style="color:#B392F0"> FormData</span><span style="color:#E1E4E8">(form) });</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span></code></pre>
+<h2 id="selective-imports-tree-shaking">Selective Imports (Tree-Shaking)</h2>
+<p>Import only the rules you need to reduce bundle size:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> jsValidation </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@phpdevsr/js-validation/core'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#9ECBFF"> '@phpdevsr/js-validation/rules/required'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#9ECBFF"> '@phpdevsr/js-validation/rules/email'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> validator</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> jsValidation</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'#contact'</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#E1E4E8">  rules: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    name: { required: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">    email: { required: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, email: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}).</span><span style="color:#B392F0">submit</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">form</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">  fetch</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/api/contact'</span><span style="color:#E1E4E8">, { method: </span><span style="color:#9ECBFF">'POST'</span><span style="color:#E1E4E8">, body: </span><span style="color:#F97583">new</span><span style="color:#B392F0"> FormData</span><span style="color:#E1E4E8">(form) });</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span></code></pre>
+<h2 id="using-html-data-attributes">Using HTML Data Attributes</h2>
+<p>You can declare rules directly in HTML using <code>data-rule-*</code> attributes:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">form</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"signup-form"</span><span style="color:#B392F0"> novalidate</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">input</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"email"</span><span style="color:#B392F0"> data-rule-required</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"true"</span><span style="color:#B392F0"> data-rule-email</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"true"</span><span style="color:#E1E4E8"> /></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">input</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"password"</span><span style="color:#B392F0"> type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"password"</span><span style="color:#B392F0"> data-rule-required</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"true"</span><span style="color:#B392F0"> data-rule-minlength</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"6"</span><span style="color:#E1E4E8"> /></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">button</span><span style="color:#B392F0"> type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"submit"</span><span style="color:#E1E4E8">>Submit&#x3C;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">form</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> validator</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> jsValidation.</span><span style="color:#B392F0">default</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'#signup-form'</span><span style="color:#E1E4E8">, {});</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span></code></pre>
+<h2 id="api-reference">API Reference</h2>
+<h3 id="jsvalidationformorselector-options"><code>jsValidation(formOrSelector, options)</code></h3>
+<p>Creates a validator instance.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>formOrSelector</code></td><td><code>string | HTMLFormElement</code></td><td>CSS selector or form element</td></tr><tr><td><code>options</code></td><td><code>object</code></td><td>Configuration object</td></tr></tbody></table>
+<h4 id="options">Options</h4>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Option</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>rules</code></td><td><code>object</code></td><td>Field-name-keyed validation rules</td></tr><tr><td><code>messages</code></td><td><code>object</code></td><td>Custom error messages per field/rule</td></tr><tr><td><code>onkeyup</code></td><td><code>boolean</code></td><td>Set to <code>false</code> to disable real-time validation on input</td></tr><tr><td><code>errorClass</code></td><td><code>string</code></td><td>CSS class added to invalid fields (default: <code>'is-invalid'</code>)</td></tr><tr><td><code>errorElement</code></td><td><code>string</code></td><td>HTML tag for the error message element (default: <code>'span'</code>)</td></tr><tr><td><code>errorElementClass</code></td><td><code>string</code></td><td>CSS class for the error message element (default: <code>'invalid-feedback'</code>)</td></tr></tbody></table>
+<h4 id="instance-methods">Instance Methods</h4>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Method</th><th>Description</th></tr></thead><tbody><tr><td><code>.submit(handler)</code></td><td>Register submit handler (called when form is valid)</td></tr><tr><td><code>.validate()</code></td><td>Validate all fields; returns <code>true</code> if valid</td></tr><tr><td><code>.resetForm()</code></td><td>Clear all validation errors</td></tr><tr><td><code>.element(field)</code></td><td>Validate a single field element</td></tr></tbody></table>
+<h3 id="jsvalidationaddmethodname-validatefn-message"><code>jsValidation.addMethod(name, validateFn, message)</code></h3>
+<p>Register a custom validation rule globally.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>name</code></td><td><code>string</code></td><td>Rule name</td></tr><tr><td><code>validateFn</code></td><td><code>function</code></td><td><code>(value, param, field, validator) => boolean</code></td></tr><tr><td><code>message</code></td><td><code>string | function</code></td><td>Error message or function returning one</td></tr></tbody></table>
+<h2 id="error-display">Error Display</h2>
+<p>When a field fails validation:</p>
+<ul>
+<li>The CSS class <code>is-invalid</code> is added to the field (configurable via <code>errorClass</code> option)</li>
+<li>The <code>aria-invalid</code> attribute is set to <code>"true"</code></li>
+<li>The <code>invalid</code> attribute is set to <code>"true"</code></li>
+<li>The error message is stored in <code>data-jsv-message</code> attribute</li>
+<li>An error element (<code>&#x3C;span class="invalid-feedback"></code>) is inserted after the field displaying the error message</li>
+</ul>
+<p>When a field passes validation:</p>
+<ul>
+<li>The <code>is-invalid</code> class is removed</li>
+<li><code>aria-invalid</code> is set to <code>"false"</code></li>
+<li>The <code>invalid</code> attribute is removed</li>
+<li><code>data-jsv-message</code> is removed</li>
+<li>The error element is removed</li>
+</ul>
+<h3 id="customizing-error-display">Customizing Error Display</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">jsValidation</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'#my-form'</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#E1E4E8">  rules: { name: { required: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8"> } },</span></span>
+<span class="line"><span style="color:#E1E4E8">  errorClass: </span><span style="color:#9ECBFF">'my-error-class'</span><span style="color:#E1E4E8">,          </span><span style="color:#6A737D">// default: 'is-invalid'</span></span>
+<span class="line"><span style="color:#E1E4E8">  errorElement: </span><span style="color:#9ECBFF">'div'</span><span style="color:#E1E4E8">,                    </span><span style="color:#6A737D">// default: 'span'</span></span>
+<span class="line"><span style="color:#E1E4E8">  errorElementClass: </span><span style="color:#9ECBFF">'my-error-message'</span><span style="color:#6A737D">   // default: 'invalid-feedback'</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span></code></pre>
+<h2 id="next-steps">Next Steps</h2>
+<ul>
+<li>See the full <a href="/js-validation/rules/">Rules List</a></li>
+<li>Learn how to create <a href="/js-validation/custom-rules/">Custom Rules</a></li>
+<li>Check <a href="/js-validation/installation/">Installation</a> for all install methods</li>
+</ul> </main> </div> <footer class="site-footer"> <p>
+Released under the <a href="https://github.com/PHPDevsr/js-validation/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.
+        &copy; 2026 PHPDevsr.
+</p> </footer> </body></html>
