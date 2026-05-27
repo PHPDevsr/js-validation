@@ -57,13 +57,13 @@ fi
 VERSION_NUMBER="${NEW_VERSION#v}"
 RELEASE_DATE=$(date +%F)
 
-ALLOW_EXISTING_VERSION="$TAG_MODE" VERSION_NUMBER="$VERSION_NUMBER" RELEASE_DATE="$RELEASE_DATE" node --input-type=module <<'NODE'
+TAG_MODE="$TAG_MODE" VERSION_NUMBER="$VERSION_NUMBER" RELEASE_DATE="$RELEASE_DATE" node --input-type=module <<'NODE'
 import fs from 'node:fs';
 
 const changelogPath = 'CHANGELOG.md';
 const version = process.env.VERSION_NUMBER;
 const releaseDate = process.env.RELEASE_DATE;
-const allowExistingVersion = process.env.ALLOW_EXISTING_VERSION === 'true';
+const tagMode = process.env.TAG_MODE === 'true';
 
 if (!version || !releaseDate) {
   console.error('Error: missing release metadata for changelog update.');
@@ -78,14 +78,19 @@ if (!content.includes(unreleasedHeading)) {
   process.exit(1);
 }
 
-const hasExistingVersion = content.includes(`## [${version}]`);
-if (hasExistingVersion && !allowExistingVersion) {
-  console.error(`Error: ${changelogPath} already contains version ${version}.`);
-  process.exit(1);
-}
-
 let finalContent = content;
-if (!hasExistingVersion) {
+if (tagMode) {
+  if (!content.includes(`## [${version}]`)) {
+    console.error(`Error: ${changelogPath} is missing version ${version} in tag mode.`);
+    process.exit(1);
+  }
+} else {
+  const hasExistingVersion = content.includes(`## [${version}]`);
+  if (hasExistingVersion) {
+    console.error(`Error: ${changelogPath} already contains version ${version}.`);
+    process.exit(1);
+  }
+
   const lines = content.split('\n');
   const unreleasedIndex = lines.findIndex((line) => line.trim() === unreleasedHeading);
   if (unreleasedIndex === -1) {
@@ -116,29 +121,27 @@ if (!hasExistingVersion) {
     '',
     ...(nextVersionIndex === -1 ? [] : lines.slice(nextVersionIndex))
   ].join('\n');
-} else {
-  console.log(`${changelogPath} already contains version ${version}; skipping changelog promotion.`);
-}
 
-const currentVersionHeadings = [
-  ...finalContent.matchAll(/^## \[(\d+\.\d+\.\d+)\]/gm)
-].map((match) => match[1]);
-const previousVersion = currentVersionHeadings.find((v) => v !== version);
-const unreleasedRef = `[Unreleased]: https://github.com/PHPDevsr/js-validation/compare/v${version}...HEAD`;
+  const currentVersionHeadings = [
+    ...finalContent.matchAll(/^## \[(\d+\.\d+\.\d+)\]/gm)
+  ].map((match) => match[1]);
+  const previousVersion = currentVersionHeadings.find((v) => v !== version);
+  const unreleasedRef = `[Unreleased]: https://github.com/PHPDevsr/js-validation/compare/v${version}...HEAD`;
 
-if (/^\[Unreleased\]: .*$/m.test(finalContent)) {
-  finalContent = finalContent.replace(/^\[Unreleased\]: .*$/m, unreleasedRef);
-} else {
-  finalContent = `${finalContent.replace(/\s*$/, '')}\n\n${unreleasedRef}\n`;
-}
-
-if (previousVersion) {
-  const versionRef = `[${version}]: https://github.com/PHPDevsr/js-validation/compare/v${previousVersion}...v${version}`;
-  const versionRefRegex = new RegExp(`^\\[${version.replace(/\./g, '\\.')}\\]: .*$`, 'm');
-  if (versionRefRegex.test(finalContent)) {
-    finalContent = finalContent.replace(versionRefRegex, versionRef);
+  if (/^\[Unreleased\]: .*$/m.test(finalContent)) {
+    finalContent = finalContent.replace(/^\[Unreleased\]: .*$/m, unreleasedRef);
   } else {
-    finalContent = `${finalContent.replace(/\s*$/, '')}\n${versionRef}\n`;
+    finalContent = `${finalContent.replace(/\s*$/, '')}\n\n${unreleasedRef}\n`;
+  }
+
+  if (previousVersion) {
+    const versionRef = `[${version}]: https://github.com/PHPDevsr/js-validation/compare/v${previousVersion}...v${version}`;
+    const versionRefRegex = new RegExp(`^\\[${version.replace(/\./g, '\\.')}\\]: .*$`, 'm');
+    if (versionRefRegex.test(finalContent)) {
+      finalContent = finalContent.replace(versionRefRegex, versionRef);
+    } else {
+      finalContent = `${finalContent.replace(/\s*$/, '')}\n${versionRef}\n`;
+    }
   }
 }
 
@@ -163,7 +166,7 @@ echo "Updated CHANGELOG.md and docs-site/src/pages/changelog.md"
 
 # Commit and optionally create tag
 if [[ "$TAG_MODE" == true ]]; then
-  git add CHANGELOG.md docs-site/src/pages/changelog.md
+  git add docs-site/src/pages/changelog.md
 else
   git add package.json package-lock.json CHANGELOG.md docs-site/src/pages/changelog.md
 fi
