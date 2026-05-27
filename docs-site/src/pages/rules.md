@@ -220,6 +220,20 @@ rules: {
 
 ---
 
+### `alphanumeric`
+
+Validates that the value contains only letters (a–z, A–Z), digits (0–9), and underscores. Spaces and special characters are not allowed.
+
+```js
+rules: {
+  username: { alphanumeric: true }
+}
+```
+
+**Default message:** `"Please enter only letters, numbers, and underscores."`
+
+---
+
 ## Using Rules via HTML Attributes
 
 All rules can also be declared using `data-rule-*` attributes:
