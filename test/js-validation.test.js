@@ -85,54 +85,54 @@ describe('email rule', () => {
   });
 });
 
-describe("url rule", () => {
-  it("fails for invalid url", () => {
-    const f = field("url", "wrong");
+describe('url rule', () => {
+  it('fails for invalid url', () => {
+    const f = field('url', 'wrong');
     const form = makeForm([f]);
     const v = jsValidation(form, { rules: { url: { url: true } } });
     expect(v.validate()).toBe(false);
-    expect(f._jsvMessage).toBe("Please enter a valid URL.");
+    expect(f._jsvMessage).toBe('Please enter a valid URL.');
   });
 
-  it("fails for url without domain", () => {
-    const f = field("url", "http://");
+  it('fails for url without domain', () => {
+    const f = field('url', 'http://');
     const form = makeForm([f]);
     const v = jsValidation(form, { rules: { url: { url: true } } });
     expect(v.validate()).toBe(false);
-    expect(f._jsvMessage).toBe("Please enter a valid URL.");
+    expect(f._jsvMessage).toBe('Please enter a valid URL.');
   });
 
-  it("fails for url without TLD", () => {
-    const f = field("url", "http://example");
+  it('fails for url without TLD', () => {
+    const f = field('url', 'http://example');
     const form = makeForm([f]);
     const v = jsValidation(form, { rules: { url: { url: true } } });
     expect(v.validate()).toBe(false);
-    expect(f._jsvMessage).toBe("Please enter a valid URL.");
+    expect(f._jsvMessage).toBe('Please enter a valid URL.');
   });
 
-  it("passes for valid url with subdomain", () => {
-    const f = field("url", "https://sub.example.com");
+  it('passes for valid url with subdomain', () => {
+    const f = field('url', 'https://sub.example.com');
     const form = makeForm([f]);
     const v = jsValidation(form, { rules: { url: { url: true } } });
     expect(v.validate()).toBe(true);
   });
 
-  it("passes for valid url with HTTPS", () => {
-    const f = field("url", "https://example.com");
+  it('passes for valid url with HTTPS', () => {
+    const f = field('url', 'https://example.com');
     const form = makeForm([f]);
     const v = jsValidation(form, { rules: { url: { url: true } } });
     expect(v.validate()).toBe(true);
   });
 
-  it("passes for valid url with HTTP", () => {
-    const f = field("url", "http://example.com");
+  it('passes for valid url with HTTP', () => {
+    const f = field('url', 'http://example.com');
     const form = makeForm([f]);
     const v = jsValidation(form, { rules: { url: { url: true } } });
     expect(v.validate()).toBe(true);
   });
 
-  it("fails when empty", () => {
-    const f = field("url", "");
+  it('fails when empty', () => {
+    const f = field('url', '');
     const form = makeForm([f]);
     const v = jsValidation(form, { rules: { url: { url: true } } });
     expect(v.validate()).toBe(false);
