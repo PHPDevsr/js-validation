@@ -7,10 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-
-- feat: add `date` and `dateISO` validation rules with unit tests, e2e coverage, and documentation updates
-
 ## [1.1.1] - 2026-05-27
 
 ### Added
