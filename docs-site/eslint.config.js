@@ -7,6 +7,11 @@ export default [
   js.configs.recommended,
   ...astro.configs.recommended,
   {
-    ignores: ['node_modules/', 'dist/', '../_site/', '.astro/'],
+    languageOptions: {
+      globals: {
+        __APP_VERSION__: "readonly",
+      },
+    },
+    ignores: ["node_modules/", "dist/", "../_site/", ".astro/"],
   },
 ];
