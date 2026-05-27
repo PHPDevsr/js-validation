@@ -116,6 +116,32 @@ rules: {
 
 ---
 
+### `range`
+
+Validates that the numeric value is between a minimum and maximum (inclusive).
+
+```js
+rules: {
+  age: { range: [18, 65] }
+}
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `range` | `[number, number]` | Array of `[min, max]` allowed values |
+
+**Default message:** `"Please enter a value between {0} and {1}."`
+
+**Invalid format message:** `"Please enter a valid range."`
+
+> **Wrong format cases** — the rule returns `false` and the invalid format message is shown when:
+> - `range` is a single number (e.g. `range: 5`)
+> - `range` is an array with fewer than two elements (e.g. `range: [2]`)
+> - `range` is an unparseable string (e.g. `range: 'invalid'`)
+> - `range` is `null` or any other non-array value
+
+---
+
 ### `pattern`
 
 Validates that the value matches a regular expression pattern.
