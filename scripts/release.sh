@@ -44,11 +44,10 @@ if [[ "$TAG_MODE" == true ]]; then
   TARGET_VERSION="${NEW_VERSION#v}"
   CURRENT_VERSION=$(node --input-type=module -e "import fs from 'node:fs'; console.log(JSON.parse(fs.readFileSync('package.json', 'utf8')).version);")
   if [[ "$CURRENT_VERSION" != "$TARGET_VERSION" ]]; then
-    npm version "$TARGET_VERSION" --no-git-tag-version
-    echo "Synchronized package metadata to $NEW_VERSION"
-  else
-    echo "Package metadata already at $NEW_VERSION"
+    echo "Error: package.json version ($CURRENT_VERSION) does not match tag version ($TARGET_VERSION)."
+    exit 1
   fi
+  echo "Package metadata already at $NEW_VERSION"
 else
   NEW_VERSION=$(npm version "$TYPE" --no-git-tag-version)
   echo "Bumped version to $NEW_VERSION"
@@ -79,48 +78,48 @@ if (!content.includes(unreleasedHeading)) {
   process.exit(1);
 }
 
-if (content.includes(`## [${version}]`)) {
-  if (allowExistingVersion) {
-    console.log(`${changelogPath} already contains version ${version}; skipping changelog promotion.`);
-    process.exit(0);
-  }
-
+const hasExistingVersion = content.includes(`## [${version}]`);
+if (hasExistingVersion && !allowExistingVersion) {
   console.error(`Error: ${changelogPath} already contains version ${version}.`);
   process.exit(1);
 }
 
-const lines = content.split('\n');
-const unreleasedIndex = lines.findIndex((line) => line.trim() === unreleasedHeading);
-if (unreleasedIndex === -1) {
-  console.error(`Error: could not locate "${unreleasedHeading}" in ${changelogPath}.`);
-  process.exit(1);
+let finalContent = content;
+if (!hasExistingVersion) {
+  const lines = content.split('\n');
+  const unreleasedIndex = lines.findIndex((line) => line.trim() === unreleasedHeading);
+  if (unreleasedIndex === -1) {
+    console.error(`Error: could not locate "${unreleasedHeading}" in ${changelogPath}.`);
+    process.exit(1);
+  }
+
+  const nextVersionIndex = lines.findIndex(
+    (line, index) => index > unreleasedIndex && /^## \[[^\]]+\]/.test(line)
+  );
+  const unreleasedBodyLines = lines.slice(
+    unreleasedIndex + 1,
+    nextVersionIndex === -1 ? lines.length : nextVersionIndex
+  );
+
+  const hasUnreleasedContent = unreleasedBodyLines.some((line) => line.trim().length > 0);
+  const releaseNotes = hasUnreleasedContent
+    ? unreleasedBodyLines.join('\n').replace(/\s+$/, '')
+    : '### Changed\n\n- No notable changes.';
+
+  const releaseSection = [`## [${version}] - ${releaseDate}`, '', releaseNotes, ''].join('\n');
+
+  finalContent = [
+    ...lines.slice(0, unreleasedIndex),
+    unreleasedHeading,
+    '',
+    releaseSection.trimEnd(),
+    '',
+    ...(nextVersionIndex === -1 ? [] : lines.slice(nextVersionIndex))
+  ].join('\n');
+} else {
+  console.log(`${changelogPath} already contains version ${version}; skipping changelog promotion.`);
 }
 
-const nextVersionIndex = lines.findIndex(
-  (line, index) => index > unreleasedIndex && /^## \[[^\]]+\]/.test(line)
-);
-const unreleasedBodyLines = lines.slice(
-  unreleasedIndex + 1,
-  nextVersionIndex === -1 ? lines.length : nextVersionIndex
-);
-
-const hasUnreleasedContent = unreleasedBodyLines.some((line) => line.trim().length > 0);
-const releaseNotes = hasUnreleasedContent
-  ? unreleasedBodyLines.join('\n').replace(/\s+$/, '')
-  : '### Changed\n\n- No notable changes.';
-
-const releaseSection = [`## [${version}] - ${releaseDate}`, '', releaseNotes, ''].join('\n');
-
-const updated = [
-  ...lines.slice(0, unreleasedIndex),
-  unreleasedHeading,
-  '',
-  releaseSection.trimEnd(),
-  '',
-  ...(nextVersionIndex === -1 ? [] : lines.slice(nextVersionIndex))
-].join('\n');
-
-let finalContent = updated;
 const currentVersionHeadings = [
   ...finalContent.matchAll(/^## \[(\d+\.\d+\.\d+)\]/gm)
 ].map((match) => match[1]);
@@ -163,7 +162,11 @@ NODE
 echo "Updated CHANGELOG.md and docs-site/src/pages/changelog.md"
 
 # Commit and optionally create tag
-git add package.json package-lock.json CHANGELOG.md docs-site/src/pages/changelog.md
+if [[ "$TAG_MODE" == true ]]; then
+  git add CHANGELOG.md docs-site/src/pages/changelog.md
+else
+  git add package.json package-lock.json CHANGELOG.md docs-site/src/pages/changelog.md
+fi
 
 if [[ -n "$(git diff --cached --name-only)" ]]; then
   if [[ "$TAG_MODE" == true ]]; then
