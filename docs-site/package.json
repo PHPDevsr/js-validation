@@ -9,8 +9,10 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@astrojs/starlight": "^0.39.2",
-    "astro": "^6.3.8"
+    "@tailwindcss/typography": "^0.5.19",
+    "@tailwindcss/vite": "^4.3.0",
+    "astro": "^6.3.8",
+    "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

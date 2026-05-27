@@ -7,6 +7,6 @@ export default [
   js.configs.recommended,
   ...astro.configs.recommended,
   {
-    ignores: ['node_modules/', 'dist/', '../_site/'],
+    ignores: ['node_modules/', 'dist/', '../_site/', '.astro/'],
   },
 ];

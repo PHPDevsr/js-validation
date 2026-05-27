@@ -1,5 +1,11 @@
-/* ── Reset & base ── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* ── CSS variables ── */
+@theme {
+  --color-primary: #0d6efd;
+  --color-primary-dark: #0b5ed7;
+}
 
 :root {
   --primary: #0d6efd;
@@ -9,16 +15,13 @@
   --border: #dee2e6;
   --bg: #ffffff;
   --bg-sidebar: #f8f9fa;
-  --code-bg: #f4f4f5;
   --sidebar-width: 230px;
   --header-height: 56px;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   color: var(--text);
   background: var(--bg);
-  line-height: 1.6;
 }
 
 /* ── Header ── */
@@ -136,102 +139,29 @@ body {
   max-width: 860px;
 }
 
-/* ── Typography ── */
-.content h1 {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-  color: var(--text);
-}
-
-.content h2 {
-  font-size: 1.4rem;
-  margin-top: 2.5rem;
-  margin-bottom: 0.75rem;
-  padding-bottom: 0.35rem;
-  border-bottom: 2px solid var(--border);
-  color: var(--text);
-}
-
-.content h3 {
-  font-size: 1.1rem;
-  margin-top: 1.75rem;
-  margin-bottom: 0.5rem;
-  color: var(--text);
-}
-
-.content p {
-  margin-bottom: 1rem;
-}
-
-.content a {
+/* ── Prose customisation (Tailwind Typography) ── */
+.prose a {
   color: var(--primary);
-  text-decoration: none;
 }
 
-.content a:hover {
-  text-decoration: underline;
+.prose a:hover {
+  color: var(--primary-dark);
 }
 
-.content ul, .content ol {
-  margin-bottom: 1rem;
-  padding-left: 1.5rem;
+.prose h2 {
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.35rem;
 }
 
-.content li {
-  margin-bottom: 0.35rem;
-}
-
-.content hr {
-  border: none;
-  border-top: 1px solid var(--border);
-  margin: 2rem 0;
-}
-
-/* ── Code ── */
-.content code {
-  background: var(--code-bg);
-  padding: 0.15em 0.4em;
-  border-radius: 4px;
-  font-size: 0.88em;
-  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-}
-
-.content pre {
-  background: var(--code-bg);
+.prose pre {
   border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 1rem 1.25rem;
-  overflow-x: auto;
-  margin-bottom: 1.25rem;
 }
 
-.content pre code {
-  background: none;
-  padding: 0;
-  font-size: 0.875rem;
-  line-height: 1.6;
-}
-
-/* ── Tables ── */
-.content table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 1.25rem;
-  font-size: 0.9rem;
-}
-
-.content th, .content td {
-  border: 1px solid var(--border);
-  padding: 0.5rem 0.75rem;
-  text-align: left;
-}
-
-.content th {
+.prose table th {
   background: var(--bg-sidebar);
-  font-weight: 600;
 }
 
-.content tr:nth-child(even) td {
+.prose tr:nth-child(even) td {
   background: #fafafa;
 }
 
