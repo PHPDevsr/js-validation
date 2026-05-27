@@ -4,7 +4,6 @@ on:
   pull_request:
     branches: [develop, main]
     paths:
-      - 'docs/**'
       - 'docs-site/**'
       - '.github/workflows/docs-preview.yml'
     types:

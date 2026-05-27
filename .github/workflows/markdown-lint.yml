@@ -4,16 +4,14 @@ on:
   pull_request:
     branches: [develop, main]
     paths:
-      - 'docs/**/*.md'
-      - 'docs/*.md'
+      - 'docs-site/src/pages/**/*.md'
       - '*.md'
       - '.markdownlint-cli2.jsonc'
       - '.github/workflows/markdown-lint.yml'
   push:
     branches: [develop, main]
     paths:
-      - 'docs/**/*.md'
-      - 'docs/*.md'
+      - 'docs-site/src/pages/**/*.md'
       - '*.md'
       - '.markdownlint-cli2.jsonc'
       - '.github/workflows/markdown-lint.yml'
@@ -36,5 +34,5 @@ jobs:
         uses: DavidAnson/markdownlint-cli2-action@v23
         with:
           globs: |
-            docs/*.md
+            docs-site/src/pages/*.md
             *.md
