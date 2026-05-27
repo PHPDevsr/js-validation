@@ -9,9 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.2] - 2026-05-27
 
-### Changed
+### Added
 
-- No notable changes.
+- feat: added date and dateISO built-in validation rules with docs, demos, and coverage by @Copilot in #14
 
 ## [1.1.1] - 2026-05-27
 
