@@ -139,6 +139,47 @@ describe('url rule', () => {
   });
 });
 
+describe('date rule', () => {
+  it('fails for invalid date', () => {
+    const f = field('date', 'not-a-date');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { date: { date: true } } });
+    expect(v.validate()).toBe(false);
+    expect(f._jsvMessage).toBe('Please enter a valid date.');
+  });
+
+  it('passes for valid date', () => {
+    const f = field('date', '2026-05-27');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { date: { date: true } } });
+    expect(v.validate()).toBe(true);
+  });
+});
+
+describe('dateISO rule', () => {
+  it('fails for non-ISO format', () => {
+    const f = field('startDate', '05/27/2026');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { startDate: { dateISO: true } } });
+    expect(v.validate()).toBe(false);
+    expect(f._jsvMessage).toBe('Please enter a valid ISO date (YYYY-MM-DD).');
+  });
+
+  it('passes for YYYY-MM-DD format', () => {
+    const f = field('startDate', '2026-05-27');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { startDate: { dateISO: true } } });
+    expect(v.validate()).toBe(true);
+  });
+
+  it('passes for YYYY/MM/DD format', () => {
+    const f = field('startDate', '2026/05/27');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { startDate: { dateISO: true } } });
+    expect(v.validate()).toBe(true);
+  });
+});
+
 describe('minlength rule', () => {
   it('fails when value is too short', () => {
     const f = field('username', 'ab', { ruleMinlength: '3' });
