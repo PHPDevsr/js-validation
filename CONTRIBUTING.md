@@ -1,40 +1,5 @@
 # Contributing
 
-## Documentation
-
-Project documentation lives in the `docs/` folder as Markdown (`.md`) files. These are published to GitHub Pages on every release.
-
-### Documentation Structure
-
-| File | Content |
-|------|---------|
-| `docs/README.md` | Index / landing page with table of contents |
-| `docs/getting-started.md` | Quick-start guide and API reference |
-| `docs/installation.md` | Installation methods (NPM, CDN, download) |
-| `docs/requirements.md` | Runtime and development requirements |
-| `docs/browser-support.md` | Supported browsers and required APIs |
-| `docs/rules.md` | Complete list of built-in validation rules |
-| `docs/custom-rules.md` | Guide for creating custom validation rules |
-| `docs/changelog.md` | Version history and release notes |
-
-### Writing Documentation
-
-When contributing documentation:
-
-1. **Use Markdown format** — all docs files must be `.md` files in the `docs/` folder.
-2. **Follow existing structure** — use headings, tables, and code blocks consistently.
-3. **Include code examples** — show both usage with options and HTML `data-rule-*` attributes.
-4. **Link between pages** — use relative links (e.g., `[Rules List](rules.md)`).
-5. **Keep the index updated** — add new pages to `docs/README.md` table of contents.
-
-### Publishing Documentation
-
-Documentation is published automatically to GitHub Pages when a release tag (`v*`) is pushed to `main`. The release pipeline deploys the `docs/` folder contents along with compiled assets.
-
-To preview documentation locally, you can use any Markdown previewer or serve the `docs/` folder with a local HTTP server.
-
----
-
 ## Branching Strategy
 
 - **`develop`** — all contributions and feature work go here
@@ -60,30 +25,22 @@ npm run test:watch
 
 ## Release Process
 
-Maintainers create a release by simply tagging a version on `main`. The CI pipeline now prepares release metadata from that tag and then handles everything else automatically (GitHub Release creation, asset upload, NPM publish, and GitHub Pages deploy).
+Maintainers must prepare release metadata locally on `main` before pushing a release tag. CI no longer mutates release files automatically; it now validates metadata and then handles release automation (GitHub Release creation, asset upload, NPM publish, and GitHub Pages deploy).
 
 ### Prerequisites
 
 - NPM publish requires a `NPM_TOKEN` secret configured in the repository settings.
 
-### Tag-driven release (recommended)
-
-```bash
-# On main branch:
-git tag v1.1.0
-git push origin main --tags
-```
-
-### Optional local metadata prep
+### Prepare release metadata (required)
 
 ```bash
 # On main branch, after merging develop:
-# Bumps package version and promotes CHANGELOG.md [Unreleased] notes into the new version section
+# Bumps package version/package-lock and promotes CHANGELOG.md [Unreleased] notes
 npm run release patch   # 1.0.0 → 1.0.1
 npm run release minor   # 1.0.0 → 1.1.0
 npm run release major   # 1.0.0 → 2.0.0
 
-# Then push to trigger the pipeline:
+# Then push commit + tag to trigger the pipeline:
 git push origin main --tags
 ```
 
@@ -91,7 +48,7 @@ git push origin main --tags
 
 When a `v*` tag is pushed to `main`, the release pipeline will:
 
-1. **Prepare release metadata** on `main` (sync package version + promote `CHANGELOG.md` from `[Unreleased]` and enforce a section for the tag version)
+1. **Validate release metadata** from the tagged commit (`package.json` version + `CHANGELOG.md` section must match the tag)
 2. **Build** the full bundle (`js-validation.js` + `.min.js` + ESM variants)
 3. **Create a GitHub Release** with auto-generated release notes and attach all dist files
 4. **Publish to NPM** registry (skips publish if that version already exists)
@@ -110,7 +67,7 @@ develop (contributions) → PR → main (releases)
                                   ↓
                             tag v1.x.x
                                   ↓
-          CI: metadata prep → build → GitHub Release → NPM publish → Pages deploy
+      CI: metadata validation → build → GitHub Release → NPM publish → Pages deploy
 ```
 
 ### Build output
