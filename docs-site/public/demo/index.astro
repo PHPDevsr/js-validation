@@ -1,3 +1,8 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+cons demoBase = base + 'demo/';
+---
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -22,87 +27,87 @@
   </head>
   <body>
     <div class="container">
-      <a class="back" href="../">← Back to docs</a>
+      <a class="back" href={`${base}/`}>← Back to docs</a>
       <h1>Live Demos</h1>
       <p class="subtitle">Interactive examples for every built-in validation rule.</p>
 
       <div class="cards">
-        <a class="card" href="basic.html">
+        <a class="card" href={`${demoBase}/basic/`}>
           <span class="tag">Fundamentals</span>
           <h2>Basic Form</h2>
           <p>Sign-up form covering <code>required</code>, <code>email</code>, <code>minlength</code>, and <code>equalTo</code>.</p>
         </a>
-        <a class="card" href="required.html">
+        <a class="card" href={`${demoBase}/required/`}>
           <span class="tag">Rule</span>
           <h2>required</h2>
           <p>Ensures a field has a non-empty value after trimming whitespace.</p>
         </a>
-        <a class="card" href="email.html">
+        <a class="card" href={`${demoBase}/email/`}>
           <span class="tag">Rule</span>
           <h2>email</h2>
           <p>Validates that the value is a properly formatted email address.</p>
         </a>
-        <a class="card" href="url.html">
+        <a class="card" href={`${demoBase}/url/`}>
           <span class="tag">Rule</span>
           <h2>url</h2>
           <p>Validates that the value is a properly formatted URL.</p>
         </a>
-        <a class="card" href="date.html">
+        <a class="card" href={`${demoBase}/date/`}>
           <span class="tag">Rule</span>
           <h2>date</h2>
           <p>Validates that the value can be parsed as a valid date.</p>
         </a>
-        <a class="card" href="dateiso.html">
+        <a class="card" href={`${demoBase}/dateiso/`}>
           <span class="tag">Rule</span>
           <h2>dateISO</h2>
           <p>Validates ISO-like date format: <code>YYYY-MM-DD</code> or <code>YYYY/MM/DD</code>.</p>
         </a>
-        <a class="card" href="length.html">
+        <a class="card" href={`${demoBase}/length/`}>
           <span class="tag">Rule</span>
           <h2>minlength / maxlength</h2>
           <p>Constrains the number of characters allowed in a field.</p>
         </a>
-        <a class="card" href="pattern.html">
+        <a class="card" href={`${demoBase}/pattern/`}>
           <span class="tag">Rule</span>
           <h2>pattern</h2>
           <p>Validates a field against a regular expression.</p>
         </a>
-        <a class="card" href="equalto.html">
+        <a class="card" href={`${demoBase}/equalto/`}>
           <span class="tag">Rule</span>
           <h2>equalTo</h2>
           <p>Confirms two fields have the same value (e.g. password confirmation).</p>
         </a>
-        <a class="card" href="numeric.html">
+        <a class="card" href={`${demoBase}/numeric/`}>
           <span class="tag">Rule</span>
           <h2>numeric</h2>
           <p>Accepts only numeric digit characters (0–9).</p>
         </a>
-        <a class="card" href="range.html">
+        <a class="card" href={`${demoBase}/range/`}>
           <span class="tag">Rule</span>
           <h2>range</h2>
           <p>Validates that a numeric value falls between a minimum and maximum using <code>range: [min, max]</code>.</p>
         </a>
-        <a class="card" href="ipv4.html">
+        <a class="card" href={`${demoBase}/ipv4/`}>
           <span class="tag">Rule</span>
           <h2>ipv4</h2>
           <p>Validates that the value is a properly formatted IPv4 address (e.g. <code>192.168.1.1</code>).</p>
         </a>
-        <a class="card" href="ipv6.html">
+        <a class="card" href={`${demoBase}/ipv6/`}>
           <span class="tag">Rule</span>
           <h2>ipv6</h2>
           <p>Validates that the value is a properly formatted IPv6 address (e.g. <code>2001:db8::1</code>).</p>
         </a>
-        <a class="card" href="alphanumeric.html">
+        <a class="card" href={`${demoBase}/alphanumeric/`}>
           <span class="tag">Rule</span>
           <h2>alphanumeric</h2>
           <p>Accepts only letters, digits, and underscores — no spaces or special characters.</p>
         </a>
-        <a class="card" href="custom-rules.html">
+        <a class="card" href={`${demoBase}/custom-rules/`}>
           <span class="tag">Advanced</span>
           <h2>Custom Rules</h2>
           <p>Extend the validator with your own rules using <code>addMethod()</code>.</p>
         </a>
-        <a class="card" href="data-attributes.html">
+        <a class="card" href={`${demoBase}/data-attributes/`}>
           <span class="tag">Advanced</span>
           <h2>data-rule-* attributes</h2>
           <p>Declare rules directly in HTML using <code>data-rule-*</code> and <code>data-msg-*</code> attributes.</p>
