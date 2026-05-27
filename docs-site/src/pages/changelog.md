@@ -13,6 +13,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.3] - 2026-05-27
+
+### Added
+
+- feat: added new rules ipv4 & ipv6 build-in
+- feat: added new rules range build-in
+- feat: generate rich release notes body in release-pages.yml
+
+### Changed
+
+- fix: auto-generate changelog from git commits in release script
+
+### Others
+
+- docs: added demo page for rules range
+
 ## [1.1.2] - 2026-05-27
 
 ### Added
@@ -56,8 +72,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Release workflow deploying compiled assets and docs to GitHub Pages.
 - Demo page (`docs/index.html`) with declarative and programmatic usage examples.
 
-[Unreleased]: https://github.com/PHPDevsr/js-validation/compare/v1.1.2...HEAD
+[Unreleased]: https://github.com/PHPDevsr/js-validation/compare/v1.1.3...HEAD
 [1.1.1]: https://github.com/PHPDevsr/js-validation/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/PHPDevsr/js-validation/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/PHPDevsr/js-validation/releases/tag/v1.0.0
 [1.1.2]: https://github.com/PHPDevsr/js-validation/compare/v1.1.1...v1.1.2
+[1.1.3]: https://github.com/PHPDevsr/js-validation/compare/v1.1.2...v1.1.3
