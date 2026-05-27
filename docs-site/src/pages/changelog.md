@@ -11,11 +11,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-For the full changelog, see [CHANGELOG.md](https://github.com/PHPDevsr/js-validation/blob/main/CHANGELOG.md) on GitHub.
+## [Unreleased]
 
 ## [1.1.0] - 2026-05-27
 
-- feat: add invalid attribute, error element, and configurable error class on validation failure by @Copilot
+### Added
+
+- feat: add invalid attribute, error element, and configurable error class on validation failure by @Copilot in #8
 
 ## [1.0.0] - 2026-05-26
 
@@ -30,18 +32,17 @@ For the full changelog, see [CHANGELOG.md](https://github.com/PHPDevsr/js-valida
   - `maxlength` – validates maximum character length.
   - `pattern` – validates against a regular expression.
   - `equalTo` – validates field matches another field's value.
-  - `numeric` – validates numeric-only input.
 - Extensibility via `jsValidation.addMethod(name, validateFn, message)`.
 - Support for rules from both JavaScript options and `data-rule-*` HTML attributes.
 - Custom error messages via `options.messages` and `data-msg-*` attributes.
 - Field-level error state with `aria-invalid`, `validationMessage`, and `jsv-invalid` CSS class.
 - Form-wide `validate()` and `resetForm()` methods.
 - Vite build pipeline producing UMD and ES module bundles (`.js` and `.min.js`).
-- Vitest test suite covering all built-in rules.
-- Playwright E2E tests across Chromium, Firefox, and WebKit.
+- Vitest test suite with 18 tests covering all built-in rules.
 - CI workflow (GitHub Actions) for building and testing on push/PR.
 - Release workflow deploying compiled assets and docs to GitHub Pages.
 - Demo page (`docs/index.html`) with declarative and programmatic usage examples.
 
+[Unreleased]: https://github.com/PHPDevsr/js-validation/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/PHPDevsr/js-validation/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/PHPDevsr/js-validation/releases/tag/v1.0.0
-[1.1.0]: https://github.com/PHPDevsr/js-validation/releases/tag/v1.1.0
