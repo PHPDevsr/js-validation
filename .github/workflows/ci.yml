@@ -6,6 +6,8 @@ on:
     paths:
       - '**.js'
       - '**.yml'
+      - 'package.json'
+      - 'package-lock.json'
 
 concurrency:
   group: ci-${{ github.event.pull_request.number || github.ref }}
