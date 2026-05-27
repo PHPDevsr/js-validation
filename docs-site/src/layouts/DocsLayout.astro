@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 
-const version = __APP_VERSION__;
+const version = import.meta.env.PUBLIC_APP_VERSION;
 
 const { frontmatter = {} } = Astro.props;
 const { title = 'js-validation', description = 'Lightweight, zero-dependency vanilla JavaScript form validation library.' } = frontmatter;

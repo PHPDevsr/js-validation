@@ -1,3 +1,10 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const demoBase = base + '/demo';
+const version = import.meta.env.PUBLIC_APP_VERSION;
+const cdnUrl = `https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation@${version}/dist/js-validation.min.js?v=${version}`;
+---
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -31,16 +38,16 @@
   </head>
   <body>
     <div class="container">
-      <a class="back" href="index.html">← All demos</a>
+      <a class="back" href={`${demoBase}/`}>← All demos</a>
       <h1>Custom Rules with <code>addMethod()</code></h1>
       <p class="desc">Extend the validator with your own logic using <code>jsValidation.addMethod(name, fn, message)</code>.</p>
 
       <!-- Demo 1: no-spaces rule -->
       <div class="card">
         <h2>Example 1 – <code>noSpaces</code> rule</h2>
-        <pre><code>jsValidation.addMethod('noSpaces', function (value) {
-  return !/\s/.test(value);
-}, 'Spaces are not allowed.');</code></pre>
+        <pre><code>jsValidation.addMethod('noSpaces', function (value) &#123;
+  return !/\\s/.test(value);
+&#125;, 'Spaces are not allowed.');</code></pre>
         <form id="form-nospaces" novalidate>
           <div class="form-group">
             <label for="handle">Username (no spaces)</label>
@@ -55,9 +62,9 @@
       <!-- Demo 2: strongPassword rule -->
       <div class="card">
         <h2>Example 2 – <code>strongPassword</code> rule</h2>
-        <pre><code>jsValidation.addMethod('strongPassword', function (value) {
-  return /[A-Z]/.test(value) && /[0-9]/.test(value) && /[^A-Za-z0-9]/.test(value);
-}, 'Must contain an uppercase letter, a digit, and a special character.');</code></pre>
+        <pre><code>jsValidation.addMethod('strongPassword', function (value) &#123;
+  return /[A-Z]/.test(value) &amp;&amp; /[0-9]/.test(value) &amp;&amp; /[^A-Za-z0-9]/.test(value);
+&#125;, 'Must contain an uppercase letter, a digit, and a special character.');</code></pre>
         <form id="form-strong" novalidate>
           <div class="form-group">
             <label for="securePass">Password</label>
@@ -70,8 +77,8 @@
       </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation/dist/js-validation.min.js"></script>
-    <script>
+    <script is:inline src={cdnUrl}></script>
+    <script is:inline>
       // Register custom rules
       jsValidation.addMethod('noSpaces', function (value) {
         return !/\s/.test(value);

@@ -1,9 +1,16 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const demoBase = base + '/demo';
+const version = import.meta.env.PUBLIC_APP_VERSION;
+const cdnUrl = `https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation@${version}/dist/js-validation.min.js?v=${version}`;
+---
+
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>email rule Demo – js-validation</title>
+    <title>required rule Demo – js-validation</title>
     <style>
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
       body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8f9fa; color: #1a1a1a; padding: 2rem 1rem; }
@@ -15,9 +22,9 @@
       .card { background: #fff; border: 1px solid #dee2e6; border-radius: 8px; padding: 1.75rem; }
       .form-group { margin-bottom: 1.25rem; }
       .form-group label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem; }
-      .form-group input { width: 100%; padding: 0.55rem 0.75rem; border: 1px solid #ced4da; border-radius: 6px; font-size: 0.95rem; outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
-      .form-group input:focus { border-color: #86b7fe; box-shadow: 0 0 0 3px rgba(13,110,253,0.15); }
-      .form-group input.is-invalid { border-color: #dc3545; }
+      .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 0.55rem 0.75rem; border: 1px solid #ced4da; border-radius: 6px; font-size: 0.95rem; outline: none; transition: border-color 0.15s, box-shadow 0.15s; font-family: inherit; }
+      .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: #86b7fe; box-shadow: 0 0 0 3px rgba(13,110,253,0.15); }
+      .form-group input.is-invalid, .form-group textarea.is-invalid, .form-group select.is-invalid { border-color: #dc3545; }
       .invalid-feedback { display: block; color: #dc3545; font-size: 0.82rem; margin-top: 0.35rem; }
       .btn { display: inline-flex; align-items: center; margin-top: 0.5rem; padding: 0.6rem 1.5rem; background: #0d6efd; color: #fff; border: none; border-radius: 6px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.15s, box-shadow 0.15s; box-shadow: 0 1px 4px rgba(13,110,253,0.25); }
       .btn:hover { background: #0b5ed7; box-shadow: 0 3px 8px rgba(13,110,253,0.3); }
@@ -29,33 +36,42 @@
   </head>
   <body>
     <div class="container">
-      <a class="back" href="index.html">← All demos</a>
-      <h1><code>email</code> rule</h1>
-      <p class="desc">Validates that the value is a properly formatted email address (e.g. <strong>user@example.com</strong>).</p>
+      <a class="back" href={`${demoBase}/`}>← All demos</a>
+      <h1><code>required</code> rule</h1>
+      <p class="desc">Ensures a field has a non-empty value (after trimming whitespace). Works on text, textarea, and select elements.</p>
 
       <div class="card">
         <form id="demo-form" novalidate>
           <div class="form-group">
-            <label for="email">Email address</label>
-            <input id="email" name="email" type="text" placeholder="user@example.com"
-              data-rule-required="true" data-rule-email="true" />
+            <label for="name">Name (text input)</label>
+            <input id="name" name="name" type="text" placeholder="Enter your name"
+              data-rule-required="true" data-msg-required="Name is required." />
           </div>
           <div class="form-group">
-            <label for="altEmail">Alternative email <small style="font-weight:normal;color:#888">(optional, but must be valid if given)</small></label>
-            <input id="altEmail" name="altEmail" type="text" placeholder="backup@example.com"
-              data-rule-email="true" />
+            <label for="bio">Bio (textarea)</label>
+            <textarea id="bio" name="bio" rows="3" placeholder="Tell us about yourself"
+              data-rule-required="true" data-msg-required="Bio is required."></textarea>
           </div>
-          <button class="btn" type="submit">Validate</button>
+          <div class="form-group">
+            <label for="country">Country (select)</label>
+            <select id="country" name="country" data-rule-required="true" data-msg-required="Please select a country.">
+              <option value="">— Select —</option>
+              <option value="id">Indonesia</option>
+              <option value="us">United States</option>
+              <option value="gb">United Kingdom</option>
+            </select>
+          </div>
+          <button class="btn" type="submit">Submit</button>
         </form>
         <div id="status"></div>
       </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation/dist/js-validation.min.js"></script>
+    <script is:inline src={cdnUrl}></script>
     <script>
       jsValidation.default('#demo-form').submit(function () {
         const el = document.getElementById('status');
-        el.innerHTML = '<div class="alert alert-success">✓ Valid email address!</div>';
+        el.innerHTML = '<div class="alert alert-success">✓ All required fields filled!</div>';
       });
     </script>
   </body>

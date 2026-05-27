@@ -1,9 +1,16 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const demoBase = base + '/demo';
+const version = import.meta.env.PUBLIC_APP_VERSION;
+const cdnUrl = `https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation@${version}/dist/js-validation.min.js?v=${version}`;
+---
+
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ipv6 rule Demo – js-validation</title>
+    <title>minlength / maxlength Demo – js-validation</title>
     <style>
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
       body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8f9fa; color: #1a1a1a; padding: 2rem 1rem; }
@@ -19,6 +26,7 @@
       .form-group input:focus { border-color: #86b7fe; box-shadow: 0 0 0 3px rgba(13,110,253,0.15); }
       .form-group input.is-invalid { border-color: #dc3545; }
       .invalid-feedback { display: block; color: #dc3545; font-size: 0.82rem; margin-top: 0.35rem; }
+      .hint { font-size: 0.8rem; color: #888; margin-top: 0.25rem; }
       .btn { display: inline-flex; align-items: center; margin-top: 0.5rem; padding: 0.6rem 1.5rem; background: #0d6efd; color: #fff; border: none; border-radius: 6px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.15s, box-shadow 0.15s; box-shadow: 0 1px 4px rgba(13,110,253,0.25); }
       .btn:hover { background: #0b5ed7; box-shadow: 0 3px 8px rgba(13,110,253,0.3); }
       .btn:active { background: #0a58ca; }
@@ -29,21 +37,28 @@
   </head>
   <body>
     <div class="container">
-      <a class="back" href="index.html">← All demos</a>
-      <h1><code>ipv6</code> rule</h1>
-      <p class="desc">Validates that the value is a properly formatted IPv6 address (e.g. <strong>2001:db8::1</strong>).</p>
+      <a class="back" href={`${demoBase}/`}>← All demos</a>
+      <h1><code>minlength</code> / <code>maxlength</code> rules</h1>
+      <p class="desc">Constrain the number of characters allowed in a field.</p>
 
       <div class="card">
         <form id="demo-form" novalidate>
           <div class="form-group">
-            <label for="ipv6">IPv6 Address</label>
-            <input id="ipv6" name="ipv6" type="text" placeholder="2001:db8::1"
-              data-rule-required="true" data-rule-ipv6="true" />
+            <label for="username">Username</label>
+            <input id="username" name="username" type="text" placeholder="e.g. john_doe"
+              data-rule-required="true" data-rule-minlength="3" data-rule-maxlength="20" />
+            <span class="hint">3–20 characters</span>
           </div>
           <div class="form-group">
-            <label for="altIpv6">Secondary IPv6 <small style="font-weight:normal;color:#888">(optional, but must be valid if given)</small></label>
-            <input id="altIpv6" name="altIpv6" type="text" placeholder="::1"
-              data-rule-ipv6="true" />
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" placeholder="••••••••"
+              data-rule-required="true" data-rule-minlength="8" data-rule-maxlength="64" />
+            <span class="hint">8–64 characters</span>
+          </div>
+          <div class="form-group">
+            <label for="pin">PIN <small style="font-weight:normal;color:#888">(exactly 4 digits)</small></label>
+            <input id="pin" name="pin" type="text" placeholder="1234"
+              data-rule-required="true" data-rule-minlength="4" data-rule-maxlength="4" />
           </div>
           <button class="btn" type="submit">Validate</button>
         </form>
@@ -51,11 +66,11 @@
       </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation/dist/js-validation.min.js"></script>
+    <script is:inline src={cdnUrl}></script>
     <script>
       jsValidation.default('#demo-form').submit(function () {
         const el = document.getElementById('status');
-        el.innerHTML = '<div class="alert alert-success">✓ Valid IPv6 address!</div>';
+        el.innerHTML = '<div class="alert alert-success">✓ All length constraints satisfied!</div>';
       });
     </script>
   </body>

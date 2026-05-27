@@ -1,9 +1,16 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const demoBase = base + '/demo';
+const version = import.meta.env.PUBLIC_APP_VERSION;
+const cdnUrl = `https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation@${version}/dist/js-validation.min.js?v=${version}`;
+---
+
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>date rule Demo – js-validation</title>
+    <title>equalTo rule Demo – js-validation</title>
     <style>
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
       body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8f9fa; color: #1a1a1a; padding: 2rem 1rem; }
@@ -19,7 +26,6 @@
       .form-group input:focus { border-color: #86b7fe; box-shadow: 0 0 0 3px rgba(13,110,253,0.15); }
       .form-group input.is-invalid { border-color: #dc3545; }
       .invalid-feedback { display: block; color: #dc3545; font-size: 0.82rem; margin-top: 0.35rem; }
-      .hint { font-size: 0.8rem; color: #888; margin-top: 0.25rem; }
       .btn { display: inline-flex; align-items: center; margin-top: 0.5rem; padding: 0.6rem 1.5rem; background: #0d6efd; color: #fff; border: none; border-radius: 6px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.15s, box-shadow 0.15s; box-shadow: 0 1px 4px rgba(13,110,253,0.25); }
       .btn:hover { background: #0b5ed7; box-shadow: 0 3px 8px rgba(13,110,253,0.3); }
       .btn:active { background: #0a58ca; }
@@ -30,17 +36,31 @@
   </head>
   <body>
     <div class="container">
-      <a class="back" href="index.html">← All demos</a>
-      <h1><code>date</code> rule</h1>
-      <p class="desc">Validates that the value can be parsed as a valid date.</p>
+      <a class="back" href={`${demoBase}/`}>← All demos</a>
+      <h1><code>equalTo</code> rule</h1>
+      <p class="desc">Validates that a field's value matches the value of another field. Ideal for password confirmation.</p>
 
       <div class="card">
         <form id="demo-form" novalidate>
           <div class="form-group">
-            <label for="birthDate">Birth date</label>
-            <input id="birthDate" name="birthDate" type="text" placeholder="2026-05-27"
-              data-rule-required="true" data-rule-date="true" />
-            <span class="hint">Example: <code>2026-05-27</code> or <code>2026/05/27</code>.</span>
+            <label for="email">Email</label>
+            <input id="email" name="email" type="text" placeholder="user@example.com"
+              data-rule-required="true" data-rule-email="true" />
+          </div>
+          <div class="form-group">
+            <label for="confirmEmail">Confirm Email</label>
+            <input id="confirmEmail" name="confirmEmail" type="text" placeholder="user@example.com"
+              data-rule-required="true" />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" placeholder="••••••••"
+              data-rule-required="true" data-rule-minlength="8" />
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input id="confirmPassword" name="confirmPassword" type="password" placeholder="••••••••"
+              data-rule-required="true" />
           </div>
           <button class="btn" type="submit">Validate</button>
         </form>
@@ -48,11 +68,20 @@
       </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation/dist/js-validation.min.js"></script>
+    <script is:inline src={cdnUrl}></script>
     <script>
-      jsValidation.default('#demo-form').submit(function () {
+      jsValidation.default('#demo-form', {
+        rules: {
+          confirmEmail:     { equalTo: '#email' },
+          confirmPassword:  { equalTo: '#password' }
+        },
+        messages: {
+          confirmEmail:    { equalTo: 'Email addresses must match.' },
+          confirmPassword: { equalTo: 'Passwords must match.' }
+        }
+      }).submit(function () {
         const el = document.getElementById('status');
-        el.innerHTML = '<div class="alert alert-success">✓ Valid date!</div>';
+        el.innerHTML = '<div class="alert alert-success">✓ All fields match!</div>';
       });
     </script>
   </body>
