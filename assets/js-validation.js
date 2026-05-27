@@ -178,6 +178,26 @@
 	//#region src/rules/maxlength.js
 	VanillaValidator.addMethod("maxlength", (value, expected) => String(value || "").length <= Number(expected), (param) => `Please enter no more than ${param} characters.`);
 	//#endregion
+	//#region src/rules/range.js
+	VanillaValidator.addMethod("range", (value, param) => {
+		try {
+			const bounds = Array.isArray(param) ? param : JSON.parse(param);
+			if (!Array.isArray(bounds) || bounds.length < 2) return false;
+			const num = Number(value);
+			if (String(value || "").trim() === "" || isNaN(num)) return false;
+			return num >= Number(bounds[0]) && num <= Number(bounds[1]);
+		} catch {
+			return false;
+		}
+	}, (param) => {
+		try {
+			const bounds = Array.isArray(param) ? param : JSON.parse(param);
+			return `Please enter a value between ${bounds[0]} and ${bounds[1]}.`;
+		} catch {
+			return "Please enter a valid range.";
+		}
+	});
+	//#endregion
 	//#region src/rules/pattern.js
 	VanillaValidator.addMethod("pattern", (value, expected) => {
 		if (String(value || "").trim() === "") return false;
@@ -208,6 +228,18 @@
 	//#endregion
 	//#region src/rules/dateISO.js
 	VanillaValidator.addMethod("dateISO", (value) => /^\d{4}[\/\-]\d{2}[\/\-]\d{2}$/.test(String(value)), "Please enter a valid ISO date (YYYY-MM-DD).");
+	//#endregion
+	//#region src/rules/ipv4.js
+	VanillaValidator.addMethod("ipv4", (value) => {
+		if (String(value || "").trim() === "") return false;
+		return /^(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)$/i.test(String(value));
+	}, "Please enter a valid IPv4 address.");
+	//#endregion
+	//#region src/rules/ipv6.js
+	VanillaValidator.addMethod("ipv6", (value) => {
+		if (String(value || "").trim() === "") return false;
+		return /^((([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}:[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){5}:([0-9A-Fa-f]{1,4}:)?[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){4}:([0-9A-Fa-f]{1,4}:){0,2}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){3}:([0-9A-Fa-f]{1,4}:){0,3}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){2}:([0-9A-Fa-f]{1,4}:){0,4}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(([0-9A-Fa-f]{1,4}:){0,5}:((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(::([0-9A-Fa-f]{1,4}:){0,5}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|([0-9A-Fa-f]{1,4}::([0-9A-Fa-f]{1,4}:){0,5}[0-9A-Fa-f]{1,4})|(::([0-9A-Fa-f]{1,4}:){0,6}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){1,7}:))$/i.test(String(value));
+	}, "Please enter a valid IPv6 address.");
 	//#endregion
 	//#region src/index.js
 	/**
