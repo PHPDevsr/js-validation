@@ -10,7 +10,7 @@ Vanilla JavaScript (pure JS) form validation inspired by [`jquery-validation`](h
 
 - No dependency (pure JS)
 - Modular rules – each rule lives in its own file under `src/rules/`
-- Built-in rules: `required`, `email`, `minlength`, `maxlength`, `pattern`, `equalTo`, etc
+- Built-in rules: `required`, `email`, `minlength`, `maxlength`, `pattern`, `equalTo`, `numeric`, `url`, `date`, `dateISO`
 - Extensible with custom rules via `addMethod`
 - Build with **Vite** – outputs `js-validation.js` and `js-validation.min.js`
 - Test with **Vitest**
@@ -89,7 +89,7 @@ import jsValidation from '@phpdevsr/js-validation/core';
 import '@phpdevsr/js-validation/rules/required';
 import '@phpdevsr/js-validation/rules/email';
 
-// Available rules: required, email, minlength, maxlength, pattern, equalTo
+// Available rules: required, email, minlength, maxlength, pattern, equalTo, numeric, url, date, dateISO
 
 const validator = jsValidation('#contact', {
   rules: {

@@ -52,6 +52,34 @@ rules: {
 
 ---
 
+### `date`
+
+Validates that the value can be parsed as a valid date.
+
+```js
+rules: {
+  birthday: { date: true }
+}
+```
+
+**Default message:** `"Please enter a valid date."`
+
+---
+
+### `dateISO`
+
+Validates that the value matches ISO-like date format (`YYYY-MM-DD` or `YYYY/MM/DD`).
+
+```js
+rules: {
+  startDate: { dateISO: true }
+}
+```
+
+**Default message:** `"Please enter a valid ISO date (YYYY-MM-DD)."`
+
+---
+
 ### `minlength`
 
 Validates that the value has at least the specified number of characters.

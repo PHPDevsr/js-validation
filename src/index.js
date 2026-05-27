@@ -15,6 +15,8 @@ import './rules/pattern.js';
 import './rules/equalTo.js';
 import './rules/numeric.js';
 import './rules/url.js';
+import './rules/date.js';
+import './rules/dateISO.js';
 
 function jsValidation(formOrSelector, options = {}) {
   let form = formOrSelector;
