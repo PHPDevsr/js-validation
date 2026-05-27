@@ -56,10 +56,71 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Generate release body
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          REPO="${GITHUB_REPOSITORY}"
+          REPO_NAME="${REPO#*/}"
+
+          # Fetch all tags so we can find the previous one
+          git fetch --tags --quiet
+
+          PREV_TAG=$(git tag --sort=-v:refname | grep -v "^${TAG}$" | head -1 || true)
+
+          # Call GitHub's generate-notes API
+          GENERATE_ARGS=(-f "tag_name=${TAG}")
+          [[ -n "$PREV_TAG" ]] && GENERATE_ARGS+=(-f "previous_tag_name=${PREV_TAG}")
+          AUTO_NOTES=$(gh api --method POST \
+            -H "Accept: application/vnd.github+json" \
+            "/repos/${REPO}/releases/generate-notes" \
+            "${GENERATE_ARGS[@]}" \
+            --jq '.body' 2>/dev/null || echo "")
+
+          # Build the custom release body
+          export TAG REPO REPO_NAME PREV_TAG AUTO_NOTES
+          node --input-type=module > /tmp/release_body.md <<'JSEOF'
+          const tag = process.env.TAG;
+          const repo = process.env.REPO;
+          const repoName = process.env.REPO_NAME;
+          const prevTag = process.env.PREV_TAG || '';
+          const autoNotes = process.env.AUTO_NOTES || '';
+
+          const newContribMatch = autoNotes.match(/## New Contributors\n([\s\S]*?)(?=\n\n\*\*Full Changelog|\*\*Full Changelog|$)/);
+          const newContribLines = newContribMatch
+            ? newContribMatch[1].trim().split('\n').filter(Boolean).map(l => l.replace(/^\* /, ''))
+            : [];
+
+          const fullChangelogLine = prevTag
+            ? `Full Changelog: https://github.com/${repo}/compare/${prevTag}...${tag}`
+            : (() => {
+                const m = autoNotes.match(/\*\*Full Changelog\*\*: (https?:\/\/\S+)/);
+                return m ? `Full Changelog: ${m[1]}` : null;
+              })();
+
+          const lines = [
+            `@${repoName} ${tag} release.`,
+            '',
+            `See the changelog: https://github.com/${repo}/blob/main/CHANGELOG.md`,
+          ];
+
+          if (newContribLines.length > 0) {
+            lines.push('', 'New Contributors');
+            newContribLines.forEach(l => lines.push(l));
+          }
+
+          if (fullChangelogLine) {
+            lines.push(fullChangelogLine);
+          }
+
+          process.stdout.write(lines.join('\n') + '\n');
+          JSEOF
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          generate_release_notes: true
+          body_path: /tmp/release_body.md
           files: |
             dist/js-validation.js
             dist/js-validation.min.js
