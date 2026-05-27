@@ -27,6 +27,9 @@ var VanillaValidator = class VanillaValidator {
 	constructor(form, options = {}) {
 		this.form = form;
 		this.options = options;
+		this.errorClass = options.errorClass || "is-invalid";
+		this.errorElement = options.errorElement || "span";
+		this.errorElementClass = options.errorElementClass || "invalid-feedback";
 		this.errors = {};
 		if (!this.form) throw new Error("A form element is required for validation.");
 		this._bindEvents();
@@ -80,21 +83,45 @@ var VanillaValidator = class VanillaValidator {
 	}
 	showError(field, message) {
 		this.errors[field.name] = message;
-		this._getClassList(field).add("jsv-invalid");
+		this._getClassList(field).add(this.errorClass);
 		if (field.setAttribute) {
 			field.setAttribute("aria-invalid", "true");
+			field.setAttribute("invalid", "true");
 			field.setAttribute("data-jsv-message", message);
-		} else field["aria-invalid"] = "true";
+		} else {
+			field["aria-invalid"] = "true";
+			field["invalid"] = "true";
+		}
 		field._jsvMessage = message;
+		this._showErrorElement(field, message);
 	}
 	clearError(field) {
 		delete this.errors[field.name];
-		this._getClassList(field).remove("jsv-invalid");
+		this._getClassList(field).remove(this.errorClass);
 		if (field.setAttribute) {
 			field.setAttribute("aria-invalid", "false");
+			field.removeAttribute("invalid");
 			field.removeAttribute("data-jsv-message");
-		} else field["aria-invalid"] = "false";
+		} else {
+			field["aria-invalid"] = "false";
+			delete field["invalid"];
+		}
 		field._jsvMessage = "";
+		this._removeErrorElement(field);
+	}
+	_showErrorElement(field, message) {
+		if (!field.parentNode || typeof document === "undefined") return;
+		this._removeErrorElement(field);
+		const el = document.createElement(this.errorElement);
+		el.className = this.errorElementClass;
+		el.textContent = message;
+		el.setAttribute("data-jsv-error-for", field.name);
+		field.parentNode.insertBefore(el, field.nextSibling);
+	}
+	_removeErrorElement(field) {
+		if (!field.parentNode) return;
+		const existing = field.parentNode.querySelector(`[data-jsv-error-for="${field.name}"]`);
+		if (existing) existing.parentNode.removeChild(existing);
 	}
 	element(field) {
 		if (!field || !field.name) return true;
