@@ -1,0 +1,75 @@
+---
+import '../styles/global.css';
+
+const { frontmatter = {} } = Astro.props;
+const { title = 'js-validation', description = 'Lightweight, zero-dependency vanilla JavaScript form validation library.' } = frontmatter;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const navLinks = [
+  { href: `${base}/`, label: 'Home' },
+  { href: `${base}/getting-started/`, label: 'Getting Started' },
+  { href: `${base}/installation/`, label: 'Installation' },
+  { href: `${base}/requirements/`, label: 'Requirements' },
+  { href: `${base}/browser-support/`, label: 'Browser Support' },
+  { href: `${base}/rules/`, label: 'Rules' },
+  { href: `${base}/custom-rules/`, label: 'Custom Rules' },
+  { href: `${base}/changelog/`, label: 'Changelog' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title} – js-validation</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="site-title" href={`${base}/`}>
+          <span class="site-name">js-validation</span>
+          <span class="site-badge">v1.1.0</span>
+        </a>
+        <nav class="header-nav">
+          <a href="https://github.com/PHPDevsr/js-validation" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.npmjs.com/package/@phpdevsr/js-validation" target="_blank" rel="noopener">npm</a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <nav>
+          <ul>
+            {navLinks.map(link => (
+              <li>
+                <a
+                  href={link.href}
+                  class:list={['nav-link', { active: currentPath === link.href || currentPath === link.href + '/' }]}
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <slot />
+      </main>
+    </div>
+
+    <footer class="site-footer">
+      <p>
+        Released under the <a href="https://github.com/PHPDevsr/js-validation/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.
+        &copy; {new Date().getFullYear()} PHPDevsr.
+      </p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,54 @@
+---
+import DocsLayout from '../layouts/DocsLayout.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<DocsLayout frontmatter={{ title: 'Home', description: 'Lightweight, zero-dependency vanilla JavaScript form validation library inspired by jquery-validation.' }}>
+  <h1>js-validation</h1>
+  <p class="subtitle">Lightweight, zero-dependency vanilla JavaScript form validation library inspired by <a href="https://github.com/jquery-validation/jquery-validation/" target="_blank" rel="noopener">jquery-validation</a>.</p>
+
+  <ul class="features">
+    <li>No dependencies – pure vanilla JavaScript</li>
+    <li>Familiar API inspired by jquery-validation</li>
+    <li>Built-in rules: <code>required</code>, <code>email</code>, <code>minlength</code>, <code>maxlength</code>, <code>pattern</code>, <code>equalTo</code>, <code>numeric</code></li>
+    <li>Custom rules via <code>addMethod()</code></li>
+    <li>Tree-shakeable ES module imports</li>
+    <li>Configurable error classes and error elements</li>
+    <li>Accessible – sets <code>aria-invalid</code> and <code>invalid</code> attributes</li>
+  </ul>
+
+  <a href="https://phpdevsr.github.io/js-validation/demo.html" class="demo-link">▶ Live Demo</a>
+
+  <h2 class="section-title">Documentation</h2>
+  <div class="cards">
+    <a href={`${base}/getting-started/`} class="card">
+      <h3>Getting Started</h3>
+      <p>Quick setup guide, basic usage, and API reference.</p>
+    </a>
+    <a href={`${base}/installation/`} class="card">
+      <h3>Installation</h3>
+      <p>CDN, npm, and manual install methods.</p>
+    </a>
+    <a href={`${base}/rules/`} class="card">
+      <h3>Rules</h3>
+      <p>All built-in validation rules and their options.</p>
+    </a>
+    <a href={`${base}/custom-rules/`} class="card">
+      <h3>Custom Rules</h3>
+      <p>Create your own validation rules with <code>addMethod()</code>.</p>
+    </a>
+    <a href={`${base}/browser-support/`} class="card">
+      <h3>Browser Support</h3>
+      <p>Supported browsers and compatibility notes.</p>
+    </a>
+    <a href={`${base}/requirements/`} class="card">
+      <h3>Requirements</h3>
+      <p>System and environment requirements.</p>
+    </a>
+    <a href={`${base}/changelog/`} class="card">
+      <h3>Changelog</h3>
+      <p>Version history and release notes.</p>
+    </a>
+  </div>
+</DocsLayout>

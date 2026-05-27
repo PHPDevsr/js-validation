@@ -181,22 +181,29 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
+      - name: Build library
         run: npm run build
 
-      - name: Prepare docs site
+      - name: Install docs dependencies
+        run: npm ci
+        working-directory: docs-site
+
+      - name: Build Astro docs site
+        run: npm run build
+        working-directory: docs-site
+
+      - name: Copy dist assets into docs output
         run: |
-          mkdir -p public/assets
-          cp docs/index.html public/index.html
-          cp dist/js-validation.js public/assets/js-validation.js
-          cp dist/js-validation.min.js public/assets/js-validation.min.js
-          cp dist/js-validation.esm.js public/assets/js-validation.esm.js
-          cp dist/js-validation.esm.min.js public/assets/js-validation.esm.min.js
-          touch public/.nojekyll
+          mkdir -p _site/assets
+          cp dist/js-validation.js _site/assets/js-validation.js
+          cp dist/js-validation.min.js _site/assets/js-validation.min.js
+          cp dist/js-validation.esm.js _site/assets/js-validation.esm.js
+          cp dist/js-validation.esm.min.js _site/assets/js-validation.esm.min.js
+          touch _site/.nojekyll
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: ./public
+          folder: ./_site
           branch: gh-pages
           clean-exclude: pr-preview

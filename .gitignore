@@ -4,3 +4,4 @@ test-results
 playwright-report
 node_modules
 test-results
+_site
