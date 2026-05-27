@@ -79,39 +79,43 @@ jobs:
             --jq '.body' 2>/dev/null || echo "")
 
           # Build the custom release body
-          export TAG REPO REPO_NAME PREV_TAG AUTO_NOTES
+          PACKAGE_NAME="$(node --input-type=module -e "import fs from 'node:fs'; console.log(JSON.parse(fs.readFileSync('package.json', 'utf8')).name);")"
+          export TAG REPO REPO_NAME PREV_TAG AUTO_NOTES PACKAGE_NAME
           node --input-type=module > /tmp/release_body.md <<'JSEOF'
           const tag = process.env.TAG;
           const repo = process.env.REPO;
           const repoName = process.env.REPO_NAME;
           const prevTag = process.env.PREV_TAG || '';
           const autoNotes = process.env.AUTO_NOTES || '';
+          const packageName = process.env.PACKAGE_NAME || repoName;
 
-          const newContribMatch = autoNotes.match(/## New Contributors\n([\s\S]*?)(?=\n\n\*\*Full Changelog|\*\*Full Changelog|$)/);
+          const newContribMatch = autoNotes.match(/##\s+New Contributors\r?\n([\s\S]*?)(?=\r?\n\r?\n\*\*Full Changelog|\*\*Full Changelog|$)/i);
           const newContribLines = newContribMatch
-            ? newContribMatch[1].trim().split('\n').filter(Boolean).map(l => l.replace(/^\* /, ''))
+            ? newContribMatch[1].trim().split('\n').filter(Boolean).map(l => l.trimEnd())
             : [];
 
-          const fullChangelogLine = prevTag
-            ? `Full Changelog: https://github.com/${repo}/compare/${prevTag}...${tag}`
+          const fullChangelogUrl = prevTag
+            ? `https://github.com/${repo}/compare/${prevTag}...${tag}`
             : (() => {
-                const m = autoNotes.match(/\*\*Full Changelog\*\*: (https?:\/\/\S+)/);
-                return m ? `Full Changelog: ${m[1]}` : null;
+                const m = autoNotes.match(/\*\*Full Changelog\*\*:\s*(https?:\/\/\S+)/);
+                return m ? m[1] : null;
               })();
 
           const lines = [
-            `@${repoName} ${tag} release.`,
+            `## 🎉 \`${packageName}\` ${tag}`,
             '',
-            `See the changelog: https://github.com/${repo}/blob/main/CHANGELOG.md`,
+            `> See the full changelog: https://github.com/${repo}/blob/main/CHANGELOG.md`,
           ];
 
           if (newContribLines.length > 0) {
-            lines.push('', 'New Contributors');
+            lines.push('');
+            lines.push('### 🌟 New Contributors');
             newContribLines.forEach(l => lines.push(l));
           }
 
-          if (fullChangelogLine) {
-            lines.push(fullChangelogLine);
+          if (fullChangelogUrl) {
+            lines.push('');
+            lines.push(`**Full Changelog**: ${fullChangelogUrl}`);
           }
 
           process.stdout.write(lines.join('\n') + '\n');
