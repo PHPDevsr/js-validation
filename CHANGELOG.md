@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-05-27
+
+### Changed
+
+- No notable changes.
+
 ## [1.0.0] - 2026-05-26
 
 ### Added
@@ -30,3 +36,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CI workflow (GitHub Actions) for building and testing on push/PR.
 - Release workflow deploying compiled assets and docs to GitHub Pages.
 - Demo page (`docs/index.html`) with declarative and programmatic usage examples.
+
+[Unreleased]: https://github.com/PHPDevsr/js-validation/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/PHPDevsr/js-validation/compare/v1.0.0...v1.1.0
