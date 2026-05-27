@@ -59,6 +59,7 @@ RELEASE_DATE=$(date +%F)
 
 TAG_MODE="$TAG_MODE" VERSION_NUMBER="$VERSION_NUMBER" RELEASE_DATE="$RELEASE_DATE" node --input-type=module <<'NODE'
 import fs from 'node:fs';
+import { execSync } from 'node:child_process';
 
 const changelogPath = 'CHANGELOG.md';
 const version = process.env.VERSION_NUMBER;
@@ -107,9 +108,53 @@ if (tagMode) {
   );
 
   const hasUnreleasedContent = unreleasedBodyLines.some((line) => line.trim().length > 0);
-  const releaseNotes = hasUnreleasedContent
-    ? unreleasedBodyLines.join('\n').replace(/\s+$/, '')
-    : '### Changed\n\n- No notable changes.';
+
+  let releaseNotes;
+  if (hasUnreleasedContent) {
+    releaseNotes = unreleasedBodyLines.join('\n').replace(/\s+$/, '');
+  } else {
+    // Auto-generate changelog entries from git commits since the last tag
+    let lastTag = '';
+    try {
+      lastTag = execSync('git describe --tags --abbrev=0', {
+        encoding: 'utf8',
+        stdio: ['pipe', 'pipe', 'ignore']
+      }).trim();
+    } catch (_) {
+      lastTag = '';
+    }
+
+    let commits = [];
+    try {
+      const range = lastTag ? `${lastTag}..HEAD` : 'HEAD';
+      const log = execSync(`git log ${range} --pretty=format:%s --no-merges`, {
+        encoding: 'utf8',
+        stdio: ['pipe', 'pipe', 'ignore']
+      }).trim();
+      commits = log ? log.split('\n').filter(Boolean) : [];
+    } catch (_) {
+      commits = [];
+    }
+
+    const added = commits.filter((c) => /^feat[:(]/.test(c));
+    const changed = commits.filter((c) => /^(fix|refactor)[:(]/.test(c));
+    const others = commits.filter((c) => !added.includes(c) && !changed.includes(c));
+
+    const sections = [];
+    if (added.length > 0) {
+      sections.push(`### Added\n\n${added.map((c) => `- ${c}`).join('\n')}`);
+    }
+    if (changed.length > 0) {
+      sections.push(`### Changed\n\n${changed.map((c) => `- ${c}`).join('\n')}`);
+    }
+    if (others.length > 0) {
+      sections.push(`### Others\n\n${others.map((c) => `- ${c}`).join('\n')}`);
+    }
+
+    releaseNotes = sections.length > 0
+      ? sections.join('\n\n')
+      : '### Changed\n\n- No notable changes.';
+  }
 
   const releaseSection = [`## [${version}] - ${releaseDate}`, '', releaseNotes, ''].join('\n');
 
