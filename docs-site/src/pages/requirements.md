@@ -1,3 +1,9 @@
+---
+layout: ../layouts/DocsLayout.astro
+title: "Requirements"
+description: "System and environment requirements for js-validation."
+---
+
 # Requirements
 
 ## Runtime Requirements
@@ -7,7 +13,7 @@
 | Requirement | Minimum Version |
 |-------------|-----------------|
 | JavaScript | ES6+ (ES2015) |
-| Browser | Any modern browser (see [Browser Support](browser-support.md)) |
+| Browser | Any modern browser (see [Browser Support](/js-validation/browser-support/)) |
 
 ## Development Requirements
 

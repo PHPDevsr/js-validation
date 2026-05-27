@@ -1,3 +1,9 @@
+---
+layout: ../layouts/DocsLayout.astro
+title: "Installation"
+description: "CDN, npm, and manual install methods for js-validation."
+---
+
 # Installation
 
 ## NPM
@@ -23,7 +29,7 @@ import jsValidation from '@phpdevsr/js-validation';
 ### Specific version
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation@1.0.0/dist/js-validation.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation@1.1.0/dist/js-validation.min.js"></script>
 ```
 
 ### ES Module via CDN

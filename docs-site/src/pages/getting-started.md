@@ -1,3 +1,9 @@
+---
+layout: ../layouts/DocsLayout.astro
+title: "Getting Started"
+description: "Quick setup guide, basic usage, and API reference for js-validation."
+---
+
 # Getting Started
 
 ## Overview
@@ -161,6 +167,6 @@ jsValidation('#my-form', {
 
 ## Next Steps
 
-- See the full [Rules List](rules.md)
-- Learn how to create [Custom Rules](custom-rules.md)
-- Check [Installation](installation.md) for all install methods
+- See the full [Rules List](/js-validation/rules/)
+- Learn how to create [Custom Rules](/js-validation/custom-rules/)
+- Check [Installation](/js-validation/installation/) for all install methods

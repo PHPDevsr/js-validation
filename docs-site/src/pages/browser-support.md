@@ -1,3 +1,9 @@
+---
+layout: ../layouts/DocsLayout.astro
+title: "Browser Support"
+description: "Supported browsers and compatibility notes for js-validation."
+---
+
 # Browser Support
 
 ## Supported Browsers

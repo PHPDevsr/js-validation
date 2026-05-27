@@ -1,3 +1,9 @@
+---
+layout: ../layouts/DocsLayout.astro
+title: "Rules"
+description: "All built-in validation rules and their options for js-validation."
+---
+
 # Rules List
 
 ## Built-in Rules
@@ -177,4 +183,4 @@ rules: {
 
 ## See Also
 
-- [Custom Rules](custom-rules.md) – How to create your own validation rules.
+- [Custom Rules](/js-validation/custom-rules/) – How to create your own validation rules.

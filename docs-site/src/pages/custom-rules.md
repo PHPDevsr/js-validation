@@ -1,3 +1,9 @@
+---
+layout: ../layouts/DocsLayout.astro
+title: "Custom Rules"
+description: "Create your own validation rules with addMethod() in js-validation."
+---
+
 # Custom Rules
 
 ## Overview
@@ -146,5 +152,5 @@ import './my-rules/phone.js';
 
 ## See Also
 
-- [Rules List](rules.md) – All built-in validation rules.
-- [Getting Started](getting-started.md) – Basic usage guide.
+- [Rules List](/js-validation/rules/) – All built-in validation rules.
+- [Getting Started](/js-validation/getting-started/) – Basic usage guide.

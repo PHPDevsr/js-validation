@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [develop, main]
     paths:
-      - 'docs/**'
+      - 'docs-site/**'
       - '.github/workflows/docs-preview.yml'
     types:
       - opened
@@ -28,62 +28,83 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Build docs site
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install docs dependencies
         if: github.event.action != 'closed'
-        run: |
-          mkdir -p _docs_preview
-          cat > _docs_preview/index.html << 'EOF'
-          <!DOCTYPE html>
-          <html lang="en">
-          <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>js-validation Docs Preview</title>
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css">
-            <style>
-              .sidebar .app-name { font-weight: bold; }
-              .markdown-section { max-width: 900px; }
-            </style>
-          </head>
-          <body>
-            <div id="app"></div>
-            <script>
-              window.$docsify = {
-                name: 'js-validation',
-                repo: 'PHPDevsr/js-validation',
-                loadSidebar: true,
-                subMaxLevel: 3,
-                search: 'auto',
-                auto2top: true
-              };
-            </script>
-            <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-javascript.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
-          </body>
-          </html>
-          EOF
+        run: npm ci
+        working-directory: docs-site
 
-          cat > _docs_preview/_sidebar.md << 'EOF'
-          - [Home](README.md)
-          - [Getting Started](getting-started.md)
-          - [Installation](installation.md)
-          - [Requirements](requirements.md)
-          - [Browser Support](browser-support.md)
-          - [Rules List](rules.md)
-          - [Custom Rules](custom-rules.md)
-          - [Changelog](changelog.md)
-          EOF
+      - name: Lint Astro docs
+        if: github.event.action != 'closed'
+        run: npm run lint
+        working-directory: docs-site
 
-          cp docs/*.md _docs_preview/
-          touch _docs_preview/.nojekyll
+      - name: Build Astro docs site
+        if: github.event.action != 'closed'
+        run: npm run build
+        working-directory: docs-site
+        env:
+          ASTRO_BASE: /js-validation/preview-pr-${{ github.event.pull_request.number }}
+
+      - name: Add .nojekyll
+        if: github.event.action != 'closed'
+        run: touch _site/.nojekyll
 
       - name: Deploy PR preview
-        uses: rossjrw/pr-preview-action@v1
+        if: github.event.action != 'closed'
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          source-dir: _docs_preview/
-          deploy-repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
-          pages-branch: gh-pages
-          umbrella-dir: pr-preview
-          action: auto
+          folder: _site
+          branch: gh-pages
+          target-folder: preview-pr-${{ github.event.pull_request.number }}
+          clean: true
+
+      - name: Remove PR preview
+        if: github.event.action == 'closed'
+        run: |
+          mkdir -p /tmp/empty-preview
+        
+      - name: Deploy empty folder to remove preview
+        if: github.event.action == 'closed'
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: /tmp/empty-preview
+          branch: gh-pages
+          target-folder: preview-pr-${{ github.event.pull_request.number }}
+          clean: true
+
+      - name: Comment PR preview URL
+        if: github.event.action != 'closed'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const previewUrl = `https://phpdevsr.github.io/js-validation/preview-pr-${prNumber}/`;
+            const body = `📖 **Docs preview deployed:** ${previewUrl}`;
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+            });
+            const existing = comments.data.find(c => c.body.startsWith('📖 **Docs preview deployed:**'));
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body,
+              });
+            }
+

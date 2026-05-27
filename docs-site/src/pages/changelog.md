@@ -1,3 +1,9 @@
+---
+layout: ../layouts/DocsLayout.astro
+title: "Changelog"
+description: "Version history and release notes for js-validation."
+---
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
@@ -5,7 +11,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-For the full changelog, see [CHANGELOG.md](../CHANGELOG.md) in the project root.
+For the full changelog, see [CHANGELOG.md](https://github.com/PHPDevsr/js-validation/blob/main/CHANGELOG.md) on GitHub.
 
 ## [1.1.0] - 2026-05-27
 
