@@ -37,7 +37,7 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "test:watch": "vitest",
-    "release": "./.github/scripts/release.sh"
+    "release": "bash ./.github/scripts/release.sh"
   },
   "keywords": [
     "validation",
