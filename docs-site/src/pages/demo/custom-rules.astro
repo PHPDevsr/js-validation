@@ -76,7 +76,7 @@ const version = import.meta.env.PUBLIC_APP_VERSION;
       </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation/dist/js-validation.min.js"></script>
+    <script is:inline src={`https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation@${version}/dist/js-validation.min.js?v=${version}`}></script>
     <script>
       // Register custom rules
       jsValidation.addMethod('noSpaces', function (value) {
