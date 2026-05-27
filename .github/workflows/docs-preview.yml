@@ -48,6 +48,8 @@ jobs:
         if: github.event.action != 'closed'
         run: npm run build
         working-directory: docs-site
+        env:
+          ASTRO_BASE: /js-validation/preview-pr-${{ github.event.pull_request.number }}
 
       - name: Add .nojekyll
         if: github.event.action != 'closed'
