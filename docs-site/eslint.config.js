@@ -20,6 +20,12 @@ export default [
     languageOptions: {
       globals: {
         __APP_VERSION__: "readonly",
+
+        window: "readonly",
+        document: "readonly",
+        console: "readonly",
+
+        jsValidation: "readonly",
       },
     },
   },
