@@ -1,0 +1,158 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="All built-in validation rules and their options for js-validation."><title>Rules – js-validation</title><link rel="stylesheet" href="/js-validation/preview-pr-13/_astro/DocsLayout.BMy3Vabr.css"><script type="module" src="/js-validation/preview-pr-13/_astro/page.vzY--OHv.js"></script></head> <body> <header class="site-header"> <div class="header-inner"> <a class="site-title" href="/js-validation/preview-pr-13/"> <span class="site-name">js-validation</span> <span class="site-badge">v1.1.0</span> </a> <nav class="header-nav"> <a href="https://github.com/PHPDevsr/js-validation" target="_blank" rel="noopener">GitHub</a> <a href="https://www.npmjs.com/package/@phpdevsr/js-validation" target="_blank" rel="noopener">npm</a> </nav> </div> </header> <div class="layout"> <aside class="sidebar"> <nav> <ul> <li> <a href="/js-validation/preview-pr-13/" class="nav-link"> Home </a> </li><li> <a href="/js-validation/preview-pr-13/getting-started/" class="nav-link"> Getting Started </a> </li><li> <a href="/js-validation/preview-pr-13/installation/" class="nav-link"> Installation </a> </li><li> <a href="/js-validation/preview-pr-13/requirements/" class="nav-link"> Requirements </a> </li><li> <a href="/js-validation/preview-pr-13/browser-support/" class="nav-link"> Browser Support </a> </li><li> <a href="/js-validation/preview-pr-13/rules/" class="nav-link active"> Rules </a> </li><li> <a href="/js-validation/preview-pr-13/custom-rules/" class="nav-link"> Custom Rules </a> </li><li> <a href="/js-validation/preview-pr-13/changelog/" class="nav-link"> Changelog </a> </li> </ul> </nav> </aside> <main class="content prose prose-slate max-w-none"> <h1 id="rules-list">Rules List</h1>
+<h2 id="built-in-rules">Built-in Rules</h2>
+<p>The following validation rules are included with <strong>js-validation</strong>:</p>
+<h3 id="required"><code>required</code></h3>
+<p>Validates that the field has a non-empty value (after trimming whitespace).</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">rules</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#B392F0">  name</span><span style="color:#E1E4E8">: { </span><span style="color:#B392F0">required</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><strong>Default message:</strong> <code>"This field is required."</code></p>
+<hr>
+<h3 id="email"><code>email</code></h3>
+<p>Validates that the value is a properly formatted email address.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">rules</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#B392F0">  email</span><span style="color:#E1E4E8">: { </span><span style="color:#B392F0">required</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">email</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><strong>Default message:</strong> <code>"Please enter a valid email address."</code></p>
+<hr>
+<h3 id="url"><code>url</code></h3>
+<p>Validates that the value is a properly formatted URL.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">rules</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#B392F0">  url</span><span style="color:#E1E4E8">: { </span><span style="color:#B392F0">required</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">url</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><strong>Default message:</strong> <code>"Please enter a valid URL."</code></p>
+<hr>
+<h3 id="minlength"><code>minlength</code></h3>
+<p>Validates that the value has at least the specified number of characters.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">rules</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#B392F0">  password</span><span style="color:#E1E4E8">: { </span><span style="color:#B392F0">minlength</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">6</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>minlength</code></td><td><code>number</code></td><td>Minimum number of characters</td></tr></tbody></table>
+<p><strong>Default message:</strong> <code>"Please enter at least {0} characters."</code></p>
+<hr>
+<h3 id="maxlength"><code>maxlength</code></h3>
+<p>Validates that the value has no more than the specified number of characters.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">rules</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#B392F0">  username</span><span style="color:#E1E4E8">: { </span><span style="color:#B392F0">maxlength</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">20</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>maxlength</code></td><td><code>number</code></td><td>Maximum number of characters</td></tr></tbody></table>
+<p><strong>Default message:</strong> <code>"Please enter no more than {0} characters."</code></p>
+<hr>
+<h3 id="pattern"><code>pattern</code></h3>
+<p>Validates that the value matches a regular expression pattern.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">rules</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#B392F0">  zipcode</span><span style="color:#E1E4E8">: { </span><span style="color:#B392F0">pattern</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'^[0-9]{5}$'</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>pattern</code></td><td><code>string</code></td><td>Regular expression pattern (without delimiters)</td></tr></tbody></table>
+<p><strong>Default message:</strong> <code>"Please match the requested format."</code></p>
+<hr>
+<h3 id="equalto"><code>equalTo</code></h3>
+<p>Validates that the value matches the value of another field (useful for password confirmation).</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">rules</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#B392F0">  confirmPassword</span><span style="color:#E1E4E8">: { </span><span style="color:#B392F0">equalTo</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'#password'</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>equalTo</code></td><td><code>string</code></td><td>CSS selector of the field to compare against</td></tr></tbody></table>
+<p><strong>Default message:</strong> <code>"Please enter the same value again."</code></p>
+<hr>
+<h3 id="numeric"><code>numeric</code></h3>
+<p>Validates that the value contains only numeric digits (0-9).</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">rules</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#B392F0">  age</span><span style="color:#E1E4E8">: { </span><span style="color:#B392F0">numeric</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><strong>Default message:</strong> <code>"Please enter only numeric values."</code></p>
+<hr>
+<h2 id="using-rules-via-html-attributes">Using Rules via HTML Attributes</h2>
+<p>All rules can also be declared using <code>data-rule-*</code> attributes:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">input</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"email"</span><span style="color:#B392F0"> data-rule-required</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"true"</span><span style="color:#B392F0"> data-rule-email</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"true"</span><span style="color:#E1E4E8"> /></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">input</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"password"</span><span style="color:#B392F0"> data-rule-required</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"true"</span><span style="color:#B392F0"> data-rule-minlength</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"6"</span><span style="color:#E1E4E8"> /></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">input</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"zipcode"</span><span style="color:#B392F0"> data-rule-pattern</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"^[0-9]{5}$"</span><span style="color:#E1E4E8"> /></span></span></code></pre>
+<h2 id="custom-error-messages-via-html">Custom Error Messages via HTML</h2>
+<p>Use <code>data-msg-*</code> attributes to override default messages:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">input</span></span>
+<span class="line"><span style="color:#B392F0">  name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"email"</span></span>
+<span class="line"><span style="color:#B392F0">  data-rule-required</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"true"</span></span>
+<span class="line"><span style="color:#B392F0">  data-msg-required</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"Email is required!"</span></span>
+<span class="line"><span style="color:#E1E4E8">/></span></span></code></pre>
+<h2 id="combining-rules">Combining Rules</h2>
+<p>Multiple rules can be applied to a single field. They are evaluated in order:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">rules</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#B392F0">  username</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#B392F0">    required</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#B392F0">    minlength</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#B392F0">    maxlength</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">20</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#B392F0">    pattern</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'^[a-zA-Z0-9_]+$'</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h2 id="rule-evaluation">Rule Evaluation</h2>
+<ul>
+<li>Rules are evaluated in the order they are defined.</li>
+<li>Validation stops at the first failing rule for each field.</li>
+<li>A rule with a value of <code>false</code> or <code>"false"</code> is skipped.</li>
+</ul>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a href="/js-validation/custom-rules/">Custom Rules</a> – How to create your own validation rules.</li>
+</ul> </main> </div> <footer class="site-footer"> <p>
+Released under the <a href="https://github.com/PHPDevsr/js-validation/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.
+        &copy; 2026 PHPDevsr.
+</p> </footer> </body></html>

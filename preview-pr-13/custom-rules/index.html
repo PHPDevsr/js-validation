@@ -1,0 +1,162 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Create your own validation rules with addMethod() in js-validation."><title>Custom Rules – js-validation</title><link rel="stylesheet" href="/js-validation/preview-pr-13/_astro/DocsLayout.BMy3Vabr.css"><script type="module" src="/js-validation/preview-pr-13/_astro/page.vzY--OHv.js"></script></head> <body> <header class="site-header"> <div class="header-inner"> <a class="site-title" href="/js-validation/preview-pr-13/"> <span class="site-name">js-validation</span> <span class="site-badge">v1.1.0</span> </a> <nav class="header-nav"> <a href="https://github.com/PHPDevsr/js-validation" target="_blank" rel="noopener">GitHub</a> <a href="https://www.npmjs.com/package/@phpdevsr/js-validation" target="_blank" rel="noopener">npm</a> </nav> </div> </header> <div class="layout"> <aside class="sidebar"> <nav> <ul> <li> <a href="/js-validation/preview-pr-13/" class="nav-link"> Home </a> </li><li> <a href="/js-validation/preview-pr-13/getting-started/" class="nav-link"> Getting Started </a> </li><li> <a href="/js-validation/preview-pr-13/installation/" class="nav-link"> Installation </a> </li><li> <a href="/js-validation/preview-pr-13/requirements/" class="nav-link"> Requirements </a> </li><li> <a href="/js-validation/preview-pr-13/browser-support/" class="nav-link"> Browser Support </a> </li><li> <a href="/js-validation/preview-pr-13/rules/" class="nav-link"> Rules </a> </li><li> <a href="/js-validation/preview-pr-13/custom-rules/" class="nav-link active"> Custom Rules </a> </li><li> <a href="/js-validation/preview-pr-13/changelog/" class="nav-link"> Changelog </a> </li> </ul> </nav> </aside> <main class="content prose prose-slate max-w-none"> <h1 id="custom-rules">Custom Rules</h1>
+<h2 id="overview">Overview</h2>
+<p><strong>js-validation</strong> is designed to be extensible. You can add your own validation rules using the <code>addMethod</code> API.</p>
+<h2 id="adding-a-custom-rule">Adding a Custom Rule</h2>
+<h3 id="syntax">Syntax</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">jsValidation.</span><span style="color:#B392F0">addMethod</span><span style="color:#E1E4E8">(name, validateFn, message);</span></span></code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>name</code></td><td><code>string</code></td><td>Unique rule name</td></tr><tr><td><code>validateFn</code></td><td><code>function</code></td><td>Validation function: <code>(value, param, field, validator) => boolean</code></td></tr><tr><td><code>message</code></td><td><code>string | function</code></td><td>Error message string or function returning a message</td></tr></tbody></table>
+<h3 id="validation-function-parameters">Validation Function Parameters</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>value</code></td><td><code>string</code></td><td>Current field value</td></tr><tr><td><code>param</code></td><td><code>any</code></td><td>The rule parameter (e.g., <code>true</code>, a number, a selector)</td></tr><tr><td><code>field</code></td><td><code>HTMLElement</code></td><td>The input element being validated</td></tr><tr><td><code>validator</code></td><td><code>VanillaValidator</code></td><td>The validator instance</td></tr></tbody></table>
+<p>The function must return <code>true</code> if the value is valid, or <code>false</code> if invalid.</p>
+<h2 id="examples">Examples</h2>
+<h3 id="simple-rule">Simple Rule</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> jsValidation </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@phpdevsr/js-validation'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Rule that checks if value starts with a specific letter</span></span>
+<span class="line"><span style="color:#E1E4E8">jsValidation.</span><span style="color:#B392F0">addMethod</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#9ECBFF">  'startsWithA'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  (</span><span style="color:#FFAB70">value</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> value.</span><span style="color:#B392F0">startsWith</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'A'</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#9ECBFF">  'Must start with letter A.'</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Usage</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> validator</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> jsValidation</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'#my-form'</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#E1E4E8">  rules: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    name: { required: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, startsWithA: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<h3 id="rule-with-parameter">Rule with Parameter</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// Rule that checks minimum word count</span></span>
+<span class="line"><span style="color:#E1E4E8">jsValidation.</span><span style="color:#B392F0">addMethod</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#9ECBFF">  'minwords'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  (</span><span style="color:#FFAB70">value</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">param</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> wordCount</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> value.</span><span style="color:#B392F0">trim</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">split</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">/</span><span style="color:#79B8FF">\s</span><span style="color:#F97583">+</span><span style="color:#9ECBFF">/</span><span style="color:#E1E4E8">).</span><span style="color:#79B8FF">length</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> wordCount </span><span style="color:#F97583">>=</span><span style="color:#E1E4E8"> param;</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#9ECBFF">  'Please enter at least {0} words.'</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Usage</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> validator</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> jsValidation</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'#my-form'</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#E1E4E8">  rules: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    bio: { required: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, minwords: </span><span style="color:#79B8FF">10</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<h3 id="rule-with-dynamic-message">Rule with Dynamic Message</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// Rule with a function-based message</span></span>
+<span class="line"><span style="color:#E1E4E8">jsValidation.</span><span style="color:#B392F0">addMethod</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#9ECBFF">  'notEqualTo'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  (</span><span style="color:#FFAB70">value</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">param</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> otherField</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">querySelector</span><span style="color:#E1E4E8">(param);</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#F97583"> !</span><span style="color:#E1E4E8">otherField </span><span style="color:#F97583">||</span><span style="color:#E1E4E8"> value </span><span style="color:#F97583">!==</span><span style="color:#E1E4E8"> otherField.value;</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  (</span><span style="color:#FFAB70">param</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">field</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#9ECBFF"> `This field must be different from ${</span><span style="color:#E1E4E8">param</span><span style="color:#9ECBFF">}.`</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span></code></pre>
+<h3 id="rule-using-other-fields">Rule Using Other Fields</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// Rule that validates based on another field's value</span></span>
+<span class="line"><span style="color:#E1E4E8">jsValidation.</span><span style="color:#B392F0">addMethod</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#9ECBFF">  'requiredIf'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  (</span><span style="color:#FFAB70">value</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">param</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">field</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">validator</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> otherField</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> validator.form.</span><span style="color:#B392F0">querySelector</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`[name="${</span><span style="color:#E1E4E8">param</span><span style="color:#9ECBFF">}"]`</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (otherField </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#E1E4E8"> otherField.value.</span><span style="color:#B392F0">trim</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">!==</span><span style="color:#9ECBFF"> ''</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#E1E4E8"> value.</span><span style="color:#B392F0">trim</span><span style="color:#E1E4E8">().</span><span style="color:#79B8FF">length</span><span style="color:#F97583"> ></span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// Not required if other field is empty</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#9ECBFF">  'This field is required.'</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Usage: "address" is required only if "city" is filled</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> validator</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> jsValidation</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'#my-form'</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#E1E4E8">  rules: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    address: { requiredIf: </span><span style="color:#9ECBFF">'city'</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<h2 id="creating-a-rule-as-a-separate-module">Creating a Rule as a Separate Module</h2>
+<p>For reusable rules, create a separate file following the same pattern as built-in rules:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// my-rules/phone.js</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { VanillaValidator } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@phpdevsr/js-validation/core'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">VanillaValidator.</span><span style="color:#B392F0">addMethod</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#9ECBFF">  'phone'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  (</span><span style="color:#FFAB70">value</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#B392F0">String</span><span style="color:#E1E4E8">(value </span><span style="color:#F97583">||</span><span style="color:#9ECBFF"> ''</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">trim</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> ''</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// Allow empty (use required for mandatory)</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#9ECBFF"> /</span><span style="color:#F97583">^</span><span style="color:#85E89D;font-weight:bold">\+</span><span style="color:#F97583">?</span><span style="color:#79B8FF">[\d\s\-()]</span><span style="color:#F97583">{7,15}$</span><span style="color:#9ECBFF">/</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">test</span><span style="color:#E1E4E8">(value);</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#9ECBFF">  'Please enter a valid phone number.'</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>Then import it in your application:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> jsValidation </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@phpdevsr/js-validation/core'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#9ECBFF"> '@phpdevsr/js-validation/rules/required'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#9ECBFF"> './my-rules/phone.js'</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<h2 id="best-practices">Best Practices</h2>
+<ol>
+<li><strong>Return <code>true</code> for empty values</strong> if the rule is not about presence. Use <code>required</code> for mandatory fields.</li>
+<li><strong>Use meaningful rule names</strong> that describe what they validate.</li>
+<li><strong>Provide clear error messages</strong> that tell the user what is expected.</li>
+<li><strong>Keep rules focused</strong> – each rule should validate one thing.</li>
+<li><strong>Handle edge cases</strong> – consider <code>null</code>, <code>undefined</code>, and empty string inputs.</li>
+</ol>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a href="/js-validation/rules/">Rules List</a> – All built-in validation rules.</li>
+<li><a href="/js-validation/getting-started/">Getting Started</a> – Basic usage guide.</li>
+</ul> </main> </div> <footer class="site-footer"> <p>
+Released under the <a href="https://github.com/PHPDevsr/js-validation/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.
+        &copy; 2026 PHPDevsr.
+</p> </footer> </body></html>
