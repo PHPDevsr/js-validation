@@ -60,13 +60,21 @@ npm run test:watch
 
 ## Release Process
 
-Maintainers create a release by simply tagging a version on `main`. The CI pipeline handles everything else automatically (GitHub Release creation, asset upload, NPM publish, and GitHub Pages deploy).
+Maintainers create a release by simply tagging a version on `main`. The CI pipeline now prepares release metadata from that tag and then handles everything else automatically (GitHub Release creation, asset upload, NPM publish, and GitHub Pages deploy).
 
 ### Prerequisites
 
 - NPM publish requires a `NPM_TOKEN` secret configured in the repository settings.
 
-### Quick release (one command)
+### Tag-driven release (recommended)
+
+```bash
+# On main branch:
+git tag v1.1.0
+git push origin main --tags
+```
+
+### Optional local metadata prep
 
 ```bash
 # On main branch, after merging develop:
@@ -79,22 +87,15 @@ npm run release major   # 1.0.0 → 2.0.0
 git push origin main --tags
 ```
 
-### Manual tag release
-
-```bash
-# On main branch:
-git tag v1.1.0
-git push origin main --tags
-```
-
 ### What happens automatically
 
 When a `v*` tag is pushed to `main`, the release pipeline will:
 
-1. **Build** the full bundle (`js-validation.js` + `.min.js` + ESM variants)
-2. **Create a GitHub Release** with auto-generated release notes and attach all dist files
-3. **Publish to NPM** registry (available via `npm install @phpdevsr/js-validation`)
-4. **Deploy** docs and compiled assets to GitHub Pages
+1. **Prepare release metadata** on `main` (sync package version + promote `CHANGELOG.md` from `[Unreleased]` and enforce a section for the tag version)
+2. **Build** the full bundle (`js-validation.js` + `.min.js` + ESM variants)
+3. **Create a GitHub Release** with auto-generated release notes and attach all dist files
+4. **Publish to NPM** registry (skips publish if that version already exists)
+5. **Deploy** docs and compiled assets to GitHub Pages
 
 After NPM publish, the package is also available via CDN:
 
@@ -109,7 +110,7 @@ develop (contributions) → PR → main (releases)
                                   ↓
                             tag v1.x.x
                                   ↓
-                     CI: build → GitHub Release → NPM publish → Pages deploy
+          CI: metadata prep → build → GitHub Release → NPM publish → Pages deploy
 ```
 
 ### Build output
