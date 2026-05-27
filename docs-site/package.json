@@ -9,6 +9,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@astrojs/starlight": "^0.39.2",
     "astro": "^6.3.8"
   },
   "devDependencies": {
