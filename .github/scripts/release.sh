@@ -3,8 +3,8 @@ set -euo pipefail
 
 # Release script for js-validation
 # Usage:
-#   ./.github/release.sh [patch|minor|major]
-#   ./.github/release.sh --from-tag vX.Y.Z
+#   ./.github/scripts/release.sh [patch|minor|major]
+#   ./.github/scripts/release.sh --from-tag vX.Y.Z
 
 TYPE="${1:-patch}"
 TAG_MODE=false
@@ -13,6 +13,7 @@ TAG_NAME=""
 if [[ "$TYPE" == "--from-tag" ]]; then
   TAG_MODE=true
   TAG_NAME="${2:-}"
+
   if [[ -z "$TAG_NAME" || ! "$TAG_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
     echo "Usage: $0 --from-tag vX.Y.Z"
     exit 1
@@ -26,6 +27,7 @@ fi
 
 # Ensure we are on main branch
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
 if [[ "$BRANCH" != "main" ]]; then
   echo "Error: releases must be created from the 'main' branch."
   echo "Current branch: $BRANCH"
@@ -42,18 +44,23 @@ fi
 if [[ "$TAG_MODE" == true ]]; then
   NEW_VERSION="$TAG_NAME"
   TARGET_VERSION="${NEW_VERSION#v}"
-  CURRENT_VERSION=$(node --input-type=module -e "import fs from 'node:fs'; console.log(JSON.parse(fs.readFileSync('package.json', 'utf8')).version);")
+
+  CURRENT_VERSION=$(node --input-type=module -e "
+    import fs from 'node:fs';
+    console.log(JSON.parse(fs.readFileSync('package.json', 'utf8')).version);
+  ")
+
   if [[ "$CURRENT_VERSION" != "$TARGET_VERSION" ]]; then
     echo "Error: package.json version ($CURRENT_VERSION) does not match tag version ($TARGET_VERSION)."
     exit 1
   fi
+
   echo "Package metadata already at $NEW_VERSION"
 else
   NEW_VERSION=$(npm version "$TYPE" --no-git-tag-version)
   echo "Bumped version to $NEW_VERSION"
 fi
 
-# Update changelog
 VERSION_NUMBER="${NEW_VERSION#v}"
 RELEASE_DATE=$(date +%F)
 
@@ -80,6 +87,7 @@ if (!content.includes(unreleasedHeading)) {
 }
 
 let finalContent = content;
+
 if (tagMode) {
   if (!content.includes(`## [${version}]`)) {
     console.error(`Error: ${changelogPath} is missing version ${version} in tag mode.`);
@@ -87,68 +95,192 @@ if (tagMode) {
   }
 } else {
   const hasExistingVersion = content.includes(`## [${version}]`);
+
   if (hasExistingVersion) {
     console.error(`Error: ${changelogPath} already contains version ${version}.`);
     process.exit(1);
   }
 
   const lines = content.split('\n');
-  const unreleasedIndex = lines.findIndex((line) => line.trim() === unreleasedHeading);
+
+  const unreleasedIndex = lines.findIndex(
+    (line) => line.trim() === unreleasedHeading
+  );
+
   if (unreleasedIndex === -1) {
     console.error(`Error: could not locate "${unreleasedHeading}" in ${changelogPath}.`);
     process.exit(1);
   }
 
   const nextVersionIndex = lines.findIndex(
-    (line, index) => index > unreleasedIndex && /^## \[[^\]]+\]/.test(line)
+    (line, index) =>
+      index > unreleasedIndex &&
+      /^## \[[^\]]+\]/.test(line)
   );
+
   const unreleasedBodyLines = lines.slice(
     unreleasedIndex + 1,
     nextVersionIndex === -1 ? lines.length : nextVersionIndex
   );
 
-  const hasUnreleasedContent = unreleasedBodyLines.some((line) => line.trim().length > 0);
+  const hasUnreleasedContent = unreleasedBodyLines.some(
+    (line) => line.trim().length > 0
+  );
 
   let releaseNotes;
+
   if (hasUnreleasedContent) {
-    releaseNotes = unreleasedBodyLines.join('\n').replace(/\s+$/, '');
+    releaseNotes = unreleasedBodyLines
+      .join('\n')
+      .replace(/\s+$/, '');
   } else {
-    // Auto-generate changelog entries from git commits since the last tag
+    // =========================================
+    // Auto-generate changelog from merged PRs
+    // =========================================
+
     let lastTag = '';
+
     try {
-      lastTag = execSync('git describe --tags --abbrev=0', {
-        encoding: 'utf8',
-        stdio: ['pipe', 'pipe', 'ignore']
-      }).trim();
+      lastTag = execSync(
+        'git describe --tags --abbrev=0',
+        {
+          encoding: 'utf8',
+          stdio: ['pipe', 'pipe', 'ignore']
+        }
+      ).trim();
     } catch (_) {
       lastTag = '';
     }
 
-    let commits = [];
+    let prs = [];
+
     try {
-      const range = lastTag ? `${lastTag}..HEAD` : 'HEAD';
-      const log = execSync(`git log ${range} --pretty=format:%s --no-merges`, {
-        encoding: 'utf8',
-        stdio: ['pipe', 'pipe', 'ignore']
-      }).trim();
-      commits = log ? log.split('\n').filter(Boolean) : [];
+      const range = lastTag
+        ? `${lastTag}..HEAD`
+        : 'HEAD';
+
+      const mergeCommitMessages = execSync(
+        `git log ${range} --merges --pretty=format:%s`,
+        {
+          encoding: 'utf8',
+          stdio: ['pipe', 'pipe', 'ignore']
+        }
+      ).trim();
+
+      const mergeCommits = mergeCommitMessages
+        ? mergeCommitMessages
+            .split('\n')
+            .filter(Boolean)
+        : [];
+
+      prs = mergeCommits.map((message) => {
+        const match = message.match(/#(\d+)/);
+
+        return {
+          number: match?.[1] || null,
+          title: message
+        };
+      });
     } catch (_) {
-      commits = [];
+      prs = [];
     }
 
-    const added = commits.filter((c) => /^feat[:(]/.test(c));
-    const changed = commits.filter((c) => /^(fix|refactor)[:(]/.test(c));
-    const others = commits.filter((c) => !added.includes(c) && !changed.includes(c));
+    // Fetch real PR titles using GitHub CLI
+    try {
+      prs = prs.map((pr) => {
+        if (!pr.number) {
+          return pr;
+        }
+
+        try {
+          const title = execSync(
+            `gh pr view ${pr.number} --json title -q ".title"`,
+            {
+              encoding: 'utf8',
+              stdio: ['pipe', 'pipe', 'ignore']
+            }
+          ).trim();
+
+          return {
+            ...pr,
+            title
+          };
+        } catch (_) {
+          return pr;
+        }
+      });
+    } catch (_) {}
+
+    const titles = prs
+      .map((pr) => pr.title)
+      .filter(Boolean);
+
+    const added = titles.filter(
+      (title) => /^feat[:(]/i.test(title)
+    );
+
+    const changed = titles.filter(
+      (title) => /^(fix|refactor|perf)[:(]/i.test(title)
+    );
+
+    const docs = titles.filter(
+      (title) => /^docs[:(]/i.test(title)
+    );
+
+    const tests = titles.filter(
+      (title) => /^test[:(]/i.test(title)
+    );
+
+    const chores = titles.filter(
+      (title) => /^chore[:(]/i.test(title)
+    );
+
+    const others = titles.filter((title) => {
+      return (
+        !added.includes(title) &&
+        !changed.includes(title) &&
+        !docs.includes(title) &&
+        !tests.includes(title) &&
+        !chores.includes(title)
+      );
+    });
 
     const sections = [];
+
     if (added.length > 0) {
-      sections.push(`### Added\n\n${added.map((c) => `- ${c}`).join('\n')}`);
+      sections.push(
+        `### Added\n\n${added.map((t) => `- ${t}`).join('\n')}`
+      );
     }
+
     if (changed.length > 0) {
-      sections.push(`### Changed\n\n${changed.map((c) => `- ${c}`).join('\n')}`);
+      sections.push(
+        `### Changed\n\n${changed.map((t) => `- ${t}`).join('\n')}`
+      );
     }
+
+    if (docs.length > 0) {
+      sections.push(
+        `### Documentation\n\n${docs.map((t) => `- ${t}`).join('\n')}`
+      );
+    }
+
+    if (tests.length > 0) {
+      sections.push(
+        `### Tests\n\n${tests.map((t) => `- ${t}`).join('\n')}`
+      );
+    }
+
+    if (chores.length > 0) {
+      sections.push(
+        `### Chores\n\n${chores.map((t) => `- ${t}`).join('\n')}`
+      );
+    }
+
     if (others.length > 0) {
-      sections.push(`### Others\n\n${others.map((c) => `- ${c}`).join('\n')}`);
+      sections.push(
+        `### Others\n\n${others.map((t) => `- ${t}`).join('\n')}`
+      );
     }
 
     releaseNotes = sections.length > 0
@@ -156,7 +288,12 @@ if (tagMode) {
       : '### Changed\n\n- No notable changes.';
   }
 
-  const releaseSection = [`## [${version}] - ${releaseDate}`, '', releaseNotes, ''].join('\n');
+  const releaseSection = [
+    `## [${version}] - ${releaseDate}`,
+    '',
+    releaseNotes,
+    ''
+  ].join('\n');
 
   finalContent = [
     ...lines.slice(0, unreleasedIndex),
@@ -164,35 +301,60 @@ if (tagMode) {
     '',
     releaseSection.trimEnd(),
     '',
-    ...(nextVersionIndex === -1 ? [] : lines.slice(nextVersionIndex))
+    ...(nextVersionIndex === -1
+      ? []
+      : lines.slice(nextVersionIndex))
   ].join('\n');
 
   const currentVersionHeadings = [
     ...finalContent.matchAll(/^## \[(\d+\.\d+\.\d+)\]/gm)
   ].map((match) => match[1]);
-  const previousVersion = currentVersionHeadings.find((v) => v !== version);
-  const unreleasedRef = `[Unreleased]: https://github.com/PHPDevsr/js-validation/compare/v${version}...HEAD`;
+
+  const previousVersion = currentVersionHeadings.find(
+    (v) => v !== version
+  );
+
+  const unreleasedRef =
+    `[Unreleased]: https://github.com/PHPDevsr/js-validation/compare/v${version}...HEAD`;
 
   if (/^\[Unreleased\]: .*$/m.test(finalContent)) {
-    finalContent = finalContent.replace(/^\[Unreleased\]: .*$/m, unreleasedRef);
+    finalContent = finalContent.replace(
+      /^\[Unreleased\]: .*$/m,
+      unreleasedRef
+    );
   } else {
-    finalContent = `${finalContent.replace(/\s*$/, '')}\n\n${unreleasedRef}\n`;
+    finalContent =
+      `${finalContent.replace(/\s*$/, '')}\n\n${unreleasedRef}\n`;
   }
 
   if (previousVersion) {
-    const versionRef = `[${version}]: https://github.com/PHPDevsr/js-validation/compare/v${previousVersion}...v${version}`;
-    const versionRefRegex = new RegExp(`^\\[${version.replace(/\./g, '\\.')}\\]: .*$`, 'm');
+    const versionRef =
+      `[${version}]: https://github.com/PHPDevsr/js-validation/compare/v${previousVersion}...v${version}`;
+
+    const versionRefRegex = new RegExp(
+      `^\\[${version.replace(/\./g, '\\.')}\\]: .*$`,
+      'm'
+    );
+
     if (versionRefRegex.test(finalContent)) {
-      finalContent = finalContent.replace(versionRefRegex, versionRef);
+      finalContent = finalContent.replace(
+        versionRefRegex,
+        versionRef
+      );
     } else {
-      finalContent = `${finalContent.replace(/\s*$/, '')}\n${versionRef}\n`;
+      finalContent =
+        `${finalContent.replace(/\s*$/, '')}\n${versionRef}\n`;
     }
   }
 }
 
-fs.writeFileSync(changelogPath, finalContent.replace(/\n{3,}/g, '\n\n'));
+fs.writeFileSync(
+  changelogPath,
+  finalContent.replace(/\n{3,}/g, '\n\n')
+);
 
 const docsChangelogPath = 'docs-site/src/pages/changelog.md';
+
 if (fs.existsSync(docsChangelogPath)) {
   const docsFrontmatter = [
     '---',
@@ -203,17 +365,27 @@ if (fs.existsSync(docsChangelogPath)) {
     ''
   ].join('\n');
 
-  const docsPageContent = `${docsFrontmatter}\n${finalContent.replace(/\n{3,}/g, '\n\n').trimEnd()}\n`;
-  fs.writeFileSync(docsChangelogPath, docsPageContent);
+  const docsPageContent =
+    `${docsFrontmatter}\n${finalContent.replace(/\n{3,}/g, '\n\n').trimEnd()}\n`;
+
+  fs.writeFileSync(
+    docsChangelogPath,
+    docsPageContent
+  );
 }
 NODE
+
 echo "Updated CHANGELOG.md and docs-site/src/pages/changelog.md"
 
 # Commit and optionally create tag
 if [[ "$TAG_MODE" == true ]]; then
   git add docs-site/src/pages/changelog.md
 else
-  git add package.json package-lock.json CHANGELOG.md docs-site/src/pages/changelog.md
+  git add \
+    package.json \
+    package-lock.json \
+    CHANGELOG.md \
+    docs-site/src/pages/changelog.md
 fi
 
 if [[ -n "$(git diff --cached --name-only)" ]]; then
@@ -233,6 +405,7 @@ fi
 echo ""
 echo "Release $NEW_VERSION is ready."
 echo ""
+
 if [[ "$TAG_MODE" == true ]]; then
   echo "Push to sync release metadata:"
   echo "  git push origin main"
