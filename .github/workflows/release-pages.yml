@@ -188,6 +188,10 @@ jobs:
         run: npm ci
         working-directory: docs-site
 
+      - name: Lint Astro docs
+        run: npm run lint
+        working-directory: docs-site
+
       - name: Build Astro docs site
         run: npm run build
         working-directory: docs-site

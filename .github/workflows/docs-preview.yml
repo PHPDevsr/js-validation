@@ -39,6 +39,11 @@ jobs:
         run: npm ci
         working-directory: docs-site
 
+      - name: Lint Astro docs
+        if: github.event.action != 'closed'
+        run: npm run lint
+        working-directory: docs-site
+
       - name: Build Astro docs site
         if: github.event.action != 'closed'
         run: npm run build
