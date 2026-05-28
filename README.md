@@ -1,8 +1,25 @@
-# js-validation
+<p align="center">
+  <br>
+  <br>
+  <a href="https://vite.dev" target="_blank" rel="noopener noreferrer">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://js-validation.js.org/favicon.svg">
+      <source media="(prefers-color-scheme: light)" srcset="https://js-validation.js.org/favicon.svg">
+      <img alt="vite logo" src="https://js-validation.js.org/favicon.svg" height="190">
+    </picture>
+  </a>
+  <br>
+  <br>
+</p>
+<br/>
+<p align="center">
+  <a href="https://npmjs.com/package/@phpdevsr/js-validation"><img src="https://img.shields.io/npm/v/@phpdevsr/js-validation" alt="npm package"></a>
+  <a href="https://nodejs.org/en/about/previous-releases"><img src="https://img.shields.io/node/v/@phpdevsr/js-validation" alt="node compatibility"></a>
+  <a href="https://github.com/PHPDevsr/js-validation/actions/workflows/ci.yml"><img src="https://github.com/PHPDevsr/js-validation/actions/workflows/ci.yml/badge.svg" alt="build status"></a>
+</p>
+<br/>
 
-[![NPM Version](https://img.shields.io/npm/v/@phpdevsr/js-validation)](https://www.npmjs.com/package/@phpdevsr/js-validation)
-[![CI](https://github.com/PHPDevsr/js-validation/actions/workflows/ci.yml/badge.svg)](https://github.com/PHPDevsr/js-validation/actions/workflows/ci.yml)
-[![Node.js](https://img.shields.io/badge/node-%3E%3D22-brightgreen)](https://nodejs.org/)
+# js-validation
 
 Lightweight, zero-dependency vanilla JavaScript form validation library inspired by [`jquery-validation`](https://github.com/jquery-validation/jquery-validation/).
 
