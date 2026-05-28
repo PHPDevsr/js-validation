@@ -10,7 +10,7 @@ Lightweight, zero-dependency vanilla JavaScript form validation library inspired
 
 - No dependency (pure JS)
 - Modular rules – each rule lives in its own file under `src/rules/`
-- Built-in rules: `required`, `email`, `minlength`, `maxlength`, `pattern`, `equalTo`, `numeric`, `url`, `date`, `dateISO`, [`etc`](https://phpdevsr.github.io/js-validation/rules/)
+- Built-in rules: `required`, `email`, `minlength`, `maxlength`, `pattern`, `equalTo`, `numeric`, `url`, `date`, `dateISO`, [`etc`](https://js-validation.js.org/rules/)
 - Extensible with custom rules via `addMethod`
 - Build with **Vite** – outputs `js-validation.js` and `js-validation.min.js`
 - Test with **Vitest**
