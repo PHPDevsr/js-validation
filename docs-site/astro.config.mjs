@@ -8,8 +8,8 @@ process.env.PUBLIC_APP_VERSION = packageJson.version;
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://phpdevsr.github.io",
-  base: process.env.ASTRO_BASE || "/js-validation",
+  site: "https://js-validation.js.org",
+  base: process.env.ASTRO_BASE || "/",
   trailingSlash: "always",
   outDir: "../_site",
   vite: {
