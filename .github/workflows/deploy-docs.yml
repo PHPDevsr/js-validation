@@ -1,0 +1,77 @@
+name: Deploy Docs to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs-site/**'
+      - 'src/**'
+      - 'dist/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/deploy-docs.yml'
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Build library
+        run: npm run build
+
+      - name: Install docs dependencies
+        working-directory: docs-site
+        run: npm ci
+
+      - name: Lint Astro docs
+        working-directory: docs-site
+        run: npm run lint
+
+      - name: Build Astro docs
+        working-directory: docs-site
+        run: npm run build
+
+      - name: Prepare Pages output
+        run: |
+          rm -rf _site
+          mkdir -p _site
+
+          cp -R docs-site/dist/* _site/
+
+          mkdir -p _site/assets
+
+          cp dist/js-validation.js _site/assets/js-validation.js
+          cp dist/js-validation.min.js _site/assets/js-validation.min.js
+          cp dist/js-validation.esm.js _site/assets/js-validation.esm.js
+          cp dist/js-validation.esm.min.js _site/assets/js-validation.esm.min.js
+
+          touch _site/.nojekyll
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: ./_site
+          branch: gh-pages
+          clean: true
