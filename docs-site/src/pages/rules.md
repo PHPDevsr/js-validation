@@ -279,4 +279,4 @@ rules: {
 
 ## See Also
 
-- [Custom Rules](/js-validation/custom-rules/) – How to create your own validation rules.
+- [Custom Rules](/custom-rules/) – How to create your own validation rules.

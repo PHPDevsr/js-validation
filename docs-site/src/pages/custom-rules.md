@@ -152,5 +152,5 @@ import './my-rules/phone.js';
 
 ## See Also
 
-- [Rules List](/js-validation/rules/) – All built-in validation rules.
-- [Getting Started](/js-validation/getting-started/) – Basic usage guide.
+- [Rules List](/rules/) – All built-in validation rules.
+- [Getting Started](/getting-started/) – Basic usage guide.

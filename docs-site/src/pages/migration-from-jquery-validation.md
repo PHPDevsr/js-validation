@@ -243,6 +243,6 @@ const validator = jsValidation('#register-form', {
 
 ## See Also
 
-* [Getting Started](/js-validation/getting-started/) – Basic setup and usage.
-* [Custom Rules](/js-validation/custom-rules/) – Create your own validation rules.
-* [Rules List](/js-validation/rules/) – All built-in validation rules.
+* [Getting Started](/getting-started/) – Basic setup and usage.
+* [Custom Rules](/custom-rules/) – Create your own validation rules.
+* [Rules List](/rules/) – All built-in validation rules.

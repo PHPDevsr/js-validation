@@ -167,6 +167,6 @@ jsValidation('#my-form', {
 
 ## Next Steps
 
-- See the full [Rules List](/js-validation/rules/)
-- Learn how to create [Custom Rules](/js-validation/custom-rules/)
-- Check [Installation](/js-validation/installation/) for all install methods
+- See the full [Rules List](/rules/)
+- Learn how to create [Custom Rules](/custom-rules/)
+- Check [Installation](/installation/) for all install methods
