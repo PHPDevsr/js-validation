@@ -4,7 +4,7 @@
 [![CI](https://github.com/PHPDevsr/js-validation/actions/workflows/ci.yml/badge.svg)](https://github.com/PHPDevsr/js-validation/actions/workflows/ci.yml)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D22-brightgreen)](https://nodejs.org/)
 
-Vanilla JavaScript (pure JS) form validation inspired by [`jquery-validation`](https://github.com/jquery-validation/jquery-validation/).
+Lightweight, zero-dependency vanilla JavaScript form validation library inspired by [`jquery-validation`](https://github.com/jquery-validation/jquery-validation/).
 
 ## Features
 

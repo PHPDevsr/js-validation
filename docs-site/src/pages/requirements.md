@@ -21,8 +21,8 @@ For building and contributing to the library:
 
 | Tool | Minimum Version | Purpose |
 |------|-----------------|---------|
-| Node.js | >= 18 | Build and test tooling |
-| npm | >= 9 | Package management |
+| Node.js | >= 22 | Build and test tooling |
+| npm | >= 10 | Package management |
 
 ## Development Dependencies
 
