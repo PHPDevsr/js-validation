@@ -4,7 +4,13 @@ import '../styles/global.css';
 const version = import.meta.env.PUBLIC_APP_VERSION;
 
 const { frontmatter = {} } = Astro.props;
-const { title = 'js-validation', description = 'Lightweight, zero-dependency vanilla JavaScript form validation library.' } = frontmatter;
+const {
+  title = 'js-validation',
+  appName = 'js-validation',
+  description = 'Lightweight, zero-dependency vanilla JavaScript form validation library.',
+  keywords = 'javascript,validation,form validation,lightweight,vanilajs,jquery validation',
+  image = '/og-image.png'
+} = frontmatter;
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
@@ -16,25 +22,83 @@ const navLinks = [
   { href: `${base}/browser-support/`, label: 'Browser Support' },
   { href: `${base}/rules/`, label: 'Rules' },
   { href: `${base}/custom-rules/`, label: 'Custom Rules' },
+  { href: `${base}/migration-from-jquery-validation/`, label: 'Migration' },
   { href: `${base}/changelog/`, label: 'Changelog' },
 ];
 
 const currentPath = Astro.url.pathname;
+const siteUrl = 'https://phpdevsr.github.io';
+const imageUrl = image.startsWith('http') ? image : `${siteUrl}${base}${image}`;
+
+// Canonical URL
+const canonicalUrl = new URL(currentPath, siteUrl).toString();
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={description} />
-    <title>{title} – js-validation</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="title" content={`${title} – ${appName}`}>
+    <meta name="description" content={description}>
+    <meta name="keywords" content={keywords}>
+    <meta name="author" content="PHPDevsr">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+
+    <title>{title} – {appName}</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href={`${base}/favicon-96x96.png?v=${version}`} sizes="96x96">
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg?v=${version}`}>
+    <link rel="shortcut icon" href={`${base}/favicon.ico?v=${version}`}>
+    <link rel="apple-touch-icon" sizes="180x180" href={`${base}/apple-touch-icon.png?v=${version}`}>
+    <link rel="manifest" href={`${base}/site.webmanifest?v=${version}`}>
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content={canonicalUrl}>
+    <meta property="og:title" content={`${title} – ${appName}`}>
+    <meta property="og:description" content={description}>
+    <meta property="og:site_name" content={appName}>
+    <meta property="og:image" content={imageUrl}>
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content={canonicalUrl}>
+    <meta name="twitter:title" content={`${title} – ${appName}`}>
+    <meta name="twitter:description" content={description}>
+    <meta name="twitter:image" content={imageUrl}>
+
+    <!-- Canonical -->
+    <link rel="canonical" href={canonicalUrl}>
+    <!-- NPM verification / discovery -->
+    <meta name="application-name" content={appName}>
+    <!-- JSON-LD -->
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'SoftwareSourceCode',
+        name: 'js-validation',
+        description,
+        codeRepository: 'https://github.com/PHPDevsr/js-validation',
+        programmingLanguage: 'JavaScript',
+        runtimePlatform: 'Browser',
+        license: 'https://github.com/PHPDevsr/js-validation/blob/main/LICENSE',
+        url: canonicalUrl,
+        author: {
+          '@type': 'Organization',
+          name: 'PHPDevsr'
+        }
+      })}
+    />
   </head>
   <body>
     <header class="site-header">
       <div class="header-inner">
         <a class="site-title" href={`${base}/`}>
-          <span class="site-name">js-validation</span>
+          <span class="site-name">{appName}</span>
           <span class="site-badge">v{version}</span>
         </a>
         <nav class="header-nav">
