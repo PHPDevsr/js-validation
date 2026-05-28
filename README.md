@@ -1,11 +1,11 @@
 <p align="center">
   <br>
   <br>
-  <a href="https://vite.dev" target="_blank" rel="noopener noreferrer">
+  <a href="https://js-validation.js.org/" target="_blank" rel="noopener noreferrer">
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://js-validation.js.org/favicon.svg">
-      <source media="(prefers-color-scheme: light)" srcset="https://js-validation.js.org/favicon.svg">
-      <img alt="vite logo" src="https://js-validation.js.org/favicon.svg" height="190">
+      <source media="(prefers-color-scheme: dark)" srcset="https://js-validation.js.org/js-validation.svg">
+      <source media="(prefers-color-scheme: light)" srcset="https://js-validation.js.org/js-validation.svg">
+      <img alt="vite logo" src="https://js-validation.js.org/js-validation.svg" height="190">
     </picture>
   </a>
   <br>
