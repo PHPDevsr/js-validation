@@ -26,10 +26,10 @@ jobs:
     concurrency: preview-${{ github.ref }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
         with:
           node-version: '22'
           cache: 'npm'
@@ -57,7 +57,7 @@ jobs:
 
       - name: Deploy PR preview
         if: github.event.action != 'closed'
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4.8.0
         with:
           folder: _site
           branch: gh-pages
@@ -71,7 +71,7 @@ jobs:
         
       - name: Deploy empty folder to remove preview
         if: github.event.action == 'closed'
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4.8.0
         with:
           folder: /tmp/empty-preview
           branch: gh-pages
@@ -80,7 +80,7 @@ jobs:
 
       - name: Comment PR preview URL
         if: github.event.action != 'closed'
-        uses: actions/github-script@v7
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
         with:
           script: |
             const prNumber = context.payload.pull_request.number;
