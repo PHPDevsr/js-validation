@@ -1,0 +1,189 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="title" content="Migration from jquery-validation – js-validation"><meta name="description" content="Learn how to migrate from jquery-validation to js-validation."><meta name="keywords" content="javascript,validation,form validation,lightweight,vanilajs,jquery validation"><meta name="author" content="PHPDevsr"><meta name="robots" content="index, follow"><meta name="googlebot" content="index, follow"><title>Migration from jquery-validation – js-validation</title><!-- Favicon --><link rel="icon" type="image/png" href="/preview-pr-26/favicon-96x96.png?v=1.2.2" sizes="96x96"><link rel="icon" type="image/svg+xml" href="/preview-pr-26/favicon.svg?v=1.2.2"><link rel="shortcut icon" href="/preview-pr-26/favicon.ico?v=1.2.2"><link rel="apple-touch-icon" sizes="180x180" href="/preview-pr-26/apple-touch-icon.png?v=1.2.2"><link rel="manifest" href="/preview-pr-26/site.webmanifest?v=1.2.2"><!-- Open Graph --><meta property="og:type" content="website"><meta property="og:url" content="https://js-validation.js.org/preview-pr-26/migration-from-jquery-validation/"><meta property="og:title" content="Migration from jquery-validation – js-validation"><meta property="og:description" content="Learn how to migrate from jquery-validation to js-validation."><meta property="og:site_name" content="js-validation"><meta property="og:image" content="https://js-validation.js.org/preview-pr-26/og-image.png"><!-- Twitter --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:url" content="https://js-validation.js.org/preview-pr-26/migration-from-jquery-validation/"><meta name="twitter:title" content="Migration from jquery-validation – js-validation"><meta name="twitter:description" content="Learn how to migrate from jquery-validation to js-validation."><meta name="twitter:image" content="https://js-validation.js.org/preview-pr-26/og-image.png"><!-- Canonical --><link rel="canonical" href="https://js-validation.js.org/preview-pr-26/migration-from-jquery-validation/"><!-- NPM verification / discovery --><meta name="application-name" content="js-validation"><!-- JSON-LD --><script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareSourceCode","name":"js-validation","description":"Learn how to migrate from jquery-validation to js-validation.","codeRepository":"https://github.com/PHPDevsr/js-validation","programmingLanguage":"JavaScript","runtimePlatform":"Browser","license":"https://github.com/PHPDevsr/js-validation/blob/main/LICENSE","url":"https://js-validation.js.org/preview-pr-26/migration-from-jquery-validation/","author":{"@type":"Organization","name":"PHPDevsr"}}</script><link rel="stylesheet" href="/preview-pr-26/_astro/DocsLayout.iL5ikqre.css"><script type="module" src="/preview-pr-26/_astro/page.vzY--OHv.js"></script></head> <body> <header class="site-header"> <div class="header-inner"> <a class="site-title" href="/preview-pr-26/"> <span class="site-name">js-validation</span> <span class="site-badge">v1.2.2</span> </a> <nav class="header-nav"> <a href="https://github.com/PHPDevsr/js-validation" target="_blank" rel="noopener">GitHub</a> <a href="https://www.npmjs.com/package/@phpdevsr/js-validation" target="_blank" rel="noopener">npm</a> </nav> </div> </header> <div class="layout"> <aside class="sidebar"> <nav> <ul> <li> <a href="/preview-pr-26/" class="nav-link"> Home </a> </li><li> <a href="/preview-pr-26/getting-started/" class="nav-link"> Getting Started </a> </li><li> <a href="/preview-pr-26/installation/" class="nav-link"> Installation </a> </li><li> <a href="/preview-pr-26/requirements/" class="nav-link"> Requirements </a> </li><li> <a href="/preview-pr-26/browser-support/" class="nav-link"> Browser Support </a> </li><li> <a href="/preview-pr-26/rules/" class="nav-link"> Rules </a> </li><li> <a href="/preview-pr-26/custom-rules/" class="nav-link"> Custom Rules </a> </li><li> <a href="/preview-pr-26/migration-from-jquery-validation/" class="nav-link active"> Migration </a> </li><li> <a href="/preview-pr-26/changelog/" class="nav-link"> Changelog </a> </li> </ul> </nav> </aside> <main class="content prose prose-slate max-w-none"> <h1 id="migration-from-jquery-validation">Migration from jquery-validation</h1>
+<h2 id="overview">Overview</h2>
+<p><code>js-validation</code> is inspired by <code>jquery-validation</code> but built for modern JavaScript applications without requiring jQuery.</p>
+<p>This guide helps you migrate existing forms from <code>jquery-validation</code> to <code>@phpdevsr/js-validation</code>.</p>
+<h2 id="why-migrate">Why Migrate?</h2>
+<p>Modern frontend applications often no longer use jQuery. Migrating to <code>js-validation</code> gives you:</p>
+<ul>
+<li>Zero dependency validation</li>
+<li>Smaller bundle size</li>
+<li>Modern ESM support</li>
+<li>Better compatibility with Vite and modern tooling</li>
+<li>Simpler integration with modern frameworks</li>
+</ul>
+<h2 id="installation">Installation</h2>
+<h3 id="jquery-validation">jquery-validation</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> src</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"jquery.js"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> src</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"jquery.validate.min.js"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span></code></pre>
+<h3 id="js-validation">js-validation</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> @phpdevsr/js-validation</span></span></code></pre>
+<p>Or using CDN:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> src</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation/dist/js-validation.min.js"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span></code></pre>
+<h2 id="basic-validation">Basic Validation</h2>
+<h3 id="jquery-validation-1">jquery-validation</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">$</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"#my-form"</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">validate</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  rules: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    name: {</span></span>
+<span class="line"><span style="color:#E1E4E8">      required: </span><span style="color:#79B8FF">true</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#E1E4E8">    email: {</span></span>
+<span class="line"><span style="color:#E1E4E8">      required: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      email: </span><span style="color:#79B8FF">true</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<h3 id="js-validation-1">js-validation</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> validator</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> jsValidation</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'#my-form'</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#E1E4E8">  rules: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    name: {</span></span>
+<span class="line"><span style="color:#E1E4E8">      required: </span><span style="color:#79B8FF">true</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#E1E4E8">    email: {</span></span>
+<span class="line"><span style="color:#E1E4E8">      required: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      email: </span><span style="color:#79B8FF">true</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<h2 id="custom-rules">Custom Rules</h2>
+<h3 id="jquery-validation-2">jquery-validation</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">$.validator.</span><span style="color:#B392F0">addMethod</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#9ECBFF">  "startsWithA"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">value</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> value.</span><span style="color:#B392F0">startsWith</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"A"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#9ECBFF">  "Must start with letter A."</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">$</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"#my-form"</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">validate</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  rules: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    name: {</span></span>
+<span class="line"><span style="color:#E1E4E8">      required: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      startsWithA: </span><span style="color:#79B8FF">true</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<h3 id="js-validation-2">js-validation</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// Rule that checks if value starts with a specific letter</span></span>
+<span class="line"><span style="color:#E1E4E8">jsValidation.</span><span style="color:#B392F0">addMethod</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#9ECBFF">  'startsWithA'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  (</span><span style="color:#FFAB70">value</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> value.</span><span style="color:#B392F0">startsWith</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'A'</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#9ECBFF">  'Must start with letter A.'</span></span>
+<span class="line"><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Usage</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> validator</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> jsValidation</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'#my-form'</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#E1E4E8">  rules: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    name: {</span></span>
+<span class="line"><span style="color:#E1E4E8">      required: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      startsWithA: </span><span style="color:#79B8FF">true</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<h2 id="event-handling">Event Handling</h2>
+<h3 id="jquery-validation-3">jquery-validation</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">$</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"#my-form"</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">on</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"submit"</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">function</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">e</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  e.</span><span style="color:#B392F0">preventDefault</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<h3 id="js-validation-3">js-validation</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">jsValidation.</span><span style="color:#B392F0">default</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'#my-form'</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">submit</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">e</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  e.</span><span style="color:#B392F0">preventDefault</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<h2 id="key-differences">Key Differences</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Feature</th><th>jquery-validation</th><th>js-validation</th></tr></thead><tbody><tr><td>Requires jQuery</td><td>Yes</td><td>No</td></tr><tr><td>Zero dependency</td><td>No</td><td>Yes</td></tr><tr><td>ESM support</td><td>Limited</td><td>Yes</td></tr><tr><td>Modern bundler friendly</td><td>Partial</td><td>Yes</td></tr><tr><td>Tree shaking</td><td>No</td><td>Yes</td></tr></tbody></table>
+<h2 id="migration-tips">Migration Tips</h2>
+<h3 id="replace-validate">Replace <code>.validate()</code></h3>
+<h4 id="jquery-validation-4">jquery-validation</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">$</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"#my-form"</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">validate</span><span style="color:#E1E4E8">({</span><span style="color:#F97583">...</span><span style="color:#E1E4E8">});</span></span></code></pre>
+<h4 id="js-validation-4">js-validation</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">jsValidation</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"#my-form"</span><span style="color:#E1E4E8">, {</span><span style="color:#F97583">...</span><span style="color:#E1E4E8">});</span></span></code></pre>
+<hr>
+<h3 id="replace-validatoraddmethod">Replace <code>$.validator.addMethod()</code></h3>
+<h4 id="jquery-validation-5">jquery-validation</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">$.validator.</span><span style="color:#B392F0">addMethod</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">...</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<h4 id="js-validation-5">js-validation</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">jsValidation.</span><span style="color:#B392F0">addMethod</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">...</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<hr>
+<h3 id="replace-jquery-selectors">Replace jQuery Selectors</h3>
+<h4 id="jquery-validation-6">jquery-validation</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">$</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"#my-form"</span><span style="color:#E1E4E8">)</span></span></code></pre>
+<h4 id="js-validation-6">js-validation</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">document.</span><span style="color:#B392F0">querySelector</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"#my-form"</span><span style="color:#E1E4E8">)</span></span></code></pre>
+<h2 id="common-migration-example">Common Migration Example</h2>
+<h3 id="before-jquery-validation">Before (jquery-validation)</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">$</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"#register-form"</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">validate</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  rules: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    username: {</span></span>
+<span class="line"><span style="color:#E1E4E8">      required: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      minlength: </span><span style="color:#79B8FF">3</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#E1E4E8">    password: {</span></span>
+<span class="line"><span style="color:#E1E4E8">      required: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      minlength: </span><span style="color:#79B8FF">6</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<h3 id="after-js-validation">After (js-validation)</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> validator</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> jsValidation</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'#register-form'</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#E1E4E8">  rules: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    username: {</span></span>
+<span class="line"><span style="color:#E1E4E8">      required: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      minlength: </span><span style="color:#79B8FF">3</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#E1E4E8">    password: {</span></span>
+<span class="line"><span style="color:#E1E4E8">      required: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      minlength: </span><span style="color:#79B8FF">6</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<h2 id="best-practices">Best Practices</h2>
+<ol>
+<li>Use native DOM APIs instead of jQuery helpers.</li>
+<li>Import only what you need in modular applications.</li>
+<li>Keep validation rules framework-agnostic.</li>
+<li>Use custom rules for reusable business logic.</li>
+<li>Remove unused jQuery plugins after migration.</li>
+</ol>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a href="/getting-started/">Getting Started</a> – Basic setup and usage.</li>
+<li><a href="/custom-rules/">Custom Rules</a> – Create your own validation rules.</li>
+<li><a href="/rules/">Rules List</a> – All built-in validation rules.</li>
+</ul> </main> </div> <footer class="site-footer"> <p>
+Released under the <a href="https://github.com/PHPDevsr/js-validation/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.
+        &copy; 2026 PHPDevsr.
+</p> </footer> </body></html>

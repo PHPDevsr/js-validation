@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="title" content="Installation – js-validation"><meta name="description" content="CDN, npm, and manual install methods for js-validation."><meta name="keywords" content="javascript,validation,form validation,lightweight,vanilajs,jquery validation"><meta name="author" content="PHPDevsr"><meta name="robots" content="index, follow"><meta name="googlebot" content="index, follow"><title>Installation – js-validation</title><!-- Favicon --><link rel="icon" type="image/png" href="/preview-pr-26/favicon-96x96.png?v=1.2.2" sizes="96x96"><link rel="icon" type="image/svg+xml" href="/preview-pr-26/favicon.svg?v=1.2.2"><link rel="shortcut icon" href="/preview-pr-26/favicon.ico?v=1.2.2"><link rel="apple-touch-icon" sizes="180x180" href="/preview-pr-26/apple-touch-icon.png?v=1.2.2"><link rel="manifest" href="/preview-pr-26/site.webmanifest?v=1.2.2"><!-- Open Graph --><meta property="og:type" content="website"><meta property="og:url" content="https://js-validation.js.org/preview-pr-26/installation/"><meta property="og:title" content="Installation – js-validation"><meta property="og:description" content="CDN, npm, and manual install methods for js-validation."><meta property="og:site_name" content="js-validation"><meta property="og:image" content="https://js-validation.js.org/preview-pr-26/og-image.png"><!-- Twitter --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:url" content="https://js-validation.js.org/preview-pr-26/installation/"><meta name="twitter:title" content="Installation – js-validation"><meta name="twitter:description" content="CDN, npm, and manual install methods for js-validation."><meta name="twitter:image" content="https://js-validation.js.org/preview-pr-26/og-image.png"><!-- Canonical --><link rel="canonical" href="https://js-validation.js.org/preview-pr-26/installation/"><!-- NPM verification / discovery --><meta name="application-name" content="js-validation"><!-- JSON-LD --><script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareSourceCode","name":"js-validation","description":"CDN, npm, and manual install methods for js-validation.","codeRepository":"https://github.com/PHPDevsr/js-validation","programmingLanguage":"JavaScript","runtimePlatform":"Browser","license":"https://github.com/PHPDevsr/js-validation/blob/main/LICENSE","url":"https://js-validation.js.org/preview-pr-26/installation/","author":{"@type":"Organization","name":"PHPDevsr"}}</script><link rel="stylesheet" href="/preview-pr-26/_astro/DocsLayout.iL5ikqre.css"><script type="module" src="/preview-pr-26/_astro/page.vzY--OHv.js"></script></head> <body> <header class="site-header"> <div class="header-inner"> <a class="site-title" href="/preview-pr-26/"> <span class="site-name">js-validation</span> <span class="site-badge">v1.2.2</span> </a> <nav class="header-nav"> <a href="https://github.com/PHPDevsr/js-validation" target="_blank" rel="noopener">GitHub</a> <a href="https://www.npmjs.com/package/@phpdevsr/js-validation" target="_blank" rel="noopener">npm</a> </nav> </div> </header> <div class="layout"> <aside class="sidebar"> <nav> <ul> <li> <a href="/preview-pr-26/" class="nav-link"> Home </a> </li><li> <a href="/preview-pr-26/getting-started/" class="nav-link"> Getting Started </a> </li><li> <a href="/preview-pr-26/installation/" class="nav-link active"> Installation </a> </li><li> <a href="/preview-pr-26/requirements/" class="nav-link"> Requirements </a> </li><li> <a href="/preview-pr-26/browser-support/" class="nav-link"> Browser Support </a> </li><li> <a href="/preview-pr-26/rules/" class="nav-link"> Rules </a> </li><li> <a href="/preview-pr-26/custom-rules/" class="nav-link"> Custom Rules </a> </li><li> <a href="/preview-pr-26/migration-from-jquery-validation/" class="nav-link"> Migration </a> </li><li> <a href="/preview-pr-26/changelog/" class="nav-link"> Changelog </a> </li> </ul> </nav> </aside> <main class="content prose prose-slate max-w-none"> <h1 id="installation">Installation</h1>
+<h2 id="npm">NPM</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> @phpdevsr/js-validation</span></span></code></pre>
+<p>Then import it in your project:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> jsValidation </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@phpdevsr/js-validation'</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<h2 id="cdn-jsdelivr">CDN (jsDelivr)</h2>
+<h3 id="latest-version">Latest version</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> src</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation/dist/js-validation.min.js"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span></code></pre>
+<h3 id="specific-version">Specific version</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> src</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation@1.1.0/dist/js-validation.min.js"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span></code></pre>
+<h3 id="es-module-via-cdn">ES Module via CDN</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"module"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#F97583">  import</span><span style="color:#E1E4E8"> jsValidation </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation/dist/js-validation.esm.min.js'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span></code></pre>
+<h2 id="download">Download</h2>
+<p>You can also download the files directly from the <a href="https://github.com/PHPDevsr/js-validation/releases">GitHub Releases</a> page and include them in your project manually.</p>
+<h2 id="available-files">Available Files</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>File</th><th>Format</th><th>Description</th></tr></thead><tbody><tr><td><code>dist/js-validation.js</code></td><td>UMD</td><td>Unminified, for development</td></tr><tr><td><code>dist/js-validation.min.js</code></td><td>UMD</td><td>Minified, for production</td></tr><tr><td><code>dist/js-validation.esm.js</code></td><td>ES Module</td><td>Unminified, for bundlers</td></tr><tr><td><code>dist/js-validation.esm.min.js</code></td><td>ES Module</td><td>Minified, for bundlers</td></tr></tbody></table>
+<h2 id="usage-after-installation">Usage After Installation</h2>
+<h3 id="umd-script-tag">UMD (Script Tag)</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> src</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"dist/js-validation.min.js"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> validator</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> jsValidation.</span><span style="color:#B392F0">default</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'#my-form'</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#E1E4E8">    rules: { email: { required: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, email: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8"> } }</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span></code></pre>
+<h3 id="es-module">ES Module</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> jsValidation </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@phpdevsr/js-validation'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> validator</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> jsValidation</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'#my-form'</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#E1E4E8">  rules: { email: { required: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, email: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8"> } }</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<h3 id="selective-import-core--specific-rules">Selective Import (Core + Specific Rules)</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> jsValidation </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@phpdevsr/js-validation/core'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#9ECBFF"> '@phpdevsr/js-validation/rules/required'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#9ECBFF"> '@phpdevsr/js-validation/rules/email'</span><span style="color:#E1E4E8">;</span></span></code></pre> </main> </div> <footer class="site-footer"> <p>
+Released under the <a href="https://github.com/PHPDevsr/js-validation/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>.
+        &copy; 2026 PHPDevsr.
+</p> </footer> </body></html>
