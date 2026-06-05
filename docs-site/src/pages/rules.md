@@ -254,6 +254,20 @@ rules: {
 
 ---
 
+### `ishexcolor`
+
+Validates that the value is a valid CSS hex color. Accepts both 3-digit (e.g. `#fff`) and 6-digit (e.g. `#ffffff`) formats, case-insensitively.
+
+```js
+rules: {
+  brandColor: { ishexcolor: true }
+}
+```
+
+**Default message:** `"Please enter a valid hex color (e.g. #fff or #ffffff)."`
+
+---
+
 ### `maxfiles`
 
 Validates that a file input does not contain more than the specified number of selected files. Pair it with the `multiple` attribute when users can upload more than one file.

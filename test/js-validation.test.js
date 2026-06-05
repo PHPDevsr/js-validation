@@ -757,3 +757,83 @@ describe('alphanumeric rule', () => {
     expect(v.validate()).toBe(true);
   });
 });
+
+describe('ishexcolor rule', () => {
+  it('fails for invalid hex color (no hash)', () => {
+    const f = field('color', 'ffffff');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { color: { ishexcolor: true } } });
+    expect(v.validate()).toBe(false);
+    expect(f._jsvMessage).toBe('Please enter a valid hex color (e.g. #fff or #ffffff).');
+  });
+
+  it('fails for invalid hex color (too short)', () => {
+    const f = field('color', '#ff');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { color: { ishexcolor: true } } });
+    expect(v.validate()).toBe(false);
+  });
+
+  it('fails for invalid hex color (too long)', () => {
+    const f = field('color', '#fffffff');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { color: { ishexcolor: true } } });
+    expect(v.validate()).toBe(false);
+  });
+
+  it('fails for invalid hex color (invalid characters)', () => {
+    const f = field('color', '#zzzzzz');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { color: { ishexcolor: true } } });
+    expect(v.validate()).toBe(false);
+  });
+
+  it('fails for empty value', () => {
+    const f = field('color', '');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { color: { ishexcolor: true } } });
+    expect(v.validate()).toBe(false);
+  });
+
+  it('passes for valid 6-digit hex color (lowercase)', () => {
+    const f = field('color', '#1a2b3c');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { color: { ishexcolor: true } } });
+    expect(v.validate()).toBe(true);
+  });
+
+  it('passes for valid 6-digit hex color (uppercase)', () => {
+    const f = field('color', '#AABBCC');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { color: { ishexcolor: true } } });
+    expect(v.validate()).toBe(true);
+  });
+
+  it('passes for valid 3-digit hex color (lowercase)', () => {
+    const f = field('color', '#abc');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { color: { ishexcolor: true } } });
+    expect(v.validate()).toBe(true);
+  });
+
+  it('passes for valid 3-digit hex color (uppercase)', () => {
+    const f = field('color', '#FFF');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { color: { ishexcolor: true } } });
+    expect(v.validate()).toBe(true);
+  });
+
+  it('passes for #000000 (black)', () => {
+    const f = field('color', '#000000');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { color: { ishexcolor: true } } });
+    expect(v.validate()).toBe(true);
+  });
+
+  it('passes for #ffffff (white)', () => {
+    const f = field('color', '#ffffff');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { color: { ishexcolor: true } } });
+    expect(v.validate()).toBe(true);
+  });
+});
