@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- feat: add built-in `notEqualTo`, `maxfiles`, and `maxsize` rules with tests, e2e coverage, and docs
+- feat: add built-in `notEqualTo`, `maxfiles`, `maxsize` and `maxsizetotal` rules with tests, e2e coverage, and docs
 
 ## [1.2.2] - 2026-05-27
 
