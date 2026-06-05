@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>E2E Test - maxsizetotal Rule</title>
+    <style>
+      .is-invalid { border: 2px solid red; }
+    </style>
+  </head>
+  <body>
+    <form id="test-form" novalidate>
+      <div><input name="attachments" id="attachments" type="file" multiple /></div>
+      <button type="submit" id="submit-btn">Submit</button>
+    </form>
+    <p id="status"></p>
+
+    <script type="module">
+      import jsValidation from '/src/index.js';
+
+      jsValidation('#test-form', {
+        rules: {
+          attachments: { maxsizetotal: '3KB' }
+        },
+        messages: {
+          attachments: { maxsizetotal: 'Total size of all files must not exceed 3KB.' }
+        }
+      }).submit(() => {
+        document.getElementById('status').textContent = 'Form submitted successfully!';
+      });
+    </script>
+  </body>
+</html>
