@@ -266,6 +266,31 @@
 
 <table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>maxsize</code></td><td><code>number</code> or <code>string</code></td><td>Maximum size allowed for each selected file</td></tr></tbody></table>
 <p><strong>Default message:</strong> <code>"Please select files no larger than {0}."</code></p>
+<h3 id="maxsizetotal"><code>maxsizetotal</code></h3>
+<p>Validates that all selected file is within the specified size limit. The parameter can be a number of bytes or a string using <code>B</code>, <code>KB</code>, <code>MB</code>, or <code>GB</code>.</p>
+<blockquote>
+<p>Available since <code>v1.3.0</code>.</p>
+</blockquote>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">rules</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#B392F0">  attachments</span><span style="color:#E1E4E8">: { </span><span style="color:#B392F0">maxsizetotal</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'2MB'</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>maxsizetotal</code></td><td><code>number</code> or <code>string</code></td><td>Maximum size allowed for all selected file</td></tr></tbody></table>
+<p><strong>Default message:</strong> <code>"Total size of all files must not exceed {0}."</code></p>
 <hr>
 <h2 id="using-rules-via-html-attributes">Using Rules via HTML Attributes</h2>
 <p>All rules can also be declared using <code>data-rule-*</code> attributes:</p>
