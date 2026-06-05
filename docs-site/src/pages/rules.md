@@ -292,6 +292,24 @@ rules: {
 
 **Default message:** `"Please select files no larger than {0}."`
 
+### `maxsizetotal`
+
+Validates that all selected file is within the specified size limit. The parameter can be a number of bytes or a string using `B`, `KB`, `MB`, or `GB`.
+
+> Available since `v1.3.0`.
+
+```js
+rules: {
+  attachments: { maxsizetotal: '2MB' }
+}
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `maxsizetotal` | `number` or `string` | Maximum size allowed for all selected file |
+
+**Default message:** `"Total size of all files must not exceed {0}."`
+
 ---
 
 ## Using Rules via HTML Attributes
