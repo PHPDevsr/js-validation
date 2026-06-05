@@ -401,6 +401,45 @@ describe('maxsize rule', () => {
   });
 });
 
+describe('maxsizetotal rule', () => {
+  it('fails when the combined size of all files exceeds the limit', () => {
+    const upload = field('attachments', '', { ruleMaxsizetotal: '2KB' });
+    upload.type = 'file';
+    upload.files = [{ name: 'a.txt', size: 1024 }, { name: 'b.txt', size: 1024 }, { name: 'c.txt', size: 1 }];
+    const form = makeForm([upload]);
+    const v = jsValidation(form);
+    expect(v.validate()).toBe(false);
+    expect(upload._jsvMessage).toBe('Total size of all files must not exceed 2KB.');
+  });
+
+  it('passes when the combined size of all files is within the limit', () => {
+    const upload = field('attachments', '');
+    upload.type = 'file';
+    upload.files = [{ name: 'a.txt', size: 512 }, { name: 'b.txt', size: 512 }];
+    const form = makeForm([upload]);
+    const v = jsValidation(form, { rules: { attachments: { maxsizetotal: '2KB' } } });
+    expect(v.validate()).toBe(true);
+  });
+
+  it('passes when combined size exactly equals the limit', () => {
+    const upload = field('attachments', '');
+    upload.type = 'file';
+    upload.files = [{ name: 'a.txt', size: 1024 }, { name: 'b.txt', size: 1024 }];
+    const form = makeForm([upload]);
+    const v = jsValidation(form, { rules: { attachments: { maxsizetotal: '2KB' } } });
+    expect(v.validate()).toBe(true);
+  });
+
+  it('passes when no files are selected', () => {
+    const upload = field('attachments', '');
+    upload.type = 'file';
+    upload.files = [];
+    const form = makeForm([upload]);
+    const v = jsValidation(form, { rules: { attachments: { maxsizetotal: '1KB' } } });
+    expect(v.validate()).toBe(true);
+  });
+});
+
 describe('numeric rule', () => {
   it('fails for non-numeric value', () => {
     const f = field('age', 'abc');

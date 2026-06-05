@@ -24,6 +24,7 @@ import './rules/ipv6.js';
 import './rules/alphanumeric.js';
 import './rules/maxfiles.js';
 import './rules/maxsize.js';
+import './rules/maxsizetotal.js';
 
 function jsValidation(formOrSelector, options = {}) {
   let form = formOrSelector;
