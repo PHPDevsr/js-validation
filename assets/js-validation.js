@@ -211,6 +211,13 @@
 		return !!target && String(value || "") === String(target.value || "");
 	}, "Please enter the same value again.");
 	//#endregion
+	//#region src/rules/notEqualTo.js
+	VanillaValidator.addMethod("notEqualTo", (value, selector, _field, validator) => {
+		if (!validator.form || typeof validator.form.querySelector !== "function") return true;
+		const target = validator.form.querySelector(selector);
+		return !!target && String(value || "") !== String(target.value || "");
+	}, "Please enter a different value.");
+	//#endregion
 	//#region src/rules/numeric.js
 	VanillaValidator.addMethod("numeric", (value) => {
 		if (String(value || "").trim() === "") return false;
@@ -246,6 +253,53 @@
 		if (String(value || "").trim() === "") return false;
 		return /^\w+$/i.test(String(value));
 	}, "Please enter only letters, numbers, and underscores.");
+	//#endregion
+	//#region src/rules/maxfiles.js
+	VanillaValidator.addMethod("maxfiles", (_value, param, field) => {
+		const limit = Number(param);
+		if (!Number.isFinite(limit) || limit < 0) return false;
+		return Array.from(field && field.files || []).length <= limit;
+	}, (param) => `Please select no more than ${param} files.`);
+	//#endregion
+	//#region src/rules/maxsize.js
+	function parseSize$1(param) {
+		if (typeof param === "number") return param;
+		const value = String(param || "").trim();
+		if (/^\d+(?:\.\d+)?$/.test(value)) return Number(value);
+		const match = value.match(/^(\d+(?:\.\d+)?)\s*(B|KB|MB|GB)$/i);
+		if (!match) return NaN;
+		return Number(match[1]) * {
+			B: 1,
+			KB: 1024,
+			MB: 1024 * 1024,
+			GB: 1024 * 1024 * 1024
+		}[match[2].toUpperCase()];
+	}
+	VanillaValidator.addMethod("maxsize", (_value, param, field) => {
+		const limit = parseSize$1(param);
+		if (!Number.isFinite(limit) || limit < 0) return false;
+		return Array.from(field && field.files || []).every((file) => Number(file && file.size) <= limit);
+	}, (param) => `Please select files no larger than ${param}.`);
+	//#endregion
+	//#region src/rules/maxsizetotal.js
+	function parseSize(param) {
+		if (typeof param === "number") return param;
+		const value = String(param || "").trim();
+		if (/^\d+(?:\.\d+)?$/.test(value)) return Number(value);
+		const match = value.match(/^(\d+(?:\.\d+)?)\s*(B|KB|MB|GB)$/i);
+		if (!match) return NaN;
+		return Number(match[1]) * {
+			B: 1,
+			KB: 1024,
+			MB: 1024 * 1024,
+			GB: 1024 * 1024 * 1024
+		}[match[2].toUpperCase()];
+	}
+	VanillaValidator.addMethod("maxsizetotal", (_value, param, field) => {
+		const limit = parseSize(param);
+		if (!Number.isFinite(limit) || limit < 0) return false;
+		return Array.from(field && field.files || []).reduce((sum, file) => sum + Number(file && file.size), 0) <= limit;
+	}, (param) => `Total size of all files must not exceed ${param}.`);
 	//#endregion
 	//#region src/index.js
 	/**
