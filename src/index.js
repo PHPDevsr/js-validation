@@ -25,6 +25,7 @@ import './rules/alphanumeric.js';
 import './rules/maxfiles.js';
 import './rules/maxsize.js';
 import './rules/maxsizetotal.js';
+import './rules/ishexcolor.js';
 
 function jsValidation(formOrSelector, options = {}) {
   let form = formOrSelector;
