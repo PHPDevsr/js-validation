@@ -14,6 +14,7 @@ import './rules/maxlength.js';
 import './rules/range.js';
 import './rules/pattern.js';
 import './rules/equalTo.js';
+import './rules/notEqualTo.js';
 import './rules/numeric.js';
 import './rules/url.js';
 import './rules/date.js';
@@ -21,6 +22,8 @@ import './rules/dateISO.js';
 import './rules/ipv4.js';
 import './rules/ipv6.js';
 import './rules/alphanumeric.js';
+import './rules/maxfiles.js';
+import './rules/maxsize.js';
 
 function jsValidation(formOrSelector, options = {}) {
   let form = formOrSelector;

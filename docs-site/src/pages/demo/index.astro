@@ -77,6 +77,11 @@ const demoBase = base + '/demo';
           <h2>equalTo</h2>
           <p>Confirms two fields have the same value (e.g. password confirmation).</p>
         </a>
+        <a class="card" href={`${demoBase}/notequalto/`}>
+          <span class="tag">Rule · v1.3.0</span>
+          <h2>notEqualTo</h2>
+          <p>Requires one field to differ from another, such as a new password versus the current password.</p>
+        </a>
         <a class="card" href={`${demoBase}/numeric/`}>
           <span class="tag">Rule</span>
           <h2>numeric</h2>
@@ -101,6 +106,11 @@ const demoBase = base + '/demo';
           <span class="tag">Rule</span>
           <h2>alphanumeric</h2>
           <p>Accepts only letters, digits, and underscores — no spaces or special characters.</p>
+        </a>
+        <a class="card" href={`${demoBase}/files/`}>
+          <span class="tag">Rule · v1.3.0</span>
+          <h2>maxfiles / maxsize</h2>
+          <p>Limits the number of selected files and enforces a per-file size cap for uploads.</p>
         </a>
         <a class="card" href={`${demoBase}/custom-rules/`}>
           <span class="tag">Advanced</span>

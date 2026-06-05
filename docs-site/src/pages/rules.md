@@ -178,6 +178,26 @@ rules: {
 
 ---
 
+### `notEqualTo`
+
+Validates that the value is different from the value of another field. Useful for requiring a new value, such as a new password that must differ from the current password.
+
+> Available since `v1.3.0`.
+
+```js
+rules: {
+  newPassword: { notEqualTo: '#currentPassword' }
+}
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `notEqualTo` | `string` | CSS selector of the field to compare against |
+
+**Default message:** `"Please enter a different value."`
+
+---
+
 ### `numeric`
 
 Validates that the value contains only numeric digits (0-9).
@@ -231,6 +251,46 @@ rules: {
 ```
 
 **Default message:** `"Please enter only letters, numbers, and underscores."`
+
+---
+
+### `maxfiles`
+
+Validates that a file input does not contain more than the specified number of selected files. Pair it with the `multiple` attribute when users can upload more than one file.
+
+> Available since `v1.3.0`.
+
+```js
+rules: {
+  attachments: { maxfiles: 3 }
+}
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `maxfiles` | `number` | Maximum number of selected files |
+
+**Default message:** `"Please select no more than {0} files."`
+
+---
+
+### `maxsize`
+
+Validates that every selected file is within the specified size limit. The parameter can be a number of bytes or a string using `B`, `KB`, `MB`, or `GB`.
+
+> Available since `v1.3.0`.
+
+```js
+rules: {
+  attachments: { maxsize: '2MB' }
+}
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `maxsize` | `number` or `string` | Maximum size allowed for each selected file |
+
+**Default message:** `"Please select files no larger than {0}."`
 
 ---
 

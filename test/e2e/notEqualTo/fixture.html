@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>E2E Test - notEqualTo Rule</title>
+    <style>
+      .is-invalid { border: 2px solid red; }
+    </style>
+  </head>
+  <body>
+    <form id="test-form" novalidate>
+      <div><input name="currentPassword" id="currentPassword" type="password" /></div>
+      <div><input name="newPassword" id="newPassword" type="password" /></div>
+      <button type="submit" id="submit-btn">Submit</button>
+    </form>
+    <p id="status"></p>
+
+    <script type="module">
+      import jsValidation from '/src/index.js';
+
+      jsValidation('#test-form', {
+        rules: {
+          currentPassword: { required: true },
+          newPassword: { required: true, notEqualTo: '#currentPassword' }
+        },
+        messages: {
+          newPassword: { notEqualTo: 'New password must be different.' }
+        }
+      }).submit(() => {
+        document.getElementById('status').textContent = 'Form submitted successfully!';
+      });
+    </script>
+  </body>
+</html>

@@ -338,6 +338,69 @@ describe('equalTo rule', () => {
   });
 });
 
+describe('notEqualTo rule', () => {
+  it('fails when values match', () => {
+    const current = field('currentPassword', 'secret');
+    current.id = 'currentPassword';
+    const next = field('newPassword', 'secret');
+    const form = makeForm([current, next]);
+    const v = jsValidation(form, { rules: { newPassword: { notEqualTo: '#currentPassword' } } });
+    expect(v.validate()).toBe(false);
+    expect(next._jsvMessage).toBe('Please enter a different value.');
+  });
+
+  it('passes when values are different', () => {
+    const current = field('currentPassword', 'secret');
+    current.id = 'currentPassword';
+    const next = field('newPassword', 'secret-2');
+    const form = makeForm([current, next]);
+    const v = jsValidation(form, { rules: { newPassword: { notEqualTo: '#currentPassword' } } });
+    expect(v.validate()).toBe(true);
+  });
+});
+
+describe('maxfiles rule', () => {
+  it('fails when selected files exceed the limit', () => {
+    const upload = field('attachments', '');
+    upload.type = 'file';
+    upload.files = [{ name: 'one.txt', size: 10 }, { name: 'two.txt', size: 10 }, { name: 'three.txt', size: 10 }];
+    const form = makeForm([upload]);
+    const v = jsValidation(form, { rules: { attachments: { maxfiles: 2 } } });
+    expect(v.validate()).toBe(false);
+    expect(upload._jsvMessage).toBe('Please select no more than 2 files.');
+  });
+
+  it('passes when selected files are within the limit', () => {
+    const upload = field('attachments', '', { ruleMaxfiles: '2' });
+    upload.type = 'file';
+    upload.files = [{ name: 'one.txt', size: 10 }, { name: 'two.txt', size: 10 }];
+    const form = makeForm([upload]);
+    const v = jsValidation(form);
+    expect(v.validate()).toBe(true);
+  });
+});
+
+describe('maxsize rule', () => {
+  it('fails when any selected file exceeds the limit', () => {
+    const upload = field('attachments', '', { ruleMaxsize: '2KB' });
+    upload.type = 'file';
+    upload.files = [{ name: 'small.txt', size: 512 }, { name: 'large.txt', size: 4096 }];
+    const form = makeForm([upload]);
+    const v = jsValidation(form);
+    expect(v.validate()).toBe(false);
+    expect(upload._jsvMessage).toBe('Please select files no larger than 2KB.');
+  });
+
+  it('passes when all selected files are within the limit', () => {
+    const upload = field('attachments', '');
+    upload.type = 'file';
+    upload.files = [{ name: 'one.txt', size: 512 }, { name: 'two.txt', size: 1024 }];
+    const form = makeForm([upload]);
+    const v = jsValidation(form, { rules: { attachments: { maxsize: 2048 } } });
+    expect(v.validate()).toBe(true);
+  });
+});
+
 describe('numeric rule', () => {
   it('fails for non-numeric value', () => {
     const f = field('age', 'abc');
