@@ -889,3 +889,69 @@ describe('time rule', () => {
     expect(v.validate()).toBe(true);
   });
 });
+
+describe('alpha rule', () => {
+  it('fails for value with digits', () => {
+    const f = field('name', 'hello123');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { name: { alpha: true } } });
+    expect(v.validate()).toBe(false);
+    expect(f._jsvMessage).toBe('Please enter only alphabetic letters.');
+  });
+
+  it('fails for value with spaces', () => {
+    const f = field('name', 'hello world');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { name: { alpha: true } } });
+    expect(v.validate()).toBe(false);
+  });
+
+  it('fails for value with special characters', () => {
+    const f = field('name', 'hello@world');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { name: { alpha: true } } });
+    expect(v.validate()).toBe(false);
+  });
+
+  it('fails for value with hyphens', () => {
+    const f = field('name', 'hello-world');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { name: { alpha: true } } });
+    expect(v.validate()).toBe(false);
+  });
+
+  it('fails for value with underscores', () => {
+    const f = field('name', 'hello_world');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { name: { alpha: true } } });
+    expect(v.validate()).toBe(false);
+  });
+
+  it('fails for empty value', () => {
+    const f = field('name', '');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { name: { alpha: true } } });
+    expect(v.validate()).toBe(false);
+  });
+
+  it('passes for lowercase letters only', () => {
+    const f = field('name', 'hello');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { name: { alpha: true } } });
+    expect(v.validate()).toBe(true);
+  });
+
+  it('passes for uppercase letters only', () => {
+    const f = field('name', 'HELLO');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { name: { alpha: true } } });
+    expect(v.validate()).toBe(true);
+  });
+
+  it('passes for mixed case letters', () => {
+    const f = field('name', 'HelloWorld');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { name: { alpha: true } } });
+    expect(v.validate()).toBe(true);
+  });
+});
