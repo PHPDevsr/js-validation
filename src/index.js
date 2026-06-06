@@ -26,6 +26,7 @@ import './rules/maxfiles.js';
 import './rules/maxsize.js';
 import './rules/maxsizetotal.js';
 import './rules/ishexcolor.js';
+import './rules/time.js';
 
 function jsValidation(formOrSelector, options = {}) {
   let form = formOrSelector;

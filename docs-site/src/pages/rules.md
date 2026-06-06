@@ -80,6 +80,22 @@ rules: {
 
 ---
 
+### `time`
+
+Validates time in `H:MM`, `HH:MM`, or `HH:MM:SS` format.
+
+> Available since `v1.4.0`.
+
+```js
+rules: {
+  startTime: { time: true }
+}
+```
+
+**Default message:** `"Please enter a valid time (HH:MM or HH:MM:SS)."`
+
+---
+
 ### `minlength`
 
 Validates that the value has at least the specified number of characters.
