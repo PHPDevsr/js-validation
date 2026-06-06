@@ -270,6 +270,22 @@ rules: {
 
 ---
 
+### `alpha`
+
+Validates that the value contains only alphabetic letters (a–z, A–Z). Digits, spaces, underscores, and special characters are not allowed.
+
+> Available since `v1.4.0`.
+
+```js
+rules: {
+  firstName: { alpha: true }
+}
+```
+
+**Default message:** `"Please enter only alphabetic letters."`
+
+---
+
 ### `ishexcolor`
 
 Validates that the value is a valid CSS hex color. Accepts both 3-digit (e.g. `#fff`) and 6-digit (e.g. `#ffffff`) formats, case-insensitively.
