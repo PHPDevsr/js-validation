@@ -837,3 +837,55 @@ describe('ishexcolor rule', () => {
     expect(v.validate()).toBe(true);
   });
 });
+
+describe('time rule', () => {
+  it('fails for invalid hour', () => {
+    const f = field('appointment', '24:00');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { appointment: { time: true } } });
+    expect(v.validate()).toBe(false);
+    expect(f._jsvMessage).toBe('Please enter a valid time (HH:MM or HH:MM:SS).');
+  });
+
+  it('fails for invalid minute', () => {
+    const f = field('appointment', '12:60');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { appointment: { time: true } } });
+    expect(v.validate()).toBe(false);
+  });
+
+  it('fails for invalid second', () => {
+    const f = field('appointment', '10:30:60');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { appointment: { time: true } } });
+    expect(v.validate()).toBe(false);
+  });
+
+  it('fails for empty value', () => {
+    const f = field('appointment', '');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { appointment: { time: true } } });
+    expect(v.validate()).toBe(false);
+  });
+
+  it('passes for H:MM format', () => {
+    const f = field('appointment', '9:05');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { appointment: { time: true } } });
+    expect(v.validate()).toBe(true);
+  });
+
+  it('passes for HH:MM format', () => {
+    const f = field('appointment', '09:05');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { appointment: { time: true } } });
+    expect(v.validate()).toBe(true);
+  });
+
+  it('passes for HH:MM:SS format', () => {
+    const f = field('appointment', '23:59:59');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { appointment: { time: true } } });
+    expect(v.validate()).toBe(true);
+  });
+});
