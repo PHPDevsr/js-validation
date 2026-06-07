@@ -143,7 +143,7 @@ const cdnUrl = `https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation@${version}/
           try {
             var b = Array.isArray(p) ? p : JSON.parse(p);
             return 'Veuillez entrer une valeur entre ' + b[0] + ' et ' + b[1] + '.';
-          } catch() { return 'Veuillez entrer une plage valide.'; }
+          } catch(error) { void error; return 'Veuillez entrer une plage valide.'; }
         },
         maxfiles: function(p) { return 'Veuillez sélectionner au plus ' + p + ' fichiers.'; },
         maxsize: function(p) { return 'Veuillez sélectionner des fichiers ne dépassant pas ' + p + '.'; },
