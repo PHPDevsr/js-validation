@@ -948,6 +948,7 @@ describe('alpha rule', () => {
     expect(v.validate()).toBe(true);
   });
 
+
   it('passes for mixed case letters', () => {
     const f = field('name', 'HelloWorld');
     const form = makeForm([f]);
@@ -955,3 +956,105 @@ describe('alpha rule', () => {
     expect(v.validate()).toBe(true);
   });
 });
+
+describe('localization', () => {
+  it('uses English messages by default when lang is not specified', () => {
+    const f = field('name', '');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { rules: { name: { required: true } } });
+    expect(v.validate()).toBe(false);
+    expect(f._jsvMessage).toBe('This field is required.');
+  });
+
+  it('uses English messages when lang is explicitly set to "en"', () => {
+    const f = field('email', 'invalid');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { lang: 'en', rules: { email: { email: true } } });
+    expect(v.validate()).toBe(false);
+    expect(f._jsvMessage).toBe('Please enter a valid email address.');
+  });
+
+  it('uses Spanish messages when lang is set to "es"', () => {
+    const f = field('name', '');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { lang: 'es', rules: { name: { required: true } } });
+    expect(v.validate()).toBe(false);
+    expect(f._jsvMessage).toBe('Este campo es obligatorio.');
+  });
+
+  it('uses Spanish email message', () => {
+    const f = field('email', 'invalid');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { lang: 'es', rules: { email: { email: true } } });
+    expect(v.validate()).toBe(false);
+    expect(f._jsvMessage).toBe('Por favor ingrese una dirección de correo electrónico válida.');
+  });
+
+  it('uses Spanish minlength message with parameter interpolation', () => {
+    const f = field('username', 'ab');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { lang: 'es', rules: { username: { minlength: 3 } } });
+    expect(v.validate()).toBe(false);
+    expect(f._jsvMessage).toBe('Por favor ingrese al menos 3 caracteres.');
+  });
+
+  it('uses Spanish maxlength message with parameter interpolation', () => {
+    const f = field('code', 'abcdef');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { lang: 'es', rules: { code: { maxlength: 4 } } });
+    expect(v.validate()).toBe(false);
+    expect(f._jsvMessage).toBe('Por favor ingrese no más de 4 caracteres.');
+  });
+
+  it('falls back to English when unknown locale is specified', () => {
+    const f = field('name', '');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { lang: 'unknown', rules: { name: { required: true } } });
+    expect(v.validate()).toBe(false);
+    expect(f._jsvMessage).toBe('This field is required.');
+  });
+
+  it('prefers custom messages over localized messages', () => {
+    const f = field('email', 'invalid');
+    const form = makeForm([f]);
+    const v = jsValidation(form, {
+      lang: 'es',
+      rules: { email: { email: true } },
+      messages: { email: { email: 'Custom message' } }
+    });
+    expect(v.validate()).toBe(false);
+    expect(f._jsvMessage).toBe('Custom message');
+  });
+
+  it('uses Spanish range message', () => {
+    const f = field('age', '1');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { lang: 'es', rules: { age: { range: [2, 8] } } });
+    expect(v.validate()).toBe(false);
+    expect(f._jsvMessage).toBe('Por favor ingrese un valor entre 2 y 8.');
+  });
+
+  it('uses Spanish maxfiles message', () => {
+    const upload = field('attachments', '');
+    upload.type = 'file';
+    upload.files = [{ name: 'one.txt', size: 10 }, { name: 'two.txt', size: 10 }, { name: 'three.txt', size: 10 }];
+    const form = makeForm([upload]);
+    const v = jsValidation(form, { lang: 'es', rules: { attachments: { maxfiles: 2 } } });
+    expect(v.validate()).toBe(false);
+    expect(upload._jsvMessage).toBe('Por favor seleccione no más de 2 archivos.');
+  });
+
+
+  it('supports addLocaleMessages to register custom locales', () => {
+    const customLocale = {
+      required: 'Champ requis en français'
+    };
+    jsValidation.addLocaleMessages('fr', customLocale);
+    const f = field('name', '');
+    const form = makeForm([f]);
+    const v = jsValidation(form, { lang: 'fr', rules: { name: { required: true } } });
+    expect(v.validate()).toBe(false);
+    expect(f._jsvMessage).toBe('Champ requis en français');
+  });
+});
+

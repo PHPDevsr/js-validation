@@ -13,6 +13,14 @@ function createClassList() {
 
 export class VanillaValidator {
   static methods = {};
+  static locales = {};
+
+  static addLocaleMessages(lang, messages) {
+    if (!VanillaValidator.locales[lang]) {
+      VanillaValidator.locales[lang] = {};
+    }
+    Object.assign(VanillaValidator.locales[lang], messages);
+  }
 
   static addMethod(name, validateFn, message) {
     VanillaValidator.methods[name] = {
@@ -24,6 +32,7 @@ export class VanillaValidator {
   constructor(form, options = {}) {
     this.form = form;
     this.options = options;
+    this.lang = options.lang || 'en';
     this.errorClass = options.errorClass || 'is-invalid';
     this.errorElement = options.errorElement || 'span';
     this.errorElementClass = options.errorElementClass || 'invalid-feedback';
@@ -95,6 +104,21 @@ export class VanillaValidator {
       && this.options.messages[field.name]
       && this.options.messages[field.name][ruleName];
     if (custom) return custom;
+
+    // Check locale messages
+    const localeMessages = VanillaValidator.locales[this.lang];
+    if (localeMessages && localeMessages[ruleName] !== undefined) {
+      const localeMsg = localeMessages[ruleName];
+      if (typeof localeMsg === 'function') return localeMsg(param, field);
+      return localeMsg;
+    }
+
+    // Fallback to English if current lang is not English
+    if (this.lang !== 'en' && VanillaValidator.locales['en'] && VanillaValidator.locales['en'][ruleName] !== undefined) {
+      const enMsg = VanillaValidator.locales['en'][ruleName];
+      if (typeof enMsg === 'function') return enMsg(param, field);
+      return enMsg;
+    }
 
     const message = methodDef.message;
     if (typeof message === 'function') return message(param, field);

@@ -7,6 +7,7 @@
  *   import 'js-validation/rules/email';
  */
 import { VanillaValidator } from './core.js';
+import { locales } from './locales.js';
 import './rules/required.js';
 import './rules/email.js';
 import './rules/minlength.js';
@@ -29,6 +30,11 @@ import './rules/maxsizetotal.js';
 import './rules/ishexcolor.js';
 import './rules/time.js';
 
+// Register all built-in locales
+Object.entries(locales).forEach(([lang, messages]) => {
+  VanillaValidator.addLocaleMessages(lang, messages);
+});
+
 function jsValidation(formOrSelector, options = {}) {
   let form = formOrSelector;
   if (typeof formOrSelector === 'string' && typeof document !== 'undefined') {
@@ -39,6 +45,8 @@ function jsValidation(formOrSelector, options = {}) {
 
 jsValidation.Validator = VanillaValidator;
 jsValidation.addMethod = VanillaValidator.addMethod.bind(VanillaValidator);
+jsValidation.addLocaleMessages = VanillaValidator.addLocaleMessages.bind(VanillaValidator);
 
 export default jsValidation;
 export { VanillaValidator };
+
