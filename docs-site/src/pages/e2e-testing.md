@@ -8,8 +8,6 @@ description: "End-to-End (E2E) Testing for js-validation."
 
 `js-validation` uses [Playwright](https://playwright.dev/) for browser-level end-to-end tests. These tests verify validation behaviour in a real browser environment against static HTML fixture pages served by Vite.
 
----
-
 ## Stack
 
 | Tool | Version | Purpose |
@@ -19,11 +17,9 @@ description: "End-to-End (E2E) Testing for js-validation."
 
 Browsers tested: **Chromium**, **Firefox**, **WebKit** (Safari engine).
 
----
-
 ## Configuration
 
-### Playwright — [`playwright.config.js`](file:///d:/Project/Node/js-validation/playwright.config.js)
+### Playwright (`playwright.config.js`)
 
 ```js
 export default defineConfig({
@@ -46,21 +42,19 @@ export default defineConfig({
 });
 ```
 
-### Vite E2E Server — [`vite.config.e2e.js`](file:///d:/Project/Node/js-validation/vite.config.e2e.js)
+### Vite E2E Server (`vite.config.e2e.js`)
 
 ```js
 export default defineConfig({
-  root: resolve(__dirname, 'test/e2e'),   // serves from test/e2e/
+  root: resolve(__dirname, 'test/e2e'),
   server: { port: 5174 },
   resolve: {
-    alias: { '/src': resolve(__dirname, 'src') }, // fixture pages use /src/…
+    alias: { '/src': resolve(__dirname, 'src') },
   },
 });
 ```
 
-The server root is `test/e2e/`, so a test that calls `page.goto('/fixture.html')` loads `test/e2e/fixture.html`, and `page.goto('/alpha/fixture.html')` loads `test/e2e/alpha/fixture.html`.
-
----
+The server root is `test/e2e/`, so a test calling `page.goto('/fixture.html')` loads `test/e2e/fixture.html`, and `page.goto('/alpha/fixture.html')` loads `test/e2e/alpha/fixture.html`.
 
 ## Running Tests
 
@@ -72,9 +66,7 @@ npm run test:e2e
 npm test
 ```
 
-> On CI (`process.env.CI` is set) Playwright always starts a fresh server. Locally it reuses an existing server on port `5174` if one is already running.
-
----
+On CI Playwright always starts a fresh server. Locally it reuses an existing server on port `5174` if one is already running.
 
 ## Directory Structure
 
@@ -88,15 +80,14 @@ test/e2e/
 ├── email/
 │   ├── fixture.html
 │   └── email.spec.js
+├── locales/
+│   ├── fixture.html      ← Fixture for localization tests
+│   └── locales.spec.js   ← Tests for locale switching
 ├── minlength/
 ├── maxlength/
 ├── required/
 └── … (one sub-directory per rule)
 ```
-
-Each validation rule has its own isolated fixture + spec pair following the same convention.
-
----
 
 ## Fixture Page Pattern
 
@@ -107,7 +98,7 @@ A fixture page is a minimal HTML file that:
 3. Initialises the validator with rules and an optional submit handler
 4. Exposes a `#status` element that shows `'Form submitted successfully!'` on success
 
-### Example — shared fixture ([`test/e2e/fixture.html`](file:///d:/Project/Node/js-validation/test/e2e/fixture.html))
+### Shared fixture (`test/e2e/fixture.html`)
 
 ```html
 <form id="test-form" novalidate>
@@ -138,7 +129,7 @@ A fixture page is a minimal HTML file that:
 </script>
 ```
 
-### Example — rule-specific fixture ([`test/e2e/alpha/fixture.html`](file:///d:/Project/Node/js-validation/test/e2e/alpha/fixture.html))
+### Rule-specific fixture (`test/e2e/alpha/fixture.html`)
 
 ```html
 <form id="test-form" novalidate>
@@ -159,11 +150,7 @@ A fixture page is a minimal HTML file that:
 </script>
 ```
 
----
-
 ## Writing Specs
-
-### File location
 
 Place specs inside `test/e2e/<rule-name>/<rule-name>.spec.js` for rule-specific tests, or in `test/e2e/validation.spec.js` for cross-cutting concerns.
 
@@ -174,7 +161,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('E2E: <rule> rule', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/<rule>/fixture.html'); // navigate before each test
+    await page.goto('/<rule>/fixture.html');
   });
 
   test('fails for invalid value', async ({ page }) => {
@@ -191,7 +178,7 @@ test.describe('E2E: <rule> rule', () => {
 });
 ```
 
-### Key DOM contracts that tests rely on
+### Key DOM contracts
 
 | What | Assertion |
 |------|-----------|
@@ -203,9 +190,7 @@ test.describe('E2E: <rule> rule', () => {
 | Error element text | `toHaveText('<message>')` |
 | Successful submission | `page.locator('#status').toHaveText('Form submitted successfully!')` |
 
----
-
-## Test Coverage — Shared Fixture ([`validation.spec.js`](file:///d:/Project/Node/js-validation/test/e2e/validation.spec.js))
+## Test Coverage — Shared Fixture
 
 | # | Test | What it verifies |
 |---|------|-----------------|
@@ -219,24 +204,19 @@ test.describe('E2E: <rule> rule', () => {
 | 8 | Clears errors on valid input after failed submit | `is-invalid` removed, `invalid` attribute removed |
 | 9 | Real-time validation on input event | Error clears immediately when field becomes valid while typing |
 
----
+## Test Coverage — Locales
 
-## Test Coverage — Alpha Rule ([`alpha/alpha.spec.js`](file:///d:/Project/Node/js-validation/test/e2e/alpha/alpha.spec.js))
-
-| # | Test | Input | Expected |
-|---|------|-------|----------|
-| 1 | Fails for digits | `hello123` | `is-invalid` |
-| 2 | Fails for spaces | `hello world` | `is-invalid` |
-| 3 | Fails for special chars | `hello@world` | `is-invalid` |
-| 4 | Fails for hyphens | `hello-world` | `is-invalid` |
-| 5 | Fails for underscores | `hello_world` | `is-invalid` |
-| 6 | Passes for lowercase only | `hello` | no `is-invalid` |
-| 7 | Passes for uppercase only | `HELLO` | no `is-invalid` |
-| 8 | Passes for mixed case | `HelloWorld` | no `is-invalid` |
-| 9 | Displays custom error message | `bad123!` | `data-jsv-message` = `'Please enter only alphabetic letters.'` |
-| 10 | Submits successfully when valid | `HelloWorld` + submit | `#status` = `'Form submitted successfully!'` |
-
----
+| # | Test | What it verifies |
+|---|------|-----------------|
+| 1 | English error for required (default) | `This field is required.` |
+| 2 | English error for invalid email (default) | `Please enter a valid email address.` |
+| 3 | Spanish error for required | `Este campo es obligatorio.` |
+| 4 | Spanish error for invalid email | `Por favor ingrese una dirección de correo electrónico válida.` |
+| 5 | Switch from English to Spanish on re-init | Locale changes dynamically |
+| 6 | Unknown lang falls back to English | `lang: 'zz'` shows English |
+| 7 | Missing key in active locale falls back | Partial locale returns English for missing keys |
+| 8 | Runtime registration of a new locale | `addLocaleMessages('fr', …)` works |
+| 9 | Custom message overrides locale | `messages` option takes priority |
 
 ## Adding E2E Tests for a New Rule
 
@@ -252,8 +232,6 @@ test.describe('E2E: <rule> rule', () => {
 - [ ] Verifies `data-jsv-message` attribute on failure
 - [ ] Verifies inline error element (`[data-jsv-error-for]`) visibility
 - [ ] Verifies successful form submission path
-
----
 
 ## Debugging Tips
 

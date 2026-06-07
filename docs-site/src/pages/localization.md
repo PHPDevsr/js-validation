@@ -8,8 +8,6 @@ description: "Localization support for js-validation."
 
 `js-validation` ships with built-in support for multiple languages. Error messages are loaded from locale files and resolved at runtime based on the `lang` option you pass to the validator.
 
----
-
 ## Built-in Locales
 
 | Language | Code | File |
@@ -22,8 +20,6 @@ All built-in locales are automatically registered when you import the full bundl
 ```js
 import jsValidation from '@phpdevsr/js-validation';
 ```
-
----
 
 ## Setting the Active Language
 
@@ -48,8 +44,6 @@ Resolution order:
 3. English locale (`en`) as fallback
 4. Method default message
 
----
-
 ## Message Types
 
 Locale messages are plain strings or functions:
@@ -68,11 +62,7 @@ range: (param) => {
 }
 ```
 
----
-
 ## All Built-in Message Keys
-
-The following keys must be defined in a locale object:
 
 | Key | Param | Description |
 |-----|-------|-------------|
@@ -97,8 +87,6 @@ The following keys must be defined in a locale object:
 | `maxsizetotal` | `string` | Maximum total file size |
 | `ishexcolor` | — | Must be a valid hex color |
 | `time` | — | Must be a valid time (`HH:MM` or `HH:MM:SS`) |
-
----
 
 ## Adding a Custom Locale
 
@@ -155,8 +143,6 @@ export { en, es, fr }; // ← named re-export
 const validator = jsValidation('#my-form', { lang: 'fr' });
 ```
 
----
-
 ## Runtime Registration (without modifying source)
 
 You can register a locale at runtime without touching the source files. Useful when consuming the published package:
@@ -181,8 +167,6 @@ import { VanillaValidator } from '@phpdevsr/js-validation';
 VanillaValidator.addLocaleMessages('de', { /* messages */ });
 ```
 
----
-
 ## Per-Field Custom Messages
 
 Locale messages can be overridden per field via `options.messages`. These take the highest priority:
@@ -197,37 +181,6 @@ jsValidation('#my-form', {
     confirmPassword: { equalTo: 'Las contraseñas no coinciden.' }
   }
 });
-```
-
----
-
-## Locale Object Interface
-
-```ts
-interface LocaleMessages {
-  required?:      string;
-  email?:         string;
-  minlength?:     string | ((param: number) => string);
-  maxlength?:     string | ((param: number) => string);
-  range?:         string | ((param: [number, number] | string) => string);
-  pattern?:       string;
-  equalTo?:       string;
-  notEqualTo?:    string;
-  numeric?:       string;
-  url?:           string;
-  date?:          string;
-  dateISO?:       string;
-  ipv4?:          string;
-  ipv6?:          string;
-  alpha?:         string;
-  alphanumeric?:  string;
-  maxfiles?:      string | ((param: number) => string);
-  maxsize?:       string | ((param: string) => string);
-  maxsizetotal?:  string | ((param: string) => string);
-  ishexcolor?:    string;
-  time?:          string;
-  [key: string]:  string | ((...args: any[]) => string) | undefined;
-}
 ```
 
 > You only need to define keys that differ from the fallback locale. Missing keys resolve to English or the method default.
