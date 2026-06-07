@@ -1,3 +1,9 @@
+---
+layout: ../layouts/DocsLayout.astro
+title: "Localization"
+description: "Localization support for js-validation."
+---
+
 # Localization
 
 `js-validation` ships with built-in support for multiple languages. Error messages are loaded from locale files and resolved at runtime based on the `lang` option you pass to the validator.

@@ -1,3 +1,9 @@
+---
+layout: ../layouts/DocsLayout.astro
+title: "E2E Testing"
+description: "End-to-End (E2E) Testing for js-validation."
+---
+
 # End-to-End (E2E) Testing
 
 `js-validation` uses [Playwright](https://playwright.dev/) for browser-level end-to-end tests. These tests verify validation behaviour in a real browser environment against static HTML fixture pages served by Vite.
