@@ -1,0 +1,386 @@
+<!DOCTYPE html><meta charset="utf-8"><script type="module" src="/preview-pr-30/_astro/page.vzY--OHv.js"></script><h1 id="end-to-end-e2e-testing">End-to-End (E2E) Testing</h1>
+<p><code>js-validation</code> uses <a href="https://playwright.dev/">Playwright</a> for browser-level end-to-end tests. These tests verify validation behaviour in a real browser environment against static HTML fixture pages served by Vite.</p>
+<hr>
+<h2 id="stack">Stack</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Tool</th><th>Version</th><th>Purpose</th></tr></thead><tbody><tr><td><a href="https://playwright.dev/">Playwright</a></td><td><code>^1.60.0</code></td><td>Test runner &#x26; browser automation</td></tr><tr><td><a href="https://vite.dev/">Vite</a></td><td><code>^8.0.14</code></td><td>Dev server serving fixture pages</td></tr></tbody></table>
+<p>Browsers tested: <strong>Chromium</strong>, <strong>Firefox</strong>, <strong>WebKit</strong> (Safari engine).</p>
+<hr>
+<h2 id="configuration">Configuration</h2>
+<h3 id="playwright--playwrightconfigjs">Playwright — <a href="file:///d:/Project/Node/js-validation/playwright.config.js"><code>playwright.config.js</code></a></h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#B392F0"> defineConfig</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  fullyParallel: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  testDir: </span><span style="color:#9ECBFF">'./test/e2e'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  use: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    baseURL: </span><span style="color:#9ECBFF">'http://localhost:5174'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    headless: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  projects: [</span></span>
+<span class="line"><span style="color:#E1E4E8">    { name: </span><span style="color:#9ECBFF">'chromium'</span><span style="color:#E1E4E8">, use: { </span><span style="color:#F97583">...</span><span style="color:#E1E4E8">devices[</span><span style="color:#9ECBFF">'Desktop Chrome'</span><span style="color:#E1E4E8">] } },</span></span>
+<span class="line"><span style="color:#E1E4E8">    { name: </span><span style="color:#9ECBFF">'firefox'</span><span style="color:#E1E4E8">,  use: { </span><span style="color:#F97583">...</span><span style="color:#E1E4E8">devices[</span><span style="color:#9ECBFF">'Desktop Firefox'</span><span style="color:#E1E4E8">] } },</span></span>
+<span class="line"><span style="color:#E1E4E8">    { name: </span><span style="color:#9ECBFF">'webkit'</span><span style="color:#E1E4E8">,   use: { </span><span style="color:#F97583">...</span><span style="color:#E1E4E8">devices[</span><span style="color:#9ECBFF">'Desktop Safari'</span><span style="color:#E1E4E8">] } },</span></span>
+<span class="line"><span style="color:#E1E4E8">  ],</span></span>
+<span class="line"><span style="color:#E1E4E8">  webServer: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    command: </span><span style="color:#9ECBFF">'npx vite --port 5174 --config vite.config.e2e.js'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    port: </span><span style="color:#79B8FF">5174</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    reuseExistingServer: </span><span style="color:#F97583">!</span><span style="color:#E1E4E8">process.env.</span><span style="color:#79B8FF">CI</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<h3 id="vite-e2e-server--viteconfige2ejs">Vite E2E Server — <a href="file:///d:/Project/Node/js-validation/vite.config.e2e.js"><code>vite.config.e2e.js</code></a></h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#B392F0"> defineConfig</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  root: </span><span style="color:#B392F0">resolve</span><span style="color:#E1E4E8">(__dirname, </span><span style="color:#9ECBFF">'test/e2e'</span><span style="color:#E1E4E8">),   </span><span style="color:#6A737D">// serves from test/e2e/</span></span>
+<span class="line"><span style="color:#E1E4E8">  server: { port: </span><span style="color:#79B8FF">5174</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">  resolve: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    alias: { </span><span style="color:#9ECBFF">'/src'</span><span style="color:#E1E4E8">: </span><span style="color:#B392F0">resolve</span><span style="color:#E1E4E8">(__dirname, </span><span style="color:#9ECBFF">'src'</span><span style="color:#E1E4E8">) }, </span><span style="color:#6A737D">// fixture pages use /src/…</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<p>The server root is <code>test/e2e/</code>, so a test that calls <code>page.goto('/fixture.html')</code> loads <code>test/e2e/fixture.html</code>, and <code>page.goto('/alpha/fixture.html')</code> loads <code>test/e2e/alpha/fixture.html</code>.</p>
+<hr>
+<h2 id="running-tests">Running Tests</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Run all E2E tests (all 3 browsers)</span></span>
+<span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> test:e2e</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Run unit tests (Vitest)</span></span>
+<span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> test</span></span></code></pre>
+<blockquote>
+<p>On CI (<code>process.env.CI</code> is set) Playwright always starts a fresh server. Locally it reuses an existing server on port <code>5174</code> if one is already running.</p>
+</blockquote>
+<hr>
+<h2 id="directory-structure">Directory Structure</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>test/e2e/</span></span>
+<span class="line"><span>├── fixture.html          ← Shared base fixture (multi-rule form)</span></span>
+<span class="line"><span>├── validation.spec.js    ← Tests for the shared fixture</span></span>
+<span class="line"><span>├── alpha/</span></span>
+<span class="line"><span>│   ├── fixture.html      ← Fixture for the alpha rule</span></span>
+<span class="line"><span>│   └── alpha.spec.js     ← Tests for the alpha rule</span></span>
+<span class="line"><span>├── email/</span></span>
+<span class="line"><span>│   ├── fixture.html</span></span>
+<span class="line"><span>│   └── email.spec.js</span></span>
+<span class="line"><span>├── minlength/</span></span>
+<span class="line"><span>├── maxlength/</span></span>
+<span class="line"><span>├── required/</span></span>
+<span class="line"><span>└── … (one sub-directory per rule)</span></span></code></pre>
+<p>Each validation rule has its own isolated fixture + spec pair following the same convention.</p>
+<hr>
+<h2 id="fixture-page-pattern">Fixture Page Pattern</h2>
+<p>A fixture page is a minimal HTML file that:</p>
+<ol>
+<li>Renders a <code>&#x3C;form novalidate></code> with the relevant input(s)</li>
+<li>Imports <code>js-validation</code> from <code>/src/index.js</code></li>
+<li>Initialises the validator with rules and an optional submit handler</li>
+<li>Exposes a <code>#status</code> element that shows <code>'Form submitted successfully!'</code> on success</li>
+</ol>
+<h3 id="example--shared-fixture-teste2efixturehtml">Example — shared fixture (<a href="file:///d:/Project/Node/js-validation/test/e2e/fixture.html"><code>test/e2e/fixture.html</code></a>)</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">form</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"test-form"</span><span style="color:#B392F0"> novalidate</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">>&#x3C;</span><span style="color:#85E89D">input</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"username"</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"username"</span><span style="color:#B392F0"> type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"text"</span><span style="color:#E1E4E8"> />&#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">>&#x3C;</span><span style="color:#85E89D">input</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"email"</span><span style="color:#B392F0">    id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"email"</span><span style="color:#B392F0">    type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"text"</span><span style="color:#E1E4E8"> />&#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">>&#x3C;</span><span style="color:#85E89D">input</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"password"</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"password"</span><span style="color:#B392F0"> type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"password"</span><span style="color:#E1E4E8"> />&#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">>&#x3C;</span><span style="color:#85E89D">input</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"confirmPassword"</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"confirmPassword"</span><span style="color:#B392F0"> type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"password"</span><span style="color:#E1E4E8"> />&#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">button</span><span style="color:#B392F0"> type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"submit"</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"submit-btn"</span><span style="color:#E1E4E8">>Submit&#x3C;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">form</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">p</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"status"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"module"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#F97583">  import</span><span style="color:#E1E4E8"> jsValidation </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '/src/index.js'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">  jsValidation</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'#test-form'</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#E1E4E8">    rules: {</span></span>
+<span class="line"><span style="color:#E1E4E8">      username:        { required: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, minlength: </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">      email:           { required: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, email: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">      password:        { required: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, minlength: </span><span style="color:#79B8FF">6</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">      confirmPassword: { required: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, equalTo: </span><span style="color:#9ECBFF">'#password'</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#E1E4E8">    messages: {</span></span>
+<span class="line"><span style="color:#E1E4E8">      confirmPassword: { equalTo: </span><span style="color:#9ECBFF">'Passwords must match.'</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }).</span><span style="color:#B392F0">submit</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'status'</span><span style="color:#E1E4E8">).textContent </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> 'Form submitted successfully!'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span></code></pre>
+<h3 id="example--rule-specific-fixture-teste2ealphafixturehtml">Example — rule-specific fixture (<a href="file:///d:/Project/Node/js-validation/test/e2e/alpha/fixture.html"><code>test/e2e/alpha/fixture.html</code></a>)</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">form</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"test-form"</span><span style="color:#B392F0"> novalidate</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">>&#x3C;</span><span style="color:#85E89D">input</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"field"</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"field"</span><span style="color:#B392F0"> type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"text"</span><span style="color:#E1E4E8"> />&#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">button</span><span style="color:#B392F0"> type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"submit"</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"submit-btn"</span><span style="color:#E1E4E8">>Submit&#x3C;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">form</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">p</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"status"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"module"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#F97583">  import</span><span style="color:#E1E4E8"> jsValidation </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '/src/index.js'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">  jsValidation</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'#test-form'</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#E1E4E8">    rules: { field: { required: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, alpha: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8"> } },</span></span>
+<span class="line"><span style="color:#E1E4E8">    messages: { field: { alpha: </span><span style="color:#9ECBFF">'Please enter only alphabetic letters.'</span><span style="color:#E1E4E8"> } }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }).</span><span style="color:#B392F0">submit</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'status'</span><span style="color:#E1E4E8">).textContent </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> 'Form submitted successfully!'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span></code></pre>
+<hr>
+<h2 id="writing-specs">Writing Specs</h2>
+<h3 id="file-location">File location</h3>
+<p>Place specs inside <code>test/e2e/&#x3C;rule-name>/&#x3C;rule-name>.spec.js</code> for rule-specific tests, or in <code>test/e2e/validation.spec.js</code> for cross-cutting concerns.</p>
+<h3 id="anatomy-of-a-spec-file">Anatomy of a spec file</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { test, expect } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@playwright/test'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">test.</span><span style="color:#B392F0">describe</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'E2E: &#x3C;rule> rule'</span><span style="color:#E1E4E8">, () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  test.</span><span style="color:#B392F0">beforeEach</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">async</span><span style="color:#E1E4E8"> ({ </span><span style="color:#FFAB70">page</span><span style="color:#E1E4E8"> }) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    await</span><span style="color:#E1E4E8"> page.</span><span style="color:#B392F0">goto</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/&#x3C;rule>/fixture.html'</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// navigate before each test</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">  test</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'fails for invalid value'</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">async</span><span style="color:#E1E4E8"> ({ </span><span style="color:#FFAB70">page</span><span style="color:#E1E4E8"> }) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    await</span><span style="color:#E1E4E8"> page.</span><span style="color:#B392F0">fill</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'#field'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'bad-value'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    await</span><span style="color:#E1E4E8"> page.</span><span style="color:#B392F0">click</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'#submit-btn'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    await</span><span style="color:#B392F0"> expect</span><span style="color:#E1E4E8">(page.</span><span style="color:#B392F0">locator</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'#field'</span><span style="color:#E1E4E8">)).</span><span style="color:#B392F0">toHaveClass</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">/</span><span style="color:#DBEDFF">is-invalid</span><span style="color:#9ECBFF">/</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">  test</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'passes for valid value'</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">async</span><span style="color:#E1E4E8"> ({ </span><span style="color:#FFAB70">page</span><span style="color:#E1E4E8"> }) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    await</span><span style="color:#E1E4E8"> page.</span><span style="color:#B392F0">fill</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'#field'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'good-value'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    await</span><span style="color:#E1E4E8"> page.</span><span style="color:#B392F0">click</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'#submit-btn'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    await</span><span style="color:#B392F0"> expect</span><span style="color:#E1E4E8">(page.</span><span style="color:#B392F0">locator</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'#status'</span><span style="color:#E1E4E8">)).</span><span style="color:#B392F0">toHaveText</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'Form submitted successfully!'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<h3 id="key-dom-contracts-that-tests-rely-on">Key DOM contracts that tests rely on</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>What</th><th>Assertion</th></tr></thead><tbody><tr><td>Field is invalid</td><td><code>toHaveClass(/is-invalid/)</code></td></tr><tr><td>ARIA accessibility</td><td><code>toHaveAttribute('aria-invalid', 'true')</code></td></tr><tr><td>HTML invalid attribute</td><td><code>toHaveAttribute('invalid', 'true')</code></td></tr><tr><td>Error message on field</td><td><code>toHaveAttribute('data-jsv-message', '&#x3C;msg>')</code></td></tr><tr><td>Inline error element visible</td><td><code>page.locator('[data-jsv-error-for="&#x3C;name>"]').toBeVisible()</code></td></tr><tr><td>Error element text</td><td><code>toHaveText('&#x3C;message>')</code></td></tr><tr><td>Successful submission</td><td><code>page.locator('#status').toHaveText('Form submitted successfully!')</code></td></tr></tbody></table>
+<hr>
+<h2 id="test-coverage--shared-fixture-validationspecjs">Test Coverage — Shared Fixture (<a href="file:///d:/Project/Node/js-validation/test/e2e/validation.spec.js"><code>validation.spec.js</code></a>)</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>#</th><th>Test</th><th>What it verifies</th></tr></thead><tbody><tr><td>1</td><td>Shows validation errors on empty submit</td><td><code>is-invalid</code>, <code>invalid</code>, <code>aria-invalid</code> on all fields</td></tr><tr><td>2</td><td>Displays error element below invalid field</td><td><code>[data-jsv-error-for]</code> element visible with correct text</td></tr><tr><td>3</td><td>Removes error element when field becomes valid</td><td>Error element hidden after typing</td></tr><tr><td>4</td><td>Validates email format</td><td><code>is-invalid</code> on malformed email</td></tr><tr><td>5</td><td>Validates minlength</td><td><code>is-invalid</code> when below minimum length</td></tr><tr><td>6</td><td>Validates equalTo (password confirmation)</td><td><code>is-invalid</code> when passwords don’t match</td></tr><tr><td>7</td><td>Submits successfully when all fields valid</td><td><code>#status</code> shows success message</td></tr><tr><td>8</td><td>Clears errors on valid input after failed submit</td><td><code>is-invalid</code> removed, <code>invalid</code> attribute removed</td></tr><tr><td>9</td><td>Real-time validation on input event</td><td>Error clears immediately when field becomes valid while typing</td></tr></tbody></table>
+<hr>
+<h2 id="test-coverage--alpha-rule-alphaalphaspecjs">Test Coverage — Alpha Rule (<a href="file:///d:/Project/Node/js-validation/test/e2e/alpha/alpha.spec.js"><code>alpha/alpha.spec.js</code></a>)</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>#</th><th>Test</th><th>Input</th><th>Expected</th></tr></thead><tbody><tr><td>1</td><td>Fails for digits</td><td><code>hello123</code></td><td><code>is-invalid</code></td></tr><tr><td>2</td><td>Fails for spaces</td><td><code>hello world</code></td><td><code>is-invalid</code></td></tr><tr><td>3</td><td>Fails for special chars</td><td><code>hello@world</code></td><td><code>is-invalid</code></td></tr><tr><td>4</td><td>Fails for hyphens</td><td><code>hello-world</code></td><td><code>is-invalid</code></td></tr><tr><td>5</td><td>Fails for underscores</td><td><code>hello_world</code></td><td><code>is-invalid</code></td></tr><tr><td>6</td><td>Passes for lowercase only</td><td><code>hello</code></td><td>no <code>is-invalid</code></td></tr><tr><td>7</td><td>Passes for uppercase only</td><td><code>HELLO</code></td><td>no <code>is-invalid</code></td></tr><tr><td>8</td><td>Passes for mixed case</td><td><code>HelloWorld</code></td><td>no <code>is-invalid</code></td></tr><tr><td>9</td><td>Displays custom error message</td><td><code>bad123!</code></td><td><code>data-jsv-message</code> = <code>'Please enter only alphabetic letters.'</code></td></tr><tr><td>10</td><td>Submits successfully when valid</td><td><code>HelloWorld</code> + submit</td><td><code>#status</code> = <code>'Form submitted successfully!'</code></td></tr></tbody></table>
+<hr>
+<h2 id="adding-e2e-tests-for-a-new-rule">Adding E2E Tests for a New Rule</h2>
+<ol>
+<li><strong>Create a fixture</strong> at <code>test/e2e/&#x3C;rule>/fixture.html</code> (copy an existing one and adapt the rules).</li>
+<li><strong>Create a spec</strong> at <code>test/e2e/&#x3C;rule>/&#x3C;rule>.spec.js</code>.</li>
+<li>Run <code>npm run test:e2e</code> to verify.</li>
+</ol>
+<h3 id="checklist-for-a-complete-spec">Checklist for a complete spec</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> Fails for each documented invalid input variant</li>
+<li class="task-list-item"><input type="checkbox" disabled> Passes for each valid input variant</li>
+<li class="task-list-item"><input type="checkbox" disabled> Verifies <code>is-invalid</code> class added/removed correctly</li>
+<li class="task-list-item"><input type="checkbox" disabled> Verifies <code>data-jsv-message</code> attribute on failure</li>
+<li class="task-list-item"><input type="checkbox" disabled> Verifies inline error element (<code>[data-jsv-error-for]</code>) visibility</li>
+<li class="task-list-item"><input type="checkbox" disabled> Verifies successful form submission path</li>
+</ul>
+<hr>
+<h2 id="debugging-tips">Debugging Tips</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Scenario</th><th>How</th></tr></thead><tbody><tr><td>Run a single spec</td><td><code>npx playwright test test/e2e/alpha/alpha.spec.js</code></td></tr><tr><td>Run one browser only</td><td><code>npx playwright test --project=chromium</code></td></tr><tr><td>Run in headed mode</td><td><code>npx playwright test --headed</code></td></tr><tr><td>Slow motion</td><td><code>npx playwright test --headed --slow-mo=500</code></td></tr><tr><td>Open Playwright UI</td><td><code>npx playwright test --ui</code></td></tr><tr><td>Show test report</td><td><code>npx playwright show-report</code></td></tr><tr><td>Debug interactively</td><td><code>npx playwright test --debug</code></td></tr></tbody></table>

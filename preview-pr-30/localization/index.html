@@ -1,0 +1,275 @@
+<!DOCTYPE html><meta charset="utf-8"><script type="module" src="/preview-pr-30/_astro/page.vzY--OHv.js"></script><h1 id="localization">Localization</h1>
+<p><code>js-validation</code> ships with built-in support for multiple languages. Error messages are loaded from locale files and resolved at runtime based on the <code>lang</code> option you pass to the validator.</p>
+<hr>
+<h2 id="built-in-locales">Built-in Locales</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Language</th><th>Code</th><th>File</th></tr></thead><tbody><tr><td>English</td><td><code>en</code></td><td><code>src/locales/en.js</code></td></tr><tr><td>Spanish</td><td><code>es</code></td><td><code>src/locales/es.js</code></td></tr></tbody></table>
+<p>All built-in locales are automatically registered when you import the full bundle:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> jsValidation </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@phpdevsr/js-validation'</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<hr>
+<h2 id="setting-the-active-language">Setting the Active Language</h2>
+<p>Pass the <code>lang</code> option when initialising the validator:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> validator</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> jsValidation</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'#my-form'</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#E1E4E8">  lang: </span><span style="color:#9ECBFF">'es'</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<p>If <code>lang</code> is omitted, it defaults to <code>'en'</code>.</p>
+<h3 id="fallback-behaviour">Fallback Behaviour</h3>
+<p>When a message key is missing from the active locale, the validator falls back to English (<code>en</code>). If the English key is also absent, the method-level default message (<code>'Please fix this field.'</code>) is used instead.</p>
+<p>Resolution order:</p>
+<ol>
+<li>Custom message in <code>options.messages</code></li>
+<li>Active locale (<code>options.lang</code>)</li>
+<li>English locale (<code>en</code>) as fallback</li>
+<li>Method default message</li>
+</ol>
+<hr>
+<h2 id="message-types">Message Types</h2>
+<p>Locale messages are plain strings or functions:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// Static string</span></span>
+<span class="line"><span style="color:#B392F0">required</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'This field is required.'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Dynamic string (receives the rule param as first argument)</span></span>
+<span class="line"><span style="color:#B392F0">minlength</span><span style="color:#E1E4E8">: (</span><span style="color:#FFAB70">param</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#9ECBFF"> `Please enter at least ${</span><span style="color:#E1E4E8">param</span><span style="color:#9ECBFF">} characters.`</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Multi-param (e.g. range uses an array/JSON)</span></span>
+<span class="line"><span style="color:#B392F0">range</span><span style="color:#E1E4E8">: (</span><span style="color:#FFAB70">param</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> bounds</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Array.</span><span style="color:#B392F0">isArray</span><span style="color:#E1E4E8">(param) </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> param </span><span style="color:#F97583">:</span><span style="color:#79B8FF"> JSON</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">parse</span><span style="color:#E1E4E8">(param);</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#9ECBFF"> `Please enter a value between ${</span><span style="color:#E1E4E8">bounds</span><span style="color:#9ECBFF">[</span><span style="color:#79B8FF">0</span><span style="color:#9ECBFF">]</span><span style="color:#9ECBFF">} and ${</span><span style="color:#E1E4E8">bounds</span><span style="color:#9ECBFF">[</span><span style="color:#79B8FF">1</span><span style="color:#9ECBFF">]</span><span style="color:#9ECBFF">}.`</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<hr>
+<h2 id="all-built-in-message-keys">All Built-in Message Keys</h2>
+<p>The following keys must be defined in a locale object:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Key</th><th>Param</th><th>Description</th></tr></thead><tbody><tr><td><code>required</code></td><td>—</td><td>Field is required</td></tr><tr><td><code>email</code></td><td>—</td><td>Must be a valid email</td></tr><tr><td><code>minlength</code></td><td><code>number</code></td><td>Minimum character count</td></tr><tr><td><code>maxlength</code></td><td><code>number</code></td><td>Maximum character count</td></tr><tr><td><code>range</code></td><td><code>[min, max]</code></td><td>Value within a numeric range</td></tr><tr><td><code>pattern</code></td><td>—</td><td>Must match a regex pattern</td></tr><tr><td><code>equalTo</code></td><td>—</td><td>Must equal another field</td></tr><tr><td><code>notEqualTo</code></td><td>—</td><td>Must differ from another field</td></tr><tr><td><code>numeric</code></td><td>—</td><td>Only numeric values</td></tr><tr><td><code>url</code></td><td>—</td><td>Must be a valid URL</td></tr><tr><td><code>date</code></td><td>—</td><td>Must be a valid date</td></tr><tr><td><code>dateISO</code></td><td>—</td><td>Must be a valid ISO date (<code>YYYY-MM-DD</code>)</td></tr><tr><td><code>ipv4</code></td><td>—</td><td>Must be a valid IPv4 address</td></tr><tr><td><code>ipv6</code></td><td>—</td><td>Must be a valid IPv6 address</td></tr><tr><td><code>alpha</code></td><td>—</td><td>Only alphabetic letters</td></tr><tr><td><code>alphanumeric</code></td><td>—</td><td>Letters, numbers, and underscores only</td></tr><tr><td><code>maxfiles</code></td><td><code>number</code></td><td>Maximum number of files</td></tr><tr><td><code>maxsize</code></td><td><code>string</code></td><td>Maximum file size</td></tr><tr><td><code>maxsizetotal</code></td><td><code>string</code></td><td>Maximum total file size</td></tr><tr><td><code>ishexcolor</code></td><td>—</td><td>Must be a valid hex color</td></tr><tr><td><code>time</code></td><td>—</td><td>Must be a valid time (<code>HH:MM</code> or <code>HH:MM:SS</code>)</td></tr></tbody></table>
+<hr>
+<h2 id="adding-a-custom-locale">Adding a Custom Locale</h2>
+<h3 id="step-1--create-the-locale-file">Step 1 – Create the locale file</h3>
+<p>Create <code>src/locales/&#x3C;lang>.js</code> (replace <code>&#x3C;lang></code> with your language code):</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// src/locales/fr.js</span></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> const</span><span style="color:#79B8FF"> fr</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  required: </span><span style="color:#9ECBFF">'Ce champ est obligatoire.'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  email: </span><span style="color:#9ECBFF">'Veuillez entrer une adresse e-mail valide.'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#B392F0">  minlength</span><span style="color:#E1E4E8">: (</span><span style="color:#FFAB70">param</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#9ECBFF"> `Veuillez entrer au moins ${</span><span style="color:#E1E4E8">param</span><span style="color:#9ECBFF">} caractères.`</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#B392F0">  maxlength</span><span style="color:#E1E4E8">: (</span><span style="color:#FFAB70">param</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#9ECBFF"> `Veuillez entrer au plus ${</span><span style="color:#E1E4E8">param</span><span style="color:#9ECBFF">} caractères.`</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#B392F0">  range</span><span style="color:#E1E4E8">: (</span><span style="color:#FFAB70">param</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> bounds</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Array.</span><span style="color:#B392F0">isArray</span><span style="color:#E1E4E8">(param) </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> param </span><span style="color:#F97583">:</span><span style="color:#79B8FF"> JSON</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">parse</span><span style="color:#E1E4E8">(param);</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#9ECBFF"> `Veuillez entrer une valeur entre ${</span><span style="color:#E1E4E8">bounds</span><span style="color:#9ECBFF">[</span><span style="color:#79B8FF">0</span><span style="color:#9ECBFF">]</span><span style="color:#9ECBFF">} et ${</span><span style="color:#E1E4E8">bounds</span><span style="color:#9ECBFF">[</span><span style="color:#79B8FF">1</span><span style="color:#9ECBFF">]</span><span style="color:#9ECBFF">}.`</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  pattern: </span><span style="color:#9ECBFF">'Veuillez respecter le format demandé.'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  equalTo: </span><span style="color:#9ECBFF">'Veuillez entrer la même valeur.'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  notEqualTo: </span><span style="color:#9ECBFF">'Veuillez entrer une valeur différente.'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  numeric: </span><span style="color:#9ECBFF">'Veuillez entrer uniquement des valeurs numériques.'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  url: </span><span style="color:#9ECBFF">'Veuillez entrer une URL valide.'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  date: </span><span style="color:#9ECBFF">'Veuillez entrer une date valide.'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  dateISO: </span><span style="color:#9ECBFF">'Veuillez entrer une date ISO valide (AAAA-MM-JJ).'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  ipv4: </span><span style="color:#9ECBFF">'Veuillez entrer une adresse IPv4 valide.'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  ipv6: </span><span style="color:#9ECBFF">'Veuillez entrer une adresse IPv6 valide.'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  alpha: </span><span style="color:#9ECBFF">'Veuillez entrer uniquement des lettres.'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  alphanumeric: </span><span style="color:#9ECBFF">'Veuillez entrer uniquement des lettres, chiffres et tirets bas.'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#B392F0">  maxfiles</span><span style="color:#E1E4E8">: (</span><span style="color:#FFAB70">param</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#9ECBFF"> `Veuillez sélectionner au plus ${</span><span style="color:#E1E4E8">param</span><span style="color:#9ECBFF">} fichiers.`</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#B392F0">  maxsize</span><span style="color:#E1E4E8">: (</span><span style="color:#FFAB70">param</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#9ECBFF"> `Veuillez sélectionner des fichiers ne dépassant pas ${</span><span style="color:#E1E4E8">param</span><span style="color:#9ECBFF">}.`</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#B392F0">  maxsizetotal</span><span style="color:#E1E4E8">: (</span><span style="color:#FFAB70">param</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#9ECBFF"> `La taille totale ne doit pas dépasser ${</span><span style="color:#E1E4E8">param</span><span style="color:#9ECBFF">}.`</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  ishexcolor: </span><span style="color:#9ECBFF">'Veuillez entrer une couleur hexadécimale valide (ex. #fff ou #ffffff).'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  time: </span><span style="color:#9ECBFF">'Veuillez entrer une heure valide (HH:MM ou HH:MM:SS).'</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<h3 id="step-2--register-it-in-srclocalesjs">Step 2 – Register it in <code>src/locales.js</code></h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// src/locales.js</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { en } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> './locales/en.js'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { es } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> './locales/es.js'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { fr } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> './locales/fr.js'</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// ← add</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> const</span><span style="color:#79B8FF"> locales</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> { en, es, fr }; </span><span style="color:#6A737D">// ← add to object</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#E1E4E8"> { en, es, fr }; </span><span style="color:#6A737D">// ← named re-export</span></span></code></pre>
+<h3 id="step-3--use-it">Step 3 – Use it</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> validator</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> jsValidation</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'#my-form'</span><span style="color:#E1E4E8">, { lang: </span><span style="color:#9ECBFF">'fr'</span><span style="color:#E1E4E8"> });</span></span></code></pre>
+<hr>
+<h2 id="runtime-registration-without-modifying-source">Runtime Registration (without modifying source)</h2>
+<p>You can register a locale at runtime without touching the source files. Useful when consuming the published package:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> jsValidation </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@phpdevsr/js-validation'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">jsValidation.</span><span style="color:#B392F0">addLocaleMessages</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'de'</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#E1E4E8">  required: </span><span style="color:#9ECBFF">'Dieses Feld ist erforderlich.'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  email: </span><span style="color:#9ECBFF">'Bitte geben Sie eine gültige E-Mail-Adresse ein.'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D">  // ... all other keys</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> validator</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> jsValidation</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'#my-form'</span><span style="color:#E1E4E8">, { lang: </span><span style="color:#9ECBFF">'de'</span><span style="color:#E1E4E8"> });</span></span></code></pre>
+<p>The low-level API is also available via <code>VanillaValidator</code>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { VanillaValidator } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '@phpdevsr/js-validation'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">VanillaValidator.</span><span style="color:#B392F0">addLocaleMessages</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'de'</span><span style="color:#E1E4E8">, { </span><span style="color:#6A737D">/* messages */</span><span style="color:#E1E4E8"> });</span></span></code></pre>
+<hr>
+<h2 id="per-field-custom-messages">Per-Field Custom Messages</h2>
+<p>Locale messages can be overridden per field via <code>options.messages</code>. These take the highest priority:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">jsValidation</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'#my-form'</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#E1E4E8">  lang: </span><span style="color:#9ECBFF">'es'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  rules: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    confirmPassword: { required: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, equalTo: </span><span style="color:#9ECBFF">'#password'</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  messages: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    confirmPassword: { equalTo: </span><span style="color:#9ECBFF">'Las contraseñas no coinciden.'</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<hr>
+<h2 id="locale-object-interface">Locale Object Interface</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> LocaleMessages</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#FFAB70">  required</span><span style="color:#F97583">?:</span><span style="color:#79B8FF">      string</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#FFAB70">  email</span><span style="color:#F97583">?:</span><span style="color:#79B8FF">         string</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#FFAB70">  minlength</span><span style="color:#F97583">?:</span><span style="color:#79B8FF">     string</span><span style="color:#F97583"> |</span><span style="color:#E1E4E8"> ((</span><span style="color:#FFAB70">param</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> number</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#FFAB70">  maxlength</span><span style="color:#F97583">?:</span><span style="color:#79B8FF">     string</span><span style="color:#F97583"> |</span><span style="color:#E1E4E8"> ((</span><span style="color:#FFAB70">param</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> number</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#FFAB70">  range</span><span style="color:#F97583">?:</span><span style="color:#79B8FF">         string</span><span style="color:#F97583"> |</span><span style="color:#E1E4E8"> ((</span><span style="color:#FFAB70">param</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">number</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">number</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">|</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#FFAB70">  pattern</span><span style="color:#F97583">?:</span><span style="color:#79B8FF">       string</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#FFAB70">  equalTo</span><span style="color:#F97583">?:</span><span style="color:#79B8FF">       string</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#FFAB70">  notEqualTo</span><span style="color:#F97583">?:</span><span style="color:#79B8FF">    string</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#FFAB70">  numeric</span><span style="color:#F97583">?:</span><span style="color:#79B8FF">       string</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#FFAB70">  url</span><span style="color:#F97583">?:</span><span style="color:#79B8FF">           string</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#FFAB70">  date</span><span style="color:#F97583">?:</span><span style="color:#79B8FF">          string</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#FFAB70">  dateISO</span><span style="color:#F97583">?:</span><span style="color:#79B8FF">       string</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#FFAB70">  ipv4</span><span style="color:#F97583">?:</span><span style="color:#79B8FF">          string</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#FFAB70">  ipv6</span><span style="color:#F97583">?:</span><span style="color:#79B8FF">          string</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#FFAB70">  alpha</span><span style="color:#F97583">?:</span><span style="color:#79B8FF">         string</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#FFAB70">  alphanumeric</span><span style="color:#F97583">?:</span><span style="color:#79B8FF">  string</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#FFAB70">  maxfiles</span><span style="color:#F97583">?:</span><span style="color:#79B8FF">      string</span><span style="color:#F97583"> |</span><span style="color:#E1E4E8"> ((</span><span style="color:#FFAB70">param</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> number</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#FFAB70">  maxsize</span><span style="color:#F97583">?:</span><span style="color:#79B8FF">       string</span><span style="color:#F97583"> |</span><span style="color:#E1E4E8"> ((</span><span style="color:#FFAB70">param</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#FFAB70">  maxsizetotal</span><span style="color:#F97583">?:</span><span style="color:#79B8FF">  string</span><span style="color:#F97583"> |</span><span style="color:#E1E4E8"> ((</span><span style="color:#FFAB70">param</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#FFAB70">  ishexcolor</span><span style="color:#F97583">?:</span><span style="color:#79B8FF">    string</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#FFAB70">  time</span><span style="color:#F97583">?:</span><span style="color:#79B8FF">          string</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  [</span><span style="color:#FFAB70">key</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">]</span><span style="color:#F97583">:</span><span style="color:#79B8FF">  string</span><span style="color:#F97583"> |</span><span style="color:#E1E4E8"> ((</span><span style="color:#F97583">...</span><span style="color:#FFAB70">args</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> any</span><span style="color:#E1E4E8">[]) </span><span style="color:#F97583">=></span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">|</span><span style="color:#79B8FF"> undefined</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<blockquote>
+<p>You only need to define keys that differ from the fallback locale. Missing keys resolve to English or the method default.</p>
+</blockquote>
