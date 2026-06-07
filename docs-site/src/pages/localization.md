@@ -8,8 +8,6 @@ description: "Localization support for js-validation."
 
 > Available since `v1.4.0`.
 
-> **[→ Try the Live Demo](/demo/localization/)**
-
 `js-validation` ships with built-in support for multiple languages. Error messages are loaded from locale files and resolved at runtime based on the `lang` option you pass to the validator.
 
 ## Built-in Locales
