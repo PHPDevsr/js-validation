@@ -1,0 +1,233 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const demoBase = base + '/demo';
+const version = import.meta.env.PUBLIC_APP_VERSION;
+const cdnUrl = `https://cdn.jsdelivr.net/npm/@phpdevsr/js-validation@${version}/dist/js-validation.min.js?v=${version}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Localization Demo – js-validation</title>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8f9fa; color: #1a1a1a; padding: 2rem 1rem; }
+      .container { max-width: 640px; margin: 0 auto; }
+      .back { display: inline-flex; align-items: center; gap: 0.35rem; color: #0d6efd; text-decoration: none; font-size: 0.9rem; margin-bottom: 1.5rem; }
+      .back:hover { text-decoration: underline; }
+      h1 { font-size: 1.6rem; margin-bottom: 0.25rem; }
+      .desc { color: #555; font-size: 0.95rem; margin-bottom: 2rem; }
+      .card { background: #fff; border: 1px solid #dee2e6; border-radius: 8px; padding: 1.75rem; }
+
+      /* Language switcher */
+      .lang-switcher { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #e9ecef; }
+      .lang-btn {
+        display: inline-flex; align-items: center; gap: 0.4rem;
+        padding: 0.45rem 1rem; border: 1.5px solid #dee2e6; border-radius: 20px;
+        background: #fff; color: #555; font-size: 0.88rem; font-weight: 500;
+        cursor: pointer; transition: all 0.15s; user-select: none;
+      }
+      .lang-btn:hover { border-color: #0d6efd; color: #0d6efd; background: #f0f6ff; }
+      .lang-btn.active { border-color: #0d6efd; background: #0d6efd; color: #fff; box-shadow: 0 1px 4px rgba(13,110,253,0.3); }
+      .lang-badge { display: inline-flex; align-items: center; gap: 0.3rem; margin-left: auto; font-size: 0.8rem; color: #6c757d; background: #f1f3f5; padding: 0.3rem 0.65rem; border-radius: 4px; }
+      .lang-badge strong { color: #1a1a1a; }
+
+      /* Form */
+      .form-group { margin-bottom: 1.25rem; }
+      .form-group label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem; }
+      .form-group input { width: 100%; padding: 0.55rem 0.75rem; border: 1px solid #ced4da; border-radius: 6px; font-size: 0.95rem; outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
+      .form-group input:focus { border-color: #86b7fe; box-shadow: 0 0 0 3px rgba(13,110,253,0.15); }
+      .form-group input.is-invalid { border-color: #dc3545; }
+      .form-group input.is-invalid:focus { box-shadow: 0 0 0 3px rgba(220,53,69,0.15); }
+      .invalid-feedback { display: block; color: #dc3545; font-size: 0.82rem; margin-top: 0.35rem; }
+      .hint { font-size: 0.8rem; color: #888; margin-top: 0.25rem; }
+      .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; margin-top: 0.5rem; padding: 0.6rem 1.5rem; background: #0d6efd; color: #fff; border: none; border-radius: 6px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.15s, box-shadow 0.15s; box-shadow: 0 1px 4px rgba(13,110,253,0.25); }
+      .btn:hover { background: #0b5ed7; box-shadow: 0 3px 8px rgba(13,110,253,0.3); }
+      .btn:active { background: #0a58ca; }
+      .alert { margin-top: 1.25rem; padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.9rem; font-weight: 500; }
+      .alert-success { background: #d1e7dd; color: #0a3622; border: 1px solid #a3cfbb; }
+      code { background: #f4f4f5; padding: 0.1em 0.35em; border-radius: 3px; font-size: 0.88em; }
+
+      /* Preview table */
+      .preview-box { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e9ecef; }
+      .preview-box h3 { font-size: 0.85rem; font-weight: 600; color: #6c757d; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.75rem; }
+      .preview-table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+      .preview-table th { text-align: left; padding: 0.4rem 0.6rem; border-bottom: 2px solid #dee2e6; color: #6c757d; font-weight: 600; }
+      .preview-table td { padding: 0.45rem 0.6rem; border-bottom: 1px solid #f1f3f5; color: #333; }
+      .preview-table td:first-child { font-family: ui-monospace, 'Cascadia Code', monospace; color: #0d6efd; font-size: 0.82rem; }
+      .preview-table tr:last-child td { border-bottom: none; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <a class="back" href={`${demoBase}/`}>← All demos</a>
+      <h1>Localization</h1>
+      <p class="desc">Switch between built-in locales and see error messages change in real time. Add your own locale at runtime with <code>addLocaleMessages()</code>.</p>
+
+      <div class="card">
+        <!-- Language Switcher -->
+        <div class="lang-switcher">
+          <button class="lang-btn active" data-lang="en">🇺🇸 English</button>
+          <button class="lang-btn" data-lang="es">🇪🇸 Español</button>
+          <button class="lang-btn" data-lang="fr">🇫🇷 Français</button>
+          <span class="lang-badge">Active: <strong id="active-lang-label">en</strong></span>
+        </div>
+
+        <!-- Form -->
+        <div id="form-wrapper">
+          <form id="demo-form" novalidate>
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input id="username" name="username" type="text" placeholder="e.g. johndoe" />
+              <span class="hint">Required, min 3 characters.</span>
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="text" placeholder="e.g. john@example.com" />
+            </div>
+            <div class="form-group">
+              <label for="password">Password <small style="font-weight:normal;color:#888">(min 6 chars)</small></label>
+              <input id="password" name="password" type="password" placeholder="••••••" />
+            </div>
+            <div class="form-group">
+              <label for="confirmPassword">Confirm Password</label>
+              <input id="confirmPassword" name="confirmPassword" type="password" placeholder="••••••" />
+            </div>
+            <button class="btn" type="submit" id="submit-btn">Validate</button>
+          </form>
+        </div>
+        <div id="status"></div>
+
+        <!-- Message Preview Table -->
+        <div class="preview-box">
+          <h3>Expected Error Messages</h3>
+          <table class="preview-table">
+            <thead>
+              <tr>
+                <th>Rule</th>
+                <th id="preview-lang-header">English (en)</th>
+              </tr>
+            </thead>
+            <tbody id="preview-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script is:inline src={cdnUrl}></script>
+    <script>
+      const jsvFactory = window.jsValidation.default;
+
+      // French locale messages (not bundled — registered at runtime)
+      jsvFactory.addLocaleMessages('fr', {
+        required: 'Ce champ est obligatoire.',
+        email: 'Veuillez entrer une adresse e-mail valide.',
+        minlength: function(p) { return 'Veuillez entrer au moins ' + p + ' caractères.'; },
+        maxlength: function(p) { return 'Veuillez entrer au plus ' + p + ' caractères.'; },
+        equalTo: 'Veuillez entrer la même valeur.',
+        notEqualTo: 'Veuillez entrer une valeur différente.',
+        pattern: 'Veuillez respecter le format demandé.',
+        numeric: 'Veuillez entrer uniquement des valeurs numériques.',
+        url: 'Veuillez entrer une URL valide.',
+        date: 'Veuillez entrer une date valide.',
+        dateISO: 'Veuillez entrer une date ISO valide (AAAA-MM-JJ).',
+        ipv4: 'Veuillez entrer une adresse IPv4 valide.',
+        ipv6: 'Veuillez entrer une adresse IPv6 valide.',
+        alpha: 'Veuillez entrer uniquement des lettres.',
+        alphanumeric: 'Veuillez entrer uniquement des lettres, chiffres et tirets bas.',
+        ishexcolor: 'Veuillez entrer une couleur hexadécimale valide.',
+        time: 'Veuillez entrer une heure valide (HH:MM ou HH:MM:SS).',
+        range: function(p) {
+          try {
+            var b = Array.isArray(p) ? p : JSON.parse(p);
+            return 'Veuillez entrer une valeur entre ' + b[0] + ' et ' + b[1] + '.';
+          } catch(e) { return 'Veuillez entrer une plage valide.'; }
+        },
+        maxfiles: function(p) { return 'Veuillez sélectionner au plus ' + p + ' fichiers.'; },
+        maxsize: function(p) { return 'Veuillez sélectionner des fichiers ne dépassant pas ' + p + '.'; },
+        maxsizetotal: function(p) { return 'La taille totale ne doit pas dépasser ' + p + '.'; }
+      });
+
+      // Locale preview messages for the table
+      var previewMessages = {
+        en: {
+          required: 'This field is required.',
+          email: 'Please enter a valid email address.',
+          'minlength (6)': 'Please enter at least 6 characters.',
+          equalTo: 'Please enter the same value again.'
+        },
+        es: {
+          required: 'Este campo es obligatorio.',
+          email: 'Por favor ingrese una dirección de correo electrónico válida.',
+          'minlength (6)': 'Por favor ingrese al menos 6 caracteres.',
+          equalTo: 'Por favor ingrese el mismo valor nuevamente.'
+        },
+        fr: {
+          required: 'Ce champ est obligatoire.',
+          email: 'Veuillez entrer une adresse e-mail valide.',
+          'minlength (6)': 'Veuillez entrer au moins 6 caractères.',
+          equalTo: 'Veuillez entrer la même valeur.'
+        }
+      };
+
+      var langLabels = { en: 'English (en)', es: 'Español (es)', fr: 'Français (fr)' };
+
+      function updatePreviewTable(lang) {
+        var header = document.getElementById('preview-lang-header');
+        var tbody = document.getElementById('preview-tbody');
+        var msgs = previewMessages[lang] || previewMessages.en;
+        header.textContent = langLabels[lang] || lang;
+        tbody.innerHTML = Object.keys(msgs).map(function(rule) {
+          return '<tr><td>' + rule + '</td><td>' + msgs[rule] + '</td></tr>';
+        }).join('');
+      }
+
+      function initValidator(lang) {
+        // Update active button
+        document.querySelectorAll('.lang-btn').forEach(function(btn) {
+          btn.classList.toggle('active', btn.dataset.lang === lang);
+        });
+        document.getElementById('active-lang-label').textContent = lang;
+        updatePreviewTable(lang);
+
+        // Clear status
+        document.getElementById('status').innerHTML = '';
+
+        // Clone form to strip old event listeners
+        var wrapper = document.getElementById('form-wrapper');
+        var oldForm = document.getElementById('demo-form');
+        var newForm = oldForm.cloneNode(true);
+        wrapper.replaceChild(newForm, oldForm);
+
+        // Remove leftover inline error elements
+        wrapper.querySelectorAll('[data-jsv-error-for]').forEach(function(el) { el.remove(); });
+
+        // Re-initialise with selected lang
+        jsvFactory('#demo-form', {
+          lang: lang,
+          rules: {
+            username: { required: true, minlength: 3 },
+            email: { required: true, email: true },
+            password: { required: true, minlength: 6 },
+            confirmPassword: { required: true, equalTo: '#password' }
+          }
+        }).submit(function() {
+          document.getElementById('status').innerHTML =
+            '<div class="alert alert-success">✓ Form submitted successfully!</div>';
+        });
+      }
+
+      // Language button click
+      document.querySelectorAll('.lang-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          initValidator(btn.dataset.lang);
+        });
+      });
+
+      // Initial load
+      initValidator('en');
+    </script>
+  </body>
+</html>
