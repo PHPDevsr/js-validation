@@ -19,6 +19,8 @@ function jsValidation(formOrSelector, options = {}) {
 
 jsValidation.Validator = VanillaValidator;
 jsValidation.addMethod = VanillaValidator.addMethod.bind(VanillaValidator);
+jsValidation.addLocaleMessages = VanillaValidator.addLocaleMessages.bind(VanillaValidator);
+
 
 export default jsValidation;
 export { VanillaValidator };

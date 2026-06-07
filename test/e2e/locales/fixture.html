@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>E2E Test - Locales</title>
+    <style>
+      .is-invalid { border: 2px solid red; }
+      .invalid-feedback { color: red; font-size: 0.875rem; display: block; }
+    </style>
+  </head>
+  <body>
+    <div id="form-wrapper">
+      <form id="test-form" novalidate>
+        <div>
+          <input name="username" id="username" type="text" />
+        </div>
+        <div>
+          <input name="email" id="email" type="text" />
+        </div>
+        <button type="submit" id="submit-btn">Submit</button>
+      </form>
+    </div>
+    <p id="status"></p>
+
+    <script type="module">
+      import jsValidation, { VanillaValidator } from '/src/index.js';
+
+      // Expose for use in page.evaluate()
+      window.jsValidation = jsValidation;
+      window.VanillaValidator = VanillaValidator;
+
+      /**
+       * Re-initialise the validator with the given options.
+       * Clones and replaces the form element to remove old event listeners,
+       * then clears any existing inline error elements and the status text.
+       */
+      window.initValidator = (options = {}) => {
+        // Clear status
+        document.getElementById('status').textContent = '';
+
+        // Clone form to strip previously attached event listeners
+        const wrapper = document.getElementById('form-wrapper');
+        const oldForm = document.getElementById('test-form');
+        const newForm = oldForm.cloneNode(true);
+        wrapper.replaceChild(newForm, oldForm);
+
+        // Remove any leftover inline error elements
+        wrapper.querySelectorAll('[data-jsv-error-for]').forEach((el) => el.remove());
+
+        const validator = jsValidation('#test-form', {
+          rules: {
+            username: { required: true },
+            email: { required: true, email: true },
+          },
+          ...options,
+        }).submit(() => {
+          document.getElementById('status').textContent = 'Form submitted successfully!';
+        });
+
+        window.__validator = validator;
+        return validator;
+      };
+
+      // Default init with English locale
+      window.initValidator();
+    </script>
+  </body>
+</html>
