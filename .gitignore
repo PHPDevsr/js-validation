@@ -5,3 +5,7 @@ playwright-report
 node_modules
 test-results
 _site
+**/package-lock.json
+**/yarn.lock
+**/pnpm-lock.yaml
+.DS_Store
