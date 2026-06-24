@@ -12,17 +12,27 @@ function createClassList() {
 }
 
 export class VanillaValidator {
-  static methods = {};
-  static locales = {};
+  static methods = Object.create(null);
+  static locales = Object.create(null);
 
   static addLocaleMessages(lang, messages) {
-    if (!VanillaValidator.locales[lang]) {
-      VanillaValidator.locales[lang] = {};
+    if (lang === '__proto__' || lang === 'constructor' || lang === 'prototype') {
+      throw new Error('Invalid locale key.');
     }
-    Object.assign(VanillaValidator.locales[lang], messages);
+    if (!VanillaValidator.locales[lang]) {
+      VanillaValidator.locales[lang] = Object.create(null);
+    }
+    if (!messages || typeof messages !== 'object') return;
+    for (const key of Object.keys(messages)) {
+      if (key === '__proto__' || key === 'constructor' || key === 'prototype') continue;
+      VanillaValidator.locales[lang][key] = messages[key];
+    }
   }
 
   static addMethod(name, validateFn, message) {
+    if (name === '__proto__' || name === 'constructor' || name === 'prototype') {
+      throw new Error('Invalid method name.');
+    }
     VanillaValidator.methods[name] = {
       validate: validateFn,
       message: message || 'Please fix this field.'
