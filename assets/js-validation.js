@@ -24,8 +24,19 @@
 		};
 	}
 	var VanillaValidator = class VanillaValidator {
-		static methods = {};
+		static methods = Object.create(null);
+		static locales = Object.create(null);
+		static addLocaleMessages(lang, messages) {
+			if (lang === "__proto__" || lang === "constructor" || lang === "prototype") throw new Error("Invalid locale key.");
+			if (!VanillaValidator.locales[lang]) VanillaValidator.locales[lang] = Object.create(null);
+			if (!messages || typeof messages !== "object") return;
+			for (const key of Object.keys(messages)) {
+				if (key === "__proto__" || key === "constructor" || key === "prototype") continue;
+				VanillaValidator.locales[lang][key] = messages[key];
+			}
+		}
 		static addMethod(name, validateFn, message) {
+			if (name === "__proto__" || name === "constructor" || name === "prototype") throw new Error("Invalid method name.");
 			VanillaValidator.methods[name] = {
 				validate: validateFn,
 				message: message || "Please fix this field."
@@ -34,6 +45,7 @@
 		constructor(form, options = {}) {
 			this.form = form;
 			this.options = options;
+			this.lang = options.lang || "en";
 			this.errorClass = options.errorClass || "is-invalid";
 			this.errorElement = options.errorElement || "span";
 			this.errorElementClass = options.errorElementClass || "invalid-feedback";
@@ -80,6 +92,17 @@
 		_messageFor(field, ruleName, param, methodDef) {
 			const custom = this.options.messages && this.options.messages[field.name] && this.options.messages[field.name][ruleName];
 			if (custom) return custom;
+			const localeMessages = VanillaValidator.locales[this.lang];
+			if (localeMessages && localeMessages[ruleName] !== void 0) {
+				const localeMsg = localeMessages[ruleName];
+				if (typeof localeMsg === "function") return localeMsg(param, field);
+				return localeMsg;
+			}
+			if (this.lang !== "en" && VanillaValidator.locales["en"] && VanillaValidator.locales["en"][ruleName] !== void 0) {
+				const enMsg = VanillaValidator.locales["en"][ruleName];
+				if (typeof enMsg === "function") return enMsg(param, field);
+				return enMsg;
+			}
 			const message = methodDef.message;
 			if (typeof message === "function") return message(param, field);
 			return message || "Please fix this field.";
@@ -160,6 +183,76 @@
 				this.clearError(field);
 			});
 			this.errors = {};
+		}
+	};
+	//#endregion
+	//#region src/locales.js
+	/**
+	* Localization messages for js-validation rules.
+	*
+	* Each locale lives in its own file under src/locales/<lang>.js.
+	* Add a new locale by creating src/locales/<lang>.js and re-exporting it here.
+	*/
+	var locales = {
+		en: {
+			required: "This field is required.",
+			email: "Please enter a valid email address.",
+			minlength: (param) => `Please enter at least ${param} characters.`,
+			maxlength: (param) => `Please enter no more than ${param} characters.`,
+			range: (param) => {
+				try {
+					const bounds = Array.isArray(param) ? param : JSON.parse(param);
+					return `Please enter a value between ${bounds[0]} and ${bounds[1]}.`;
+				} catch {
+					return "Please enter a valid range.";
+				}
+			},
+			pattern: "Please match the requested format.",
+			equalTo: "Please enter the same value again.",
+			notEqualTo: "Please enter a different value.",
+			numeric: "Please enter only numeric values.",
+			url: "Please enter a valid URL.",
+			date: "Please enter a valid date.",
+			dateISO: "Please enter a valid ISO date (YYYY-MM-DD).",
+			ipv4: "Please enter a valid IPv4 address.",
+			ipv6: "Please enter a valid IPv6 address.",
+			alpha: "Please enter only alphabetic letters.",
+			alphanumeric: "Please enter only letters, numbers, and underscores.",
+			maxfiles: (param) => `Please select no more than ${param} files.`,
+			maxsize: (param) => `Please select files no larger than ${param}.`,
+			maxsizetotal: (param) => `Total size of all files must not exceed ${param}.`,
+			ishexcolor: "Please enter a valid hex color (e.g. #fff or #ffffff).",
+			time: "Please enter a valid time (HH:MM or HH:MM:SS)."
+		},
+		es: {
+			required: "Este campo es obligatorio.",
+			email: "Por favor ingrese una dirección de correo electrónico válida.",
+			minlength: (param) => `Por favor ingrese al menos ${param} caracteres.`,
+			maxlength: (param) => `Por favor ingrese no más de ${param} caracteres.`,
+			range: (param) => {
+				try {
+					const bounds = Array.isArray(param) ? param : JSON.parse(param);
+					return `Por favor ingrese un valor entre ${bounds[0]} y ${bounds[1]}.`;
+				} catch {
+					return "Por favor ingrese un rango válido.";
+				}
+			},
+			pattern: "Por favor cumpla con el formato solicitado.",
+			equalTo: "Por favor ingrese el mismo valor nuevamente.",
+			notEqualTo: "Por favor ingrese un valor diferente.",
+			numeric: "Por favor ingrese solo valores numéricos.",
+			url: "Por favor ingrese una URL válida.",
+			date: "Por favor ingrese una fecha válida.",
+			dateISO: "Por favor ingrese una fecha ISO válida (AAAA-MM-DD).",
+			ipv4: "Por favor ingrese una dirección IPv4 válida.",
+			ipv6: "Por favor ingrese una dirección IPv6 válida.",
+			alpha: "Por favor ingrese solo letras.",
+			alphanumeric: "Por favor ingrese solo letras, números y guiones bajos.",
+			maxfiles: (param) => `Por favor seleccione no más de ${param} archivos.`,
+			maxsize: (param) => `Por favor seleccione archivos no mayores que ${param}.`,
+			maxsizetotal: (param) => `El tamaño total de todos los archivos no debe exceder ${param}.`,
+			ishexcolor: "Por favor ingrese un color hexadecimal válido (p. ej. #fff o #ffffff).",
+			time: "Por favor ingrese una hora válida (HH:MM o HH:MM:SS)."
 		}
 	};
 	//#endregion
@@ -248,6 +341,12 @@
 		return /^((([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}:[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){5}:([0-9A-Fa-f]{1,4}:)?[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){4}:([0-9A-Fa-f]{1,4}:){0,2}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){3}:([0-9A-Fa-f]{1,4}:){0,3}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){2}:([0-9A-Fa-f]{1,4}:){0,4}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(([0-9A-Fa-f]{1,4}:){0,5}:((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(::([0-9A-Fa-f]{1,4}:){0,5}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|([0-9A-Fa-f]{1,4}::([0-9A-Fa-f]{1,4}:){0,5}[0-9A-Fa-f]{1,4})|(::([0-9A-Fa-f]{1,4}:){0,6}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){1,7}:))$/i.test(String(value));
 	}, "Please enter a valid IPv6 address.");
 	//#endregion
+	//#region src/rules/alpha.js
+	VanillaValidator.addMethod("alpha", (value) => {
+		if (String(value || "").trim() === "") return false;
+		return /^[a-zA-Z]+$/i.test(String(value));
+	}, "Please enter only alphabetic letters.");
+	//#endregion
 	//#region src/rules/alphanumeric.js
 	VanillaValidator.addMethod("alphanumeric", (value) => {
 		if (String(value || "").trim() === "") return false;
@@ -301,6 +400,18 @@
 		return Array.from(field && field.files || []).reduce((sum, file) => sum + Number(file && file.size), 0) <= limit;
 	}, (param) => `Total size of all files must not exceed ${param}.`);
 	//#endregion
+	//#region src/rules/ishexcolor.js
+	VanillaValidator.addMethod("ishexcolor", (value) => {
+		if (String(value || "").trim() === "") return false;
+		return /^#(?:[0-9a-f]{6}|[0-9a-f]{3})$/i.test(String(value));
+	}, "Please enter a valid hex color (e.g. #fff or #ffffff).");
+	//#endregion
+	//#region src/rules/time.js
+	VanillaValidator.addMethod("time", (value) => {
+		if (String(value || "").trim() === "") return false;
+		return /^([01]\d|2[0-3]|[0-9])(:[0-5]\d){1,2}$/.test(String(value).trim());
+	}, "Please enter a valid time (HH:MM or HH:MM:SS).");
+	//#endregion
 	//#region src/index.js
 	/**
 	* js-validation – full bundle (core + all built-in rules).
@@ -310,6 +421,9 @@
 	*   import 'js-validation/rules/required';
 	*   import 'js-validation/rules/email';
 	*/
+	Object.entries(locales).forEach(([lang, messages]) => {
+		VanillaValidator.addLocaleMessages(lang, messages);
+	});
 	function jsValidation(formOrSelector, options = {}) {
 		let form = formOrSelector;
 		if (typeof formOrSelector === "string" && typeof document !== "undefined") form = document.querySelector(formOrSelector);
@@ -317,6 +431,7 @@
 	}
 	jsValidation.Validator = VanillaValidator;
 	jsValidation.addMethod = VanillaValidator.addMethod.bind(VanillaValidator);
+	jsValidation.addLocaleMessages = VanillaValidator.addLocaleMessages.bind(VanillaValidator);
 	//#endregion
 	exports.VanillaValidator = VanillaValidator;
 	exports.default = jsValidation;
