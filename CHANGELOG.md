@@ -9,9 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.4.0] - 2026-06-24
 
-### Changed
+### Added
 
-- No notable changes.
+- feat: added built-in `ishexcolor` rules by @ddevsr #27
+- feat: added built-in `time` rules by @ddevsr #28
+- feat: added built-in `alpha` rules by @ddevsr #29
+- feat: added `localization` by @ddevsr #30
 
 ## [1.3.0] - 2026-06-05
 
