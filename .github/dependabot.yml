@@ -14,8 +14,3 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: 'daily'
-    groups:
-      github-actions:
-        patterns:
-        - '*'
-        group-by: dependency-name
