@@ -57,7 +57,7 @@ jobs:
 
       - name: Deploy PR preview
         if: github.event.action != 'closed'
-        uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4.8.0
+        uses: JamesIves/github-pages-deploy-action@fa24774553152dd7873cd16ebd8d959b010c5445 # v4.9.0
         with:
           folder: _site
           branch: gh-pages
@@ -71,7 +71,7 @@ jobs:
         
       - name: Deploy empty folder to remove preview
         if: github.event.action == 'closed'
-        uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4.8.0
+        uses: JamesIves/github-pages-deploy-action@fa24774553152dd7873cd16ebd8d959b010c5445 # v4.9.0
         with:
           folder: /tmp/empty-preview
           branch: gh-pages
