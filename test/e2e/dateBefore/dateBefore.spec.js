@@ -1,0 +1,26 @@
+import { test, expect } from '@playwright/test';
+
+test.describe('E2E: dateBefore rule', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/dateBefore/fixture.html');
+  });
+
+  test('fails for invalid value', async ({ page }) => {
+    await page.fill('#field', "2030-01-01");
+    await page.click('#submit-btn');
+    await expect(page.locator('#field')).toHaveClass(/is-invalid/);
+    await expect(page.locator('#field')).toHaveAttribute('data-jsv-message', "Please enter a date before 2024-01-01.");
+    await expect(page.locator('#status')).toHaveText('');
+  });
+
+  test('passes for valid value', async ({ page }) => {
+    await page.fill('#field', "2020-01-01");
+    await expect(page.locator('#field')).not.toHaveClass(/is-invalid/);
+  });
+
+  test('submits successfully when valid', async ({ page }) => {
+    await page.fill('#field', "2020-01-01");
+    await page.click('#submit-btn');
+    await expect(page.locator('#status')).toHaveText('Form submitted successfully!');
+  });
+});

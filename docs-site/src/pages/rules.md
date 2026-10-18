@@ -608,6 +608,141 @@ rules: {
 
 ---
 
+### `domain`
+
+Validates a bare domain name (no scheme or path), e.g. `sub.example.co.id`.
+
+```js
+rules: {
+  website: { domain: true }
+}
+```
+
+**Default message:** `"Please enter a valid domain name."`
+
+---
+
+
+
+---
+
+### `url2`
+
+A stricter [`url`](#url): requires an `http://` or `https://` scheme and a host with a dot (no bare IPs or `localhost`).
+
+```js
+rules: {
+  website: { url2: true }
+}
+```
+
+**Default message:** `"Please enter a valid URL including http:// or https://."`
+
+---
+
+
+
+---
+
+### `phoneUS`
+
+Validates a US phone number. Accepts `1`/`+1` prefixes, parentheses, spaces, dots and dashes.
+
+```js
+rules: {
+  phone: { phoneUS: true }
+}
+```
+
+**Default message:** `"Please enter a valid US phone number."`
+
+---
+
+
+
+---
+
+### `dateBefore`
+
+Validates that the date is strictly before another date. The parameter can be a date string, `"today"`, or a CSS selector of another field.
+
+```js
+rules: {
+  startDate: { dateBefore: '#endDate' }
+}
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `dateBefore` | `string` | Date string, `"today"`, or a CSS selector |
+
+**Default message:** `"Please enter a date before {0}."`
+
+---
+
+
+
+---
+
+### `dateAfter`
+
+Validates that the date is strictly after another date. Same parameter forms as [`dateBefore`](#datebefore).
+
+```js
+rules: {
+  endDate: { dateAfter: '#startDate' }
+}
+```
+
+**Default message:** `"Please enter a date after {0}."`
+
+---
+
+
+
+---
+
+### `require_from_group`
+
+Requires that at least a given number of fields in a group are filled. Add the rule to **every** field in the group.
+
+```js
+rules: {
+  phone: { require_from_group: [1, '.contact'] },
+  email: { require_from_group: [1, '.contact'] }
+}
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `require_from_group` | `[number, string]` | `[count, selector]` — minimum filled fields and the group selector |
+
+**Default message:** `"Please fill at least {0} of these fields."`
+
+---
+
+
+
+---
+
+### `different`
+
+The inverse of [`equalTo`](#equalto): the value must differ from the field matched by the selector.
+
+```js
+rules: {
+  username: { different: '#currentUsername' }
+}
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `different` | `string` | CSS selector of the field to compare against |
+
+**Default message:** `"Please enter a different value."`
+
+---
+
 ## Using Rules via HTML Attributes
 
 All rules can also be declared using `data-rule-*` attributes:
