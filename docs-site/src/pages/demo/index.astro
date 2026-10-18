@@ -127,6 +127,106 @@ const demoBase = base + '/demo';
           <h2>maxfiles / maxsize / maxsizetotal</h2>
           <p>Limits the number of selected files and enforces a per-file size cap for uploads.</p>
         </a>
+        <a class="card" href={`${demoBase}/min/`}>
+          <span class="tag">Rule · v1.5.0</span>
+          <h2>min</h2>
+          <p>Requires the numeric value to be greater than or equal to a minimum.</p>
+        </a>
+        <a class="card" href={`${demoBase}/max/`}>
+          <span class="tag">Rule · v1.5.0</span>
+          <h2>max</h2>
+          <p>Requires the numeric value to be less than or equal to a maximum.</p>
+        </a>
+        <a class="card" href={`${demoBase}/step/`}>
+          <span class="tag">Rule · v1.5.0</span>
+          <h2>step</h2>
+          <p>Requires the value to be a multiple of the step, counted from the field's <code>min</code>.</p>
+        </a>
+        <a class="card" href={`${demoBase}/rangelength/`}>
+          <span class="tag">Rule · v1.5.0</span>
+          <h2>rangelength</h2>
+          <p>Requires the string length to fall within a minimum and maximum.</p>
+        </a>
+        <a class="card" href={`${demoBase}/digits/`}>
+          <span class="tag">Rule · v1.5.0</span>
+          <h2>digits</h2>
+          <p>Accepts only digit characters (0–9) — no sign, spaces, or decimal point.</p>
+        </a>
+        <a class="card" href={`${demoBase}/integer/`}>
+          <span class="tag">Rule · v1.5.0</span>
+          <h2>integer</h2>
+          <p>Accepts whole numbers, optionally signed with <code>+</code> or <code>-</code>.</p>
+        </a>
+        <a class="card" href={`${demoBase}/number/`}>
+          <span class="tag">Rule · v1.5.0</span>
+          <h2>number</h2>
+          <p>Accepts decimal numbers, including negatives and thousands separators (e.g. <code>1,234.56</code>).</p>
+        </a>
+        <a class="card" href={`${demoBase}/letters/`}>
+          <span class="tag">Rule · v1.5.0</span>
+          <h2>letters</h2>
+          <p>Accepts letters only, with optional <code>birthdate</code> and <code>id</code> character sets.</p>
+        </a>
+        <a class="card" href={`${demoBase}/notblank/`}>
+          <span class="tag">Rule · v1.5.0</span>
+          <h2>notblank</h2>
+          <p>Rejects only a truly empty value — whitespace passes, unlike <code>required</code>.</p>
+        </a>
+        <a class="card" href={`${demoBase}/creditcard/`}>
+          <span class="tag">Rule · v1.5.0</span>
+          <h2>creditcard</h2>
+          <p>Validates card numbers by Luhn checksum and issuer-specific length.</p>
+        </a>
+        <a class="card" href={`${demoBase}/creditcardexpiry/`}>
+          <span class="tag">Rule · v1.5.0</span>
+          <h2>creditcardExpiry</h2>
+          <p>Validates an <code>MM/YY</code> expiry date that has not passed.</p>
+        </a>
+        <a class="card" href={`${demoBase}/extension/`}>
+          <span class="tag">Rule · v1.5.0</span>
+          <h2>extension</h2>
+          <p>Restricts uploads to a pipe-separated list of file extensions.</p>
+        </a>
+        <a class="card" href={`${demoBase}/accept/`}>
+          <span class="tag">Rule · v1.5.0</span>
+          <h2>accept</h2>
+          <p>Restricts uploads to a list of MIME types, with <code>image/*</code> wildcards.</p>
+        </a>
+        <a class="card" href={`${demoBase}/domain/`}>
+          <span class="tag">Rule · v1.5.0</span>
+          <h2>domain</h2>
+          <p>Validates a bare domain name without scheme or path (e.g. <code>example.co.id</code>).</p>
+        </a>
+        <a class="card" href={`${demoBase}/url2/`}>
+          <span class="tag">Rule · v1.5.0</span>
+          <h2>url2</h2>
+          <p>A stricter <code>url</code> that requires an http(s) scheme and a dotted host name.</p>
+        </a>
+        <a class="card" href={`${demoBase}/phoneus/`}>
+          <span class="tag">Rule · v1.5.0</span>
+          <h2>phoneUS</h2>
+          <p>Validates US phone numbers with optional country code, parentheses, dots and dashes.</p>
+        </a>
+        <a class="card" href={`${demoBase}/datebefore/`}>
+          <span class="tag">Rule · v1.5.0</span>
+          <h2>dateBefore</h2>
+          <p>Requires a date strictly before another date string, <code>"today"</code>, or field.</p>
+        </a>
+        <a class="card" href={`${demoBase}/dateafter/`}>
+          <span class="tag">Rule · v1.5.0</span>
+          <h2>dateAfter</h2>
+          <p>Requires a date strictly after another date string, <code>"today"</code>, or field.</p>
+        </a>
+        <a class="card" href={`${demoBase}/requirefromgroup/`}>
+          <span class="tag">Rule · v1.5.0</span>
+          <h2>require_from_group</h2>
+          <p>Requires at least N fields in a selector group to be filled.</p>
+        </a>
+        <a class="card" href={`${demoBase}/different/`}>
+          <span class="tag">Rule · v1.5.0</span>
+          <h2>different</h2>
+          <p>Requires the value to differ from another field — the inverse of <code>equalTo</code>.</p>
+        </a>
         <a class="card" href={`${demoBase}/custom-rules/`}>
           <span class="tag">Advanced</span>
           <h2>Custom Rules</h2>

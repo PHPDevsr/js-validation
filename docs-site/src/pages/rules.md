@@ -362,6 +362,8 @@ rules: {
 
 Validates that the numeric value is greater than or equal to the parameter.
 
+> Available since `v1.5.0`.
+
 ```js
 rules: {
   age: { min: 18 }
@@ -383,6 +385,8 @@ rules: {
 ### `max`
 
 Validates that the numeric value is less than or equal to the parameter.
+
+> Available since `v1.5.0`.
 
 ```js
 rules: {
@@ -406,6 +410,8 @@ rules: {
 
 Validates that the numeric value is a multiple of the step, measured from the field's `min` attribute (or `0`). Decimal steps are compared without floating-point drift.
 
+> Available since `v1.5.0`.
+
 ```js
 rules: {
   price: { step: 0.25 }
@@ -428,6 +434,8 @@ rules: {
 
 Validates that the string length is within the given range (inclusive).
 
+> Available since `v1.5.0`.
+
 ```js
 rules: {
   bio: { rangelength: [10, 200] }
@@ -445,6 +453,8 @@ rules: {
 ### `digits`
 
 Validates that the value contains only digits (no sign or decimal point).
+
+> Available since `v1.5.0`.
 
 ```js
 rules: {
@@ -464,6 +474,8 @@ rules: {
 
 Validates that the value is an integer, optionally signed with `+` or `-`.
 
+> Available since `v1.5.0`.
+
 ```js
 rules: {
   offset: { integer: true }
@@ -482,6 +494,8 @@ rules: {
 
 Validates that the value is a decimal number, optionally negative and with thousands separators (`1,234.56`).
 
+> Available since `v1.5.0`.
+
 ```js
 rules: {
   balance: { number: true }
@@ -499,6 +513,8 @@ rules: {
 ### `letters`
 
 Validates that the value contains only letters. Pass `"birthdate"` to also allow spaces, dots and dashes, or `"id"` to also allow commas and apostrophes.
+
+> Available since `v1.5.0`.
 
 ```js
 rules: {
@@ -522,6 +538,8 @@ rules: {
 
 Like `required`, but only rejects a truly empty value — a value made of whitespace passes.
 
+> Available since `v1.5.0`.
+
 ```js
 rules: {
   nickname: { notblank: true }
@@ -535,6 +553,8 @@ rules: {
 ### `creditcard`
 
 Validates a credit card number using the Luhn checksum and the expected length for Visa, Mastercard, American Express, Discover, JCB and Diners Club. Spaces and dashes are ignored.
+
+> Available since `v1.5.0`.
 
 ```js
 rules: {
@@ -554,6 +574,8 @@ rules: {
 
 Validates an expiry date in `MM/YY` or `MM/YYYY` form and requires the card to still be valid in the current month.
 
+> Available since `v1.5.0`.
+
 ```js
 rules: {
   expiry: { creditcardExpiry: true }
@@ -571,6 +593,8 @@ rules: {
 ### `extension`
 
 Validates that selected files (or a file name typed into a text field) have one of the given extensions. Case-insensitive.
+
+> Available since `v1.5.0`.
 
 ```js
 rules: {
@@ -594,6 +618,8 @@ rules: {
 
 Validates selected files against a list of MIME types. Wildcards like `image/*` are supported.
 
+> Available since `v1.5.0`.
+
 ```js
 rules: {
   avatar: { accept: 'image/png,image/jpeg' }
@@ -611,6 +637,8 @@ rules: {
 ### `domain`
 
 Validates a bare domain name (no scheme or path), e.g. `sub.example.co.id`.
+
+> Available since `v1.5.0`.
 
 ```js
 rules: {
@@ -630,6 +658,8 @@ rules: {
 
 A stricter [`url`](#url): requires an `http://` or `https://` scheme and a host with a dot (no bare IPs or `localhost`).
 
+> Available since `v1.5.0`.
+
 ```js
 rules: {
   website: { url2: true }
@@ -648,6 +678,8 @@ rules: {
 
 Validates a US phone number. Accepts `1`/`+1` prefixes, parentheses, spaces, dots and dashes.
 
+> Available since `v1.5.0`.
+
 ```js
 rules: {
   phone: { phoneUS: true }
@@ -665,6 +697,8 @@ rules: {
 ### `dateBefore`
 
 Validates that the date is strictly before another date. The parameter can be a date string, `"today"`, or a CSS selector of another field.
+
+> Available since `v1.5.0`.
 
 ```js
 rules: {
@@ -688,6 +722,8 @@ rules: {
 
 Validates that the date is strictly after another date. Same parameter forms as [`dateBefore`](#datebefore).
 
+> Available since `v1.5.0`.
+
 ```js
 rules: {
   endDate: { dateAfter: '#startDate' }
@@ -705,6 +741,8 @@ rules: {
 ### `require_from_group`
 
 Requires that at least a given number of fields in a group are filled. Add the rule to **every** field in the group.
+
+> Available since `v1.5.0`.
 
 ```js
 rules: {
@@ -728,6 +766,8 @@ rules: {
 ### `different`
 
 The inverse of [`equalTo`](#equalto): the value must differ from the field matched by the selector.
+
+> Available since `v1.5.0`.
 
 ```js
 rules: {
