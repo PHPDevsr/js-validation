@@ -33,6 +33,11 @@ import './rules/min.js';
 import './rules/max.js';
 import './rules/step.js';
 import './rules/rangelength.js';
+import './rules/digits.js';
+import './rules/integer.js';
+import './rules/number.js';
+import './rules/letters.js';
+import './rules/notblank.js';
 
 // Register all built-in locales
 Object.entries(locales).forEach(([lang, messages]) => {

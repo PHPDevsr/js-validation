@@ -42,5 +42,10 @@ export const es = {
       bounds = String(param || '').split(',');
     }
     return `Por favor ingrese un valor entre ${bounds[0]} y ${bounds[1]} caracteres.`;
-  }
+  },
+  digits: 'Por favor ingrese solo dígitos.',
+  integer: 'Por favor ingrese un número entero.',
+  number: 'Por favor ingrese un número válido.',
+  letters: 'Por favor ingrese solo letras.',
+  notblank: 'Este campo es obligatorio.'
 };

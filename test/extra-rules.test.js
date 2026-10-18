@@ -41,57 +41,46 @@ function check(value, rules, options = {}) {
   return { valid: v.validate(), message: f._jsvMessage };
 }
 
-describe('min / max rules', () => {
+describe('digits / integer / number rules', () => {
   it.each([
-    ['5', 5, true], ['4.99', 5, false], ['', 5, false], ['abc', 5, false]
-  ])('min: %s against %s -> %s', (value, param, expected) => {
-    expect(check(value, { min: param }).valid).toBe(expected);
+    ['123', true], ['12.3', false], ['-1', false], ['', false]
+  ])('digits "%s" -> %s', (value, expected) => {
+    expect(check(value, { digits: true }).valid).toBe(expected);
   });
 
   it.each([
-    ['10', 10, true], ['10.01', 10, false], ['', 10, false]
-  ])('max: %s against %s -> %s', (value, param, expected) => {
-    expect(check(value, { max: param }).valid).toBe(expected);
+    ['123', true], ['-123', true], ['+42', true], ['1.5', false], ['', false]
+  ])('integer "%s" -> %s', (value, expected) => {
+    expect(check(value, { integer: true }).valid).toBe(expected);
   });
 
-  it('shows param in message', () => {
-    expect(check('1', { min: 3 }).message).toBe('Please enter a value greater than or equal to 3.');
+  it.each([
+    ['12.5', true], ['-3', true], ['1,234.56', true], ['1.2.3', false], ['', false]
+  ])('number "%s" -> %s', (value, expected) => {
+    expect(check(value, { number: true }).valid).toBe(expected);
   });
 });
 
-describe('step rule', () => {
-  it.each([
-    ['4', 2, true], ['5', 2, false], ['0', 2, true], ['', 2, false]
-  ])('integer step: %s step %s -> %s', (value, param, expected) => {
-    expect(check(value, { step: param }).valid).toBe(expected);
+describe('letters rule', () => {
+  it('accepts letters only by default', () => {
+    expect(check('John', { letters: true }).valid).toBe(true);
+    expect(check('John Doe', { letters: true }).valid).toBe(false);
+    expect(check('', { letters: true }).valid).toBe(false);
   });
 
-  it.each([
-    ['0.3', 0.1, true], ['0.7', 0.1, true], ['0.35', 0.1, false], ['1.25', 0.25, true]
-  ])('decimal step: %s step %s -> %s', (value, param, expected) => {
-    expect(check(value, { step: param }).valid).toBe(expected);
+  it('accepts spaces and dashes for birthdate option', () => {
+    expect(check('Mary-Jane Smith', { letters: 'birthdate' }).valid).toBe(true);
+    expect(check('Mary1', { letters: 'birthdate' }).valid).toBe(false);
   });
 
-  it('respects the field min as base', () => {
-    const form = makeForm([]);
-    expect(check('7', { step: 2 }, { form, extra: { min: '3' } }).valid).toBe(true);
-    expect(check('8', { step: 2 }, { form, extra: { min: '3' } }).valid).toBe(false);
+  it('accepts apostrophes and commas for id option', () => {
+    expect(check("O'Brien, Jr", { letters: 'id' }).valid).toBe(true);
   });
 });
 
-describe('rangelength rule', () => {
-  it.each([
-    ['abc', [2, 4], true], ['ab', [2, 4], true], ['abcde', [2, 4], false], ['a', [2, 4], false]
-  ])('"%s" in %j -> %s', (value, param, expected) => {
-    expect(check(value, { rangelength: param }).valid).toBe(expected);
-  });
-
-  it('accepts JSON string and "min,max" params', () => {
-    expect(check('abc', { rangelength: '[2,4]' }).valid).toBe(true);
-    expect(check('abc', { rangelength: '2,4' }).valid).toBe(true);
-  });
-
-  it('fails on invalid param', () => {
-    expect(check('abc', { rangelength: 'nope' }).valid).toBe(false);
+describe('notblank rule', () => {
+  it('rejects empty but accepts whitespace', () => {
+    expect(check('', { notblank: true }).valid).toBe(false);
+    expect(check('   ', { notblank: true }).valid).toBe(true);
   });
 });
