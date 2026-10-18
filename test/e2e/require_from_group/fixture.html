@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>E2E Test - Require From Group Rule</title>
+    <style>
+      .is-invalid { border: 2px solid red; }
+    </style>
+  </head>
+  <body>
+    <form id="test-form" novalidate>
+      <div><input name="phone" id="phone" type="text" class="contact" /></div>
+      <div><input name="email" id="email" type="text" class="contact" /></div>
+      <button type="submit" id="submit-btn">Submit</button>
+    </form>
+    <p id="status"></p>
+
+    <script type="module">
+      import jsValidation from '/src/index.js';
+
+      jsValidation('#test-form', {
+        rules: {
+          phone: { require_from_group: [1, '.contact'] },
+          email: { require_from_group: [1, '.contact'] }
+        },
+        messages: {
+          phone: { require_from_group: 'Please fill at least 1 of these fields.' },
+          email: { require_from_group: 'Please fill at least 1 of these fields.' }
+        }
+      }).submit(() => {
+        document.getElementById('status').textContent = 'Form submitted successfully!';
+      });
+    </script>
+  </body>
+</html>

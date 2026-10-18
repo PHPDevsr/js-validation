@@ -89,6 +89,13 @@ range: (param) => {
 | `maxsizetotal` | `string` | Maximum total file size |
 | `ishexcolor` | — | Must be a valid hex color |
 | `time` | — | Must be a valid time (`HH:MM` or `HH:MM:SS`) |
+| `domain` | — | Must be a valid domain name |
+| `url2` | — | Must be a URL with scheme and host |
+| `phoneUS` | — | Must be a valid US phone number |
+| `dateBefore` | `string` | Date must be before the limit |
+| `dateAfter` | `string` | Date must be after the limit |
+| `require_from_group` | `[count, selector]` | Minimum filled fields in a group |
+| `different` | — | Must differ from another field |
 | `creditcard` | — | Must be a valid credit card number |
 | `creditcardExpiry` | — | Must be a valid expiry (`MM/YY`) |
 | `extension` | `string` | Allowed file extensions |

@@ -51,5 +51,15 @@ export const en = {
   creditcard: 'Please enter a valid credit card number.',
   creditcardExpiry: 'Please enter a valid expiry date (MM/YY).',
   extension: (param) => `Please select a file with one of these extensions: ${String(param).replace(/\|/g, ', ')}.`,
-  accept: (param) => `Please select a file with an accepted type: ${param}.`
+  accept: (param) => `Please select a file with an accepted type: ${param}.`,
+  domain: 'Please enter a valid domain name.',
+  url2: 'Please enter a valid URL including http:// or https://.',
+  phoneUS: 'Please enter a valid US phone number.',
+  dateBefore: (param) => `Please enter a date before ${param}.`,
+  dateAfter: (param) => `Please enter a date after ${param}.`,
+  require_from_group: (param) => {
+    const count = Array.isArray(param) ? param[0] : String(param || '').split(',')[0];
+    return `Please fill at least ${String(count).trim()} of these fields.`;
+  },
+  different: 'Please enter a different value.'
 };

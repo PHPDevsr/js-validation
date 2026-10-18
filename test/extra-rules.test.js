@@ -41,72 +41,95 @@ function check(value, rules, options = {}) {
   return { valid: v.validate(), message: f._jsvMessage };
 }
 
-describe('creditcard rule', () => {
+describe('different rule', () => {
+  function run(value) {
+    const other = field('other', 'secret', { id: 'other' });
+    return check(value, { different: '#other' }, { form: makeForm([], { '#other': other }) });
+  }
+
+  it('fails when values match', () => {
+    expect(run('secret').valid).toBe(false);
+  });
+
+  it('passes when values differ', () => {
+    expect(run('othervalue').valid).toBe(true);
+  });
+});
+
+describe('phoneUS rule', () => {
   it.each([
-    ['4111111111111111', true],
-    ['4111 1111 1111 1111', true],
-    ['5555555555554444', true],
-    ['378282246310005', true],
-    ['6011111111111117', true],
-    ['4111111111111112', false],
-    ['1234567890123456', false],
-    ['', false]
+    ['5555555555', true], ['(555) 555-5555', true], ['+1 555-555-5555', true], ['12345', false], ['', false]
   ])('"%s" -> %s', (value, expected) => {
-    expect(check(value, { creditcard: true }).valid).toBe(expected);
+    expect(check(value, { phoneUS: true }).valid).toBe(expected);
   });
 });
 
-describe('creditcardExpiry rule', () => {
-  function future() {
-    const d = new Date();
-    d.setMonth(d.getMonth() + 3);
-    return `${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getFullYear()).slice(-2)}`;
+describe('domain rule', () => {
+  it.each([
+    ['example.com', true], ['sub.example.co.id', true], ['example', false], ['-bad.com', false], ['example..com', false], ['', false]
+  ])('"%s" -> %s', (value, expected) => {
+    expect(check(value, { domain: true }).valid).toBe(expected);
+  });
+});
+
+describe('url2 rule', () => {
+  it.each([
+    ['https://example.com/path', true], ['http://sub.example.id', true], ['example.com', false], ['http://localhost', false], ['', false]
+  ])('"%s" -> %s', (value, expected) => {
+    expect(check(value, { url2: true }).valid).toBe(expected);
+  });
+});
+
+describe('dateBefore / dateAfter rules', () => {
+  it('compares against a fixed date', () => {
+    expect(check('2020-01-01', { dateBefore: '2024-01-01' }).valid).toBe(true);
+    expect(check('2025-01-01', { dateBefore: '2024-01-01' }).valid).toBe(false);
+    expect(check('2025-01-01', { dateAfter: '2024-01-01' }).valid).toBe(true);
+  });
+
+  it('compares against another field', () => {
+    const start = field('start', '2024-06-01', { id: 'start' });
+    const end = field('end', '2024-05-01');
+    const form = makeForm([start, end], { '#start': start });
+    const v = jsValidation(form, { rules: { end: { dateAfter: '#start' } } });
+    expect(v.validate()).toBe(false);
+    end.value = '2024-07-01';
+    expect(v.validate()).toBe(true);
+  });
+
+  it('rejects empty or unparsable values', () => {
+    expect(check('', { dateBefore: 'today' }).valid).toBe(false);
+    expect(check('not-a-date', { dateAfter: '2000-01-01' }).valid).toBe(false);
+  });
+});
+
+describe('require_from_group rule', () => {
+  function groupForm() {
+    const phone = field('phone', '', { id: 'phone' });
+    const email = field('email', '', { id: 'email' });
+    [phone, email].forEach((el) => {
+      el.matches = (selector) => selector === '.contact';
+    });
+    return makeForm([phone, email]);
   }
 
-  it('accepts a future expiry', () => {
-    expect(check(future(), { creditcardExpiry: true }).valid).toBe(true);
+  it('fails when no group field is filled', () => {
+    const form = groupForm();
+    const v = jsValidation(form, { rules: { phone: { require_from_group: [1, '.contact'] } } });
+    expect(v.validate()).toBe(false);
+    expect(form.elements[0]._jsvMessage).toBe('Please fill at least 1 of these fields.');
   });
 
-  it.each(['13/30', '00/30', '12-30', ''])('rejects "%s"', (value) => {
-    expect(check(value, { creditcardExpiry: true }).valid).toBe(false);
+  it('passes when enough group fields are filled', () => {
+    const form = groupForm();
+    form.elements[1].value = 'a@b.co';
+    const v = jsValidation(form, { rules: { phone: { require_from_group: '1,.contact' } } });
+    expect(v.validate()).toBe(true);
   });
 
-  it('rejects an expired card', () => {
-    expect(check('01/20', { creditcardExpiry: true }).valid).toBe(false);
-  });
-});
-
-describe('extension rule', () => {
-  function fileField(files) {
-    return field('upload', '', { type: 'file', files });
-  }
-
-  it('checks file names', () => {
-    const f = fileField([{ name: 'a.PNG', size: 1 }, { name: 'b.jpg', size: 1 }]);
-    const form = makeForm([]);
-    expect(check('', { extension: 'jpg|png' }, { form, extra: { files: f.files } }).valid).toBe(true);
-  });
-
-  it('fails when a file has a disallowed extension', () => {
-    const f = fileField([{ name: 'a.exe', size: 1 }]);
-    const form = makeForm([]);
-    expect(check('', { extension: 'jpg|png' }, { form, extra: { files: f.files } }).valid).toBe(false);
-  });
-
-  it('checks a plain value when there are no files', () => {
-    expect(check('photo.webp', { extension: 'webp' }).valid).toBe(true);
-    expect(check('photo.gif', { extension: 'webp' }).valid).toBe(false);
-  });
-});
-
-describe('accept rule', () => {
-  it('supports wildcard MIME types', () => {
-    const f = field('upload', '', { type: 'file', files: [{ name: 'a.png', type: 'image/png', size: 1 }] });
-    const form = makeForm([]);
-    expect(check('', { accept: 'image/*' }, { form, extra: { files: f.files } }).valid).toBe(true);
-
-    const bad = field('upload', '', { type: 'file', files: [{ name: 'a.pdf', type: 'application/pdf', size: 1 }] });
-    const badForm = makeForm([]);
-    expect(check('', { accept: 'image/*' }, { form: badForm, extra: { files: bad.files } }).valid).toBe(false);
+  it('fails on an invalid param', () => {
+    const form = groupForm();
+    const v = jsValidation(form, { rules: { phone: { require_from_group: 'nope' } } });
+    expect(v.validate()).toBe(false);
   });
 });

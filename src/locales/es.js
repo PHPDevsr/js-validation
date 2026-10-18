@@ -51,5 +51,15 @@ export const es = {
   creditcard: 'Por favor ingrese un número de tarjeta de crédito válido.',
   creditcardExpiry: 'Por favor ingrese una fecha de caducidad válida (MM/AA).',
   extension: (param) => `Por favor seleccione un archivo con una de estas extensiones: ${String(param).replace(/\|/g, ', ')}.`,
-  accept: (param) => `Por favor seleccione un archivo con un tipo aceptado: ${param}.`
+  accept: (param) => `Por favor seleccione un archivo con un tipo aceptado: ${param}.`,
+  domain: 'Por favor ingrese un nombre de dominio válido.',
+  url2: 'Por favor ingrese una URL válida que incluya http:// o https://.',
+  phoneUS: 'Por favor ingrese un número de teléfono de EE. UU. válido.',
+  dateBefore: (param) => `Por favor ingrese una fecha anterior a ${param}.`,
+  dateAfter: (param) => `Por favor ingrese una fecha posterior a ${param}.`,
+  require_from_group: (param) => {
+    const count = Array.isArray(param) ? param[0] : String(param || '').split(',')[0];
+    return `Por favor complete al menos ${String(count).trim()} de estos campos.`;
+  },
+  different: 'Por favor ingrese un valor diferente.'
 };
