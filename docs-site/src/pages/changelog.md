@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- feat(creditcard,creditcardExpiry,extension,accept): add card and file type rules by @ddevsr
 - feat(min,max,step,rangelength): add numeric and length range rules by @ddevsr
 - feat(digits,integer,number,letters,notblank): add character and number format rules by @ddevsr
 

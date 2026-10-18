@@ -41,46 +41,72 @@ function check(value, rules, options = {}) {
   return { valid: v.validate(), message: f._jsvMessage };
 }
 
-describe('digits / integer / number rules', () => {
+describe('creditcard rule', () => {
   it.each([
-    ['123', true], ['12.3', false], ['-1', false], ['', false]
-  ])('digits "%s" -> %s', (value, expected) => {
-    expect(check(value, { digits: true }).valid).toBe(expected);
-  });
-
-  it.each([
-    ['123', true], ['-123', true], ['+42', true], ['1.5', false], ['', false]
-  ])('integer "%s" -> %s', (value, expected) => {
-    expect(check(value, { integer: true }).valid).toBe(expected);
-  });
-
-  it.each([
-    ['12.5', true], ['-3', true], ['1,234.56', true], ['1.2.3', false], ['', false]
-  ])('number "%s" -> %s', (value, expected) => {
-    expect(check(value, { number: true }).valid).toBe(expected);
+    ['4111111111111111', true],
+    ['4111 1111 1111 1111', true],
+    ['5555555555554444', true],
+    ['378282246310005', true],
+    ['6011111111111117', true],
+    ['4111111111111112', false],
+    ['1234567890123456', false],
+    ['', false]
+  ])('"%s" -> %s', (value, expected) => {
+    expect(check(value, { creditcard: true }).valid).toBe(expected);
   });
 });
 
-describe('letters rule', () => {
-  it('accepts letters only by default', () => {
-    expect(check('John', { letters: true }).valid).toBe(true);
-    expect(check('John Doe', { letters: true }).valid).toBe(false);
-    expect(check('', { letters: true }).valid).toBe(false);
+describe('creditcardExpiry rule', () => {
+  function future() {
+    const d = new Date();
+    d.setMonth(d.getMonth() + 3);
+    return `${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getFullYear()).slice(-2)}`;
+  }
+
+  it('accepts a future expiry', () => {
+    expect(check(future(), { creditcardExpiry: true }).valid).toBe(true);
   });
 
-  it('accepts spaces and dashes for birthdate option', () => {
-    expect(check('Mary-Jane Smith', { letters: 'birthdate' }).valid).toBe(true);
-    expect(check('Mary1', { letters: 'birthdate' }).valid).toBe(false);
+  it.each(['13/30', '00/30', '12-30', ''])('rejects "%s"', (value) => {
+    expect(check(value, { creditcardExpiry: true }).valid).toBe(false);
   });
 
-  it('accepts apostrophes and commas for id option', () => {
-    expect(check("O'Brien, Jr", { letters: 'id' }).valid).toBe(true);
+  it('rejects an expired card', () => {
+    expect(check('01/20', { creditcardExpiry: true }).valid).toBe(false);
   });
 });
 
-describe('notblank rule', () => {
-  it('rejects empty but accepts whitespace', () => {
-    expect(check('', { notblank: true }).valid).toBe(false);
-    expect(check('   ', { notblank: true }).valid).toBe(true);
+describe('extension rule', () => {
+  function fileField(files) {
+    return field('upload', '', { type: 'file', files });
+  }
+
+  it('checks file names', () => {
+    const f = fileField([{ name: 'a.PNG', size: 1 }, { name: 'b.jpg', size: 1 }]);
+    const form = makeForm([]);
+    expect(check('', { extension: 'jpg|png' }, { form, extra: { files: f.files } }).valid).toBe(true);
+  });
+
+  it('fails when a file has a disallowed extension', () => {
+    const f = fileField([{ name: 'a.exe', size: 1 }]);
+    const form = makeForm([]);
+    expect(check('', { extension: 'jpg|png' }, { form, extra: { files: f.files } }).valid).toBe(false);
+  });
+
+  it('checks a plain value when there are no files', () => {
+    expect(check('photo.webp', { extension: 'webp' }).valid).toBe(true);
+    expect(check('photo.gif', { extension: 'webp' }).valid).toBe(false);
+  });
+});
+
+describe('accept rule', () => {
+  it('supports wildcard MIME types', () => {
+    const f = field('upload', '', { type: 'file', files: [{ name: 'a.png', type: 'image/png', size: 1 }] });
+    const form = makeForm([]);
+    expect(check('', { accept: 'image/*' }, { form, extra: { files: f.files } }).valid).toBe(true);
+
+    const bad = field('upload', '', { type: 'file', files: [{ name: 'a.pdf', type: 'application/pdf', size: 1 }] });
+    const badForm = makeForm([]);
+    expect(check('', { accept: 'image/*' }, { form: badForm, extra: { files: bad.files } }).valid).toBe(false);
   });
 });

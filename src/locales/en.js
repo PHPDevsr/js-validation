@@ -47,5 +47,9 @@ export const en = {
   integer: 'Please enter an integer.',
   number: 'Please enter a valid number.',
   letters: 'Please enter only letters.',
-  notblank: 'This field is required.'
+  notblank: 'This field is required.',
+  creditcard: 'Please enter a valid credit card number.',
+  creditcardExpiry: 'Please enter a valid expiry date (MM/YY).',
+  extension: (param) => `Please select a file with one of these extensions: ${String(param).replace(/\|/g, ', ')}.`,
+  accept: (param) => `Please select a file with an accepted type: ${param}.`
 };

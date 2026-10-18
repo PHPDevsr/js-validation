@@ -47,5 +47,9 @@ export const es = {
   integer: 'Por favor ingrese un número entero.',
   number: 'Por favor ingrese un número válido.',
   letters: 'Por favor ingrese solo letras.',
-  notblank: 'Este campo es obligatorio.'
+  notblank: 'Este campo es obligatorio.',
+  creditcard: 'Por favor ingrese un número de tarjeta de crédito válido.',
+  creditcardExpiry: 'Por favor ingrese una fecha de caducidad válida (MM/AA).',
+  extension: (param) => `Por favor seleccione un archivo con una de estas extensiones: ${String(param).replace(/\|/g, ', ')}.`,
+  accept: (param) => `Por favor seleccione un archivo con un tipo aceptado: ${param}.`
 };

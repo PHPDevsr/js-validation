@@ -532,6 +532,82 @@ rules: {
 
 ---
 
+### `creditcard`
+
+Validates a credit card number using the Luhn checksum and the expected length for Visa, Mastercard, American Express, Discover, JCB and Diners Club. Spaces and dashes are ignored.
+
+```js
+rules: {
+  card: { creditcard: true }
+}
+```
+
+**Default message:** `"Please enter a valid credit card number."`
+
+---
+
+
+
+---
+
+### `creditcardExpiry`
+
+Validates an expiry date in `MM/YY` or `MM/YYYY` form and requires the card to still be valid in the current month.
+
+```js
+rules: {
+  expiry: { creditcardExpiry: true }
+}
+```
+
+**Default message:** `"Please enter a valid expiry date (MM/YY)."`
+
+---
+
+
+
+---
+
+### `extension`
+
+Validates that selected files (or a file name typed into a text field) have one of the given extensions. Case-insensitive.
+
+```js
+rules: {
+  attachments: { extension: 'jpg|png|pdf' }
+}
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `extension` | `string` | Pipe-separated list of allowed extensions |
+
+**Default message:** `"Please select a file with one of these extensions: {0}."`
+
+---
+
+
+
+---
+
+### `accept`
+
+Validates selected files against a list of MIME types. Wildcards like `image/*` are supported.
+
+```js
+rules: {
+  avatar: { accept: 'image/png,image/jpeg' }
+}
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `accept` | `string` | Comma-separated MIME types or wildcards |
+
+**Default message:** `"Please select a file with an accepted type: {0}."`
+
+---
+
 ## Using Rules via HTML Attributes
 
 All rules can also be declared using `data-rule-*` attributes:
