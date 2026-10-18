@@ -93,6 +93,11 @@ range: (param) => {
 | `max` | `number` | Maximum allowed value |
 | `step` | `number` | Value must be a multiple of step |
 | `rangelength` | `[min, max]` | Length within a range |
+| `digits` | — | Digits only |
+| `integer` | — | Must be an integer |
+| `number` | — | Must be a decimal number |
+| `letters` | — | Only letters |
+| `notblank` | — | Field must not be empty |
 
 ## Adding a Custom Locale
 

@@ -442,6 +442,96 @@ rules: {
 
 ---
 
+### `digits`
+
+Validates that the value contains only digits (no sign or decimal point).
+
+```js
+rules: {
+  otp: { digits: true }
+}
+```
+
+**Default message:** `"Please enter only digits."`
+
+---
+
+
+
+---
+
+### `integer`
+
+Validates that the value is an integer, optionally signed with `+` or `-`.
+
+```js
+rules: {
+  offset: { integer: true }
+}
+```
+
+**Default message:** `"Please enter an integer."`
+
+---
+
+
+
+---
+
+### `number`
+
+Validates that the value is a decimal number, optionally negative and with thousands separators (`1,234.56`).
+
+```js
+rules: {
+  balance: { number: true }
+}
+```
+
+**Default message:** `"Please enter a valid number."`
+
+---
+
+
+
+---
+
+### `letters`
+
+Validates that the value contains only letters. Pass `"birthdate"` to also allow spaces, dots and dashes, or `"id"` to also allow commas and apostrophes.
+
+```js
+rules: {
+  fullName: { letters: 'id' }
+}
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `letters` | `true` \| `"birthdate"` \| `"id"` | Character set to allow |
+
+**Default message:** `"Please enter only letters."`
+
+---
+
+
+
+---
+
+### `notblank`
+
+Like `required`, but only rejects a truly empty value — a value made of whitespace passes.
+
+```js
+rules: {
+  nickname: { notblank: true }
+}
+```
+
+**Default message:** `"This field is required."`
+
+---
+
 ## Using Rules via HTML Attributes
 
 All rules can also be declared using `data-rule-*` attributes:

@@ -42,5 +42,10 @@ export const en = {
       bounds = String(param || '').split(',');
     }
     return `Please enter a value between ${bounds[0]} and ${bounds[1]} characters long.`;
-  }
+  },
+  digits: 'Please enter only digits.',
+  integer: 'Please enter an integer.',
+  number: 'Please enter a valid number.',
+  letters: 'Please enter only letters.',
+  notblank: 'This field is required.'
 };
