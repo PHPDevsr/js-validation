@@ -30,5 +30,17 @@ export const es = {
   maxsize: (param) => `Por favor seleccione archivos no mayores que ${param}.`,
   maxsizetotal: (param) => `El tamaño total de todos los archivos no debe exceder ${param}.`,
   ishexcolor: 'Por favor ingrese un color hexadecimal válido (p. ej. #fff o #ffffff).',
-  time: 'Por favor ingrese una hora válida (HH:MM o HH:MM:SS).'
+  time: 'Por favor ingrese una hora válida (HH:MM o HH:MM:SS).',
+  min: (param) => `Por favor ingrese un valor mayor o igual a ${param}.`,
+  max: (param) => `Por favor ingrese un valor menor o igual a ${param}.`,
+  step: (param) => `Por favor ingrese un múltiplo de ${param}.`,
+  rangelength: (param) => {
+    let bounds;
+    try {
+      bounds = Array.isArray(param) ? param : JSON.parse(param);
+    } catch {
+      bounds = String(param || '').split(',');
+    }
+    return `Por favor ingrese un valor entre ${bounds[0]} y ${bounds[1]} caracteres.`;
+  }
 };

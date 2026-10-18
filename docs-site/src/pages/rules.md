@@ -358,6 +358,90 @@ rules: {
 
 ---
 
+### `min`
+
+Validates that the numeric value is greater than or equal to the parameter.
+
+```js
+rules: {
+  age: { min: 18 }
+}
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `min` | `number` | Minimum allowed value |
+
+**Default message:** `"Please enter a value greater than or equal to {0}."`
+
+---
+
+
+
+---
+
+### `max`
+
+Validates that the numeric value is less than or equal to the parameter.
+
+```js
+rules: {
+  quantity: { max: 10 }
+}
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `max` | `number` | Maximum allowed value |
+
+**Default message:** `"Please enter a value less than or equal to {0}."`
+
+---
+
+
+
+---
+
+### `step`
+
+Validates that the numeric value is a multiple of the step, measured from the field's `min` attribute (or `0`). Decimal steps are compared without floating-point drift.
+
+```js
+rules: {
+  price: { step: 0.25 }
+}
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `step` | `number` | Step size (the field's `step` attribute takes precedence) |
+
+**Default message:** `"Please enter a multiple of {0}."`
+
+---
+
+
+
+---
+
+### `rangelength`
+
+Validates that the string length is within the given range (inclusive).
+
+```js
+rules: {
+  bio: { rangelength: [10, 200] }
+}
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `rangelength` | `[number, number]` | `[min, max]` allowed length |
+
+**Default message:** `"Please enter a value between {0} and {1} characters long."`
+
+---
+
 ## Using Rules via HTML Attributes
 
 All rules can also be declared using `data-rule-*` attributes:

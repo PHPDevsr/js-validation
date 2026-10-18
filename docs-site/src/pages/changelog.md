@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- feat(min,max,step,rangelength): add numeric and length range rules by @ddevsr
+
 ## [1.4.0] - 2026-06-24
 
 ### Added

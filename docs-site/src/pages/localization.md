@@ -89,6 +89,10 @@ range: (param) => {
 | `maxsizetotal` | `string` | Maximum total file size |
 | `ishexcolor` | — | Must be a valid hex color |
 | `time` | — | Must be a valid time (`HH:MM` or `HH:MM:SS`) |
+| `min` | `number` | Minimum allowed value |
+| `max` | `number` | Maximum allowed value |
+| `step` | `number` | Value must be a multiple of step |
+| `rangelength` | `[min, max]` | Length within a range |
 
 ## Adding a Custom Locale
 
