@@ -29,6 +29,10 @@ import './rules/maxsize.js';
 import './rules/maxsizetotal.js';
 import './rules/ishexcolor.js';
 import './rules/time.js';
+import './rules/min.js';
+import './rules/max.js';
+import './rules/step.js';
+import './rules/rangelength.js';
 
 // Register all built-in locales
 Object.entries(locales).forEach(([lang, messages]) => {

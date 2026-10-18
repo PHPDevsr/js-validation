@@ -30,5 +30,17 @@ export const en = {
   maxsize: (param) => `Please select files no larger than ${param}.`,
   maxsizetotal: (param) => `Total size of all files must not exceed ${param}.`,
   ishexcolor: 'Please enter a valid hex color (e.g. #fff or #ffffff).',
-  time: 'Please enter a valid time (HH:MM or HH:MM:SS).'
+  time: 'Please enter a valid time (HH:MM or HH:MM:SS).',
+  min: (param) => `Please enter a value greater than or equal to ${param}.`,
+  max: (param) => `Please enter a value less than or equal to ${param}.`,
+  step: (param) => `Please enter a multiple of ${param}.`,
+  rangelength: (param) => {
+    let bounds;
+    try {
+      bounds = Array.isArray(param) ? param : JSON.parse(param);
+    } catch {
+      bounds = String(param || '').split(',');
+    }
+    return `Please enter a value between ${bounds[0]} and ${bounds[1]} characters long.`;
+  }
 };
