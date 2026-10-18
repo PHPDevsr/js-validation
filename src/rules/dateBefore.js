@@ -16,9 +16,16 @@ export function resolveDate(param, validator) {
     today.setHours(0, 0, 0, 0);
     return today.getTime();
   }
-  const target = validator && validator.form && typeof validator.form.querySelector === 'function'
-    ? validator.form.querySelector(raw)
-    : null;
+  // Try the param as a selector first (e.g. `#endDate`); a plain date string is
+  // not a valid selector, so querySelector throws and we fall back to parsing it.
+  let target = null;
+  if (validator && validator.form && typeof validator.form.querySelector === 'function') {
+    try {
+      target = validator.form.querySelector(raw);
+    } catch {
+      target = null;
+    }
+  }
   return parseDate(target ? target.value : raw);
 }
 
