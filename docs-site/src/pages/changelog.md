@@ -13,21 +13,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
+## [1.5.0] - 2026-11-14
 
-- feat(domain,url2,phoneUS,dateBefore,dateAfter,require_from_group,different): add network, date and group rules by @ddevsr
-- feat(creditcard,creditcardExpiry,extension,accept): add card and file type rules by @ddevsr
-- feat(min,max,step,rangelength): add numeric and length range rules by @ddevsr
-- feat(digits,integer,number,letters,notblank): add character and number format rules by @ddevsr
+### Changed
+
+- No notable changes.
 
 ## [1.4.0] - 2026-06-24
 
 ### Added
 
-- feat: added built-in `ishexcolor` rules by @ddevsr
-- feat: added built-in `time` rules by @ddevsr
-- feat: added built-in `alpha` rules by @ddevsr
-- feat: added `localization` by @ddevsr
+- feat: added built-in `ishexcolor` rules by @ddevsr #27
+- feat: added built-in `time` rules by @ddevsr #28
+- feat: added built-in `alpha` rules by @ddevsr #29
+- feat: added `localization` by @ddevsr #30
 
 ## [1.3.0] - 2026-06-05
 
@@ -45,6 +44,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Others
 
+- docs: make dynamic version
+- docs: make dynamic version
+- docs: make dynamic version
+- docs: make dynamic version
 - docs: make dynamic version
 
 ## [1.2.0] - 2026-05-27
@@ -123,7 +126,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Release workflow deploying compiled assets and docs to GitHub Pages.
 - Demo page (`docs/index.html`) with declarative and programmatic usage examples.
 
-[Unreleased]: https://github.com/PHPDevsr/js-validation/compare/v1.4.0...HEAD
+[Unreleased]: https://github.com/PHPDevsr/js-validation/compare/v1.5.0...HEAD
 [1.1.1]: https://github.com/PHPDevsr/js-validation/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/PHPDevsr/js-validation/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/PHPDevsr/js-validation/releases/tag/v1.0.0
@@ -134,3 +137,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.2.2]: https://github.com/PHPDevsr/js-validation/compare/v1.2.1...v1.2.2
 [1.3.0]: https://github.com/PHPDevsr/js-validation/compare/v1.2.2...v1.3.0
 [1.4.0]: https://github.com/PHPDevsr/js-validation/compare/v1.3.0...v1.4.0
+[1.5.0]: https://github.com/PHPDevsr/js-validation/compare/v1.4.0...v1.5.0
