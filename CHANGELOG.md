@@ -11,7 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- No notable changes.
+- feat(domain,url2,phoneUS,dateBefore,dateAfter,require_from_group,different): add network, date and group rules by @ddevsr
+- feat(creditcard,creditcardExpiry,extension,accept): add card and file type rules by @ddevsr
+- feat(min,max,step,rangelength): add numeric and length range rules by @ddevsr
+- feat(digits,integer,number,letters,notblank): add character and number format rules by @ddevsr
 
 ## [1.4.0] - 2026-06-24
 
@@ -38,10 +41,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Others
 
-- docs: make dynamic version
-- docs: make dynamic version
-- docs: make dynamic version
-- docs: make dynamic version
 - docs: make dynamic version
 
 ## [1.2.0] - 2026-05-27
